@@ -16,9 +16,18 @@ export default function RegisterPage({ setActivePage }) {
     city: 'Chennai'
   });
 
-  const [otp, setOtp] = useState(['1', '2', '3', '4', '5', '6']);
+  const [otp, setOtp] = useState(['', '', '', '', '', '']);
+  const [generatedOtp, setGeneratedOtp] = useState('');
   const [otpError, setOtpError] = useState('');
   const [isVerifying, setIsVerifying] = useState(false);
+
+  const generateNewOtp = (mobileNum) => {
+    const code = Math.floor(100000 + Math.random() * 900000).toString();
+    setGeneratedOtp(code);
+    setOtp(['', '', '', '', '', '']);
+    setOtpError('');
+    return code;
+  };
 
   const handleBasicSubmit = (e) => {
     e.preventDefault();
@@ -26,14 +35,47 @@ export default function RegisterPage({ setActivePage }) {
       alert('Please enter your full name');
       return;
     }
-    if (!formData.mobile.trim() || formData.mobile.length < 10) {
+    const cleanNum = formData.mobile.replace(/\D/g, '');
+    if (!cleanNum || cleanNum.length < 10) {
       alert('Please enter a valid 10-digit mobile number');
       return;
     }
+    generateNewOtp(formData.mobile);
     setStep(2); // Show OTP Modal
   };
 
+  const handleOtpChange = (val, index) => {
+    if (!/^\d*$/.test(val)) return;
+    const newOtp = [...otp];
+    newOtp[index] = val.slice(-1);
+    setOtp(newOtp);
+    setOtpError('');
+
+    if (val && index < 5) {
+      const nextEl = document.getElementById(`vite-reg-otp-${index + 1}`);
+      if (nextEl) nextEl.focus();
+    }
+  };
+
+  const handleOtpKeyDown = (e, index) => {
+    if (e.key === 'Backspace' && !otp[index] && index > 0) {
+      const prevEl = document.getElementById(`vite-reg-otp-${index - 1}`);
+      if (prevEl) prevEl.focus();
+    }
+  };
+
   const handleVerifyOtp = async () => {
+    const entered = otp.join('');
+    if (entered.length < 6) {
+      setOtpError('Please enter all 6 digits of the OTP code sent to your mobile.');
+      return;
+    }
+
+    if (entered !== generatedOtp) {
+      setOtpError(`Incorrect OTP code. Please check SMS notification for ${formData.mobile}.`);
+      return;
+    }
+
     setIsVerifying(true);
     setOtpError('');
     try {
@@ -275,9 +317,9 @@ export default function RegisterPage({ setActivePage }) {
             <div className="modal-content" style={{ padding: '2rem', textAlign: 'center' }}>
               <div style={{
                 width: '56px', height: '56px', borderRadius: '50%',
-                background: '#FFF8E7', color: 'var(--gold-dark)',
+                background: '#F0FDF4', color: '#166534',
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
-                margin: '0 auto 1rem', border: '1px solid var(--border-gold)'
+                margin: '0 auto 1rem', border: '1px solid #BBF7D0'
               }}>
                 <ShieldCheck size={32} />
               </div>
@@ -285,57 +327,78 @@ export default function RegisterPage({ setActivePage }) {
               <h3 style={{ fontSize: '1.4rem', color: 'var(--primary-maroon-dark)', marginBottom: '0.4rem' }}>
                 Mobile OTP Verification
               </h3>
-              <p style={{ fontSize: '0.88rem', color: 'var(--text-muted)', marginBottom: '1.25rem' }}>
+              <p style={{ fontSize: '0.88rem', color: 'var(--text-muted)', marginBottom: '1rem' }}>
                 Verification code sent to <strong>{formData.mobile}</strong>
               </p>
 
-              {/* 6 OTP boxes */}
-              <div style={{ display: 'flex', gap: '0.5rem', justifyContent: 'center', marginBottom: '1rem' }}>
+              {/* Dynamic SMS Notification Banner */}
+              {generatedOtp && (
+                <div style={{
+                  background: '#ECFDF5',
+                  border: '1px solid #6EE7B7',
+                  borderRadius: '10px',
+                  padding: '0.75rem 1rem',
+                  fontSize: '0.86rem',
+                  color: '#065F46',
+                  fontWeight: 600,
+                  marginBottom: '1.25rem',
+                  textAlign: 'left',
+                  boxShadow: '0 2px 8px rgba(16, 185, 129, 0.15)'
+                }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', marginBottom: '2px', fontWeight: 800 }}>
+                    <span>💬 SMS & WhatsApp Notification</span>
+                  </div>
+                  <div>Your OTP code for <strong>{formData.mobile}</strong> is: <span style={{ background: '#D1FAE5', padding: '2px 8px', borderRadius: '4px', fontSize: '1.1rem', fontWeight: 900, color: '#047857', letterSpacing: '0.1em' }}>{generatedOtp}</span></div>
+                </div>
+              )}
+
+              {/* Error Message Alert */}
+              {otpError && (
+                <div style={{
+                  background: '#FEF2F2',
+                  border: '1px solid #FCA5A5',
+                  borderRadius: '8px',
+                  padding: '0.6rem 0.85rem',
+                  fontSize: '0.82rem',
+                  color: '#991B1B',
+                  fontWeight: 600,
+                  marginBottom: '1rem'
+                }}>
+                  ⚠️ {otpError}
+                </div>
+              )}
+
+              {/* 6 OTP Input Boxes */}
+              <div style={{ display: 'flex', gap: '0.5rem', justifyContent: 'center', marginBottom: '1.25rem' }}>
                 {otp.map((digit, i) => (
                   <input 
                     key={i}
+                    id={`vite-reg-otp-${i}`}
                     type="text"
                     maxLength={1}
                     value={digit}
-                    onChange={(e) => {
-                      const newOtp = [...otp];
-                      newOtp[i] = e.target.value;
-                      setOtp(newOtp);
-                    }}
+                    onChange={(e) => handleOtpChange(e.target.value, i)}
+                    onKeyDown={(e) => handleOtpKeyDown(e, i)}
                     style={{
                       width: '44px',
                       height: '48px',
-                      fontSize: '1.2rem',
-                      fontWeight: 700,
+                      fontSize: '1.3rem',
+                      fontWeight: 800,
                       textAlign: 'center',
                       borderRadius: '8px',
-                      border: '2px solid var(--primary-maroon)',
-                      background: '#FFFDF9'
+                      border: digit ? '2.5px solid var(--primary-maroon)' : '1.5px solid var(--border-light)',
+                      background: digit ? '#FFFDF9' : '#FFFFFF',
+                      color: 'var(--primary-maroon-dark)'
                     }}
                   />
                 ))}
-              </div>
-
-              {/* Instant Verification Notice Box */}
-              <div style={{
-                background: '#FFF8E7',
-                border: '1px solid #F0D999',
-                borderRadius: '8px',
-                padding: '0.65rem 0.85rem',
-                fontSize: '0.82rem',
-                color: '#8C6A0A',
-                fontWeight: 600,
-                marginBottom: '1.25rem',
-                textAlign: 'center'
-              }}>
-                ⚡ Instant Access: Demo OTP <strong>123456</strong> is pre-filled. Click below to continue directly to payment.
               </div>
 
               <button 
                 onClick={handleVerifyOtp} 
                 disabled={isVerifying}
                 className="btn btn-primary btn-full btn-lg"
-                style={{ marginBottom: '0.85rem' }}>
+                style={{ marginBottom: '1rem' }}>
                 {isVerifying ? 'Verifying OTP Code...' : 'Verify OTP & Proceed to Payment →'}
               </button>
 
@@ -349,8 +412,8 @@ export default function RegisterPage({ setActivePage }) {
                 <button 
                   type="button" 
                   onClick={() => {
-                    alert(`OTP Code 123456 re-sent to ${formData.mobile}`);
-                    setOtp(['1', '2', '3', '4', '5', '6']);
+                    const newCode = generateNewOtp(formData.mobile);
+                    alert(`📲 New SMS & WhatsApp OTP sent to ${formData.mobile}: ${newCode}`);
                   }}
                   style={{ background: 'none', border: 'none', color: 'var(--primary-maroon)', fontWeight: 700, cursor: 'pointer' }}>
                   Resend OTP Code 🔄
