@@ -37,14 +37,16 @@ export default function Navbar({ activePage, setActivePage }) {
         <div style={{
           background: 'var(--maroon-gradient)',
           color: '#FFF',
-          padding: '0.25rem 0.8rem',
+          padding: '0.35rem 0.8rem',
           fontSize: '0.78rem',
           textAlign: 'center',
           fontWeight: 500,
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          gap: '0.4rem'
+          gap: '0.4rem',
+          flexWrap: 'wrap',
+          maxWidth: '100%'
         }}>
           <Sparkles size={13} color="#F3E5AB" />
           <span>

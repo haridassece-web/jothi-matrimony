@@ -252,14 +252,9 @@ export default function LandingPage() {
             background: '#FFFFFF',
             borderRadius: 'var(--radius-lg)'
           }}>
-            <div style={{
-              display: 'grid',
-              gridTemplateColumns: '1fr 1fr',
-              gap: '2.5rem',
-              alignItems: 'center'
-            }}>
+            <div className="commitment-grid">
               {/* Tamil Section */}
-              <div style={{ borderRight: '1px solid var(--border-light)', paddingRight: '1.5rem' }}>
+              <div className="commitment-left-box">
                 <span className="badge badge-maroon" style={{ marginBottom: '0.6rem' }}>
                   🏛️ சென்னை ஜோதி மேட்ரிமோனி
                 </span>
