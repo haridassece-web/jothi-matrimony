@@ -3,6 +3,7 @@ import { AuthProvider, useAuth } from './context/AuthContext';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import RazorpayModal from './components/RazorpayModal';
+import FloatingContactButtons from './components/FloatingContactButtons';
 
 // Pages
 import LandingPage from './pages/LandingPage';
@@ -243,62 +244,7 @@ function AppContent() {
 
       <Footer setActivePage={setActivePage} />
 
-      {/* Floating Sticky WhatsApp & Call Widget - Symbols Only */}
-      <div style={{
-        position: 'fixed',
-        bottom: '20px',
-        right: '20px',
-        zIndex: 9990,
-        display: 'flex',
-        flexDirection: 'column',
-        gap: '12px',
-        alignItems: 'center'
-      }}>
-        {/* Call Button Icon */}
-        <a 
-          href="tel:9043773977"
-          title="Call Chennai Jothi Matrimony (+91 90437 73977)"
-          style={{
-            width: '50px',
-            height: '50px',
-            borderRadius: '50%',
-            background: 'linear-gradient(135deg, #7A0C2E 0%, #4A061B 100%)',
-            color: '#FFFFFF',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            fontSize: '1.4rem',
-            boxShadow: '0 4px 15px rgba(122, 12, 46, 0.45)',
-            border: '2px solid var(--gold-primary)',
-            textDecoration: 'none',
-            transition: 'transform 0.2s'
-          }}>
-          📞
-        </a>
-
-        {/* WhatsApp Button Icon */}
-        <a 
-          href="https://wa.me/919043773977?text=Vanakkam!%20I%20am%20interested%20in%20Chennai%20Jothi%20Matrimony%20services"
-          target="_blank"
-          rel="noopener noreferrer"
-          title="Chat on WhatsApp (+91 90437 73977)"
-          style={{
-            width: '50px',
-            height: '50px',
-            borderRadius: '50%',
-            background: '#25D366',
-            color: '#FFFFFF',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            fontSize: '1.5rem',
-            boxShadow: '0 4px 15px rgba(37, 211, 102, 0.45)',
-            textDecoration: 'none',
-            transition: 'transform 0.2s'
-          }}>
-          💬
-        </a>
-      </div>
+      <FloatingContactButtons />
 
       {/* Simulated Razorpay Modal */}
       <RazorpayModal 

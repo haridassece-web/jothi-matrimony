@@ -2,6 +2,7 @@ import './globals.css';
 import { AuthProvider } from '../context/AuthContext';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
+import FloatingContactButtons from '../components/FloatingContactButtons';
 
 export const metadata = {
   title: 'Chennai Jothi Matrimony - Authentic Tamil Horoscope & Matchmaking',
@@ -19,6 +20,7 @@ export default function RootLayout({ children }) {
               {children}
             </main>
             <Footer />
+            <FloatingContactButtons />
           </div>
         </AuthProvider>
       </body>
