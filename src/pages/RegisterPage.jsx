@@ -285,12 +285,12 @@ export default function RegisterPage({ setActivePage }) {
               <h3 style={{ fontSize: '1.4rem', color: 'var(--primary-maroon-dark)', marginBottom: '0.4rem' }}>
                 Mobile OTP Verification
               </h3>
-              <p style={{ fontSize: '0.88rem', color: 'var(--text-muted)', marginBottom: '1.5rem' }}>
-                We sent a 6-digit OTP code to <strong>{formData.mobile}</strong>
+              <p style={{ fontSize: '0.88rem', color: 'var(--text-muted)', marginBottom: '1.25rem' }}>
+                Verification code sent to <strong>{formData.mobile}</strong>
               </p>
 
               {/* 6 OTP boxes */}
-              <div style={{ display: 'flex', gap: '0.5rem', justifyContent: 'center', marginBottom: '1.5rem' }}>
+              <div style={{ display: 'flex', gap: '0.5rem', justifyContent: 'center', marginBottom: '1rem' }}>
                 {otp.map((digit, i) => (
                   <input 
                     key={i}
@@ -316,20 +316,46 @@ export default function RegisterPage({ setActivePage }) {
                 ))}
               </div>
 
+              {/* Instant Verification Notice Box */}
+              <div style={{
+                background: '#FFF8E7',
+                border: '1px solid #F0D999',
+                borderRadius: '8px',
+                padding: '0.65rem 0.85rem',
+                fontSize: '0.82rem',
+                color: '#8C6A0A',
+                fontWeight: 600,
+                marginBottom: '1.25rem',
+                textAlign: 'center'
+              }}>
+                ⚡ Instant Access: Demo OTP <strong>123456</strong> is pre-filled. Click below to continue directly to payment.
+              </div>
+
               <button 
                 onClick={handleVerifyOtp} 
                 disabled={isVerifying}
                 className="btn btn-primary btn-full btn-lg"
-                style={{ marginBottom: '1rem' }}>
+                style={{ marginBottom: '0.85rem' }}>
                 {isVerifying ? 'Verifying OTP Code...' : 'Verify OTP & Proceed to Payment →'}
               </button>
 
-              <button 
-                type="button" 
-                onClick={() => setStep(1)}
-                style={{ background: 'none', border: 'none', color: 'var(--text-muted)', cursor: 'pointer', fontSize: '0.85rem' }}>
-                ← Edit Mobile Number
-              </button>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '0.82rem' }}>
+                <button 
+                  type="button" 
+                  onClick={() => setStep(1)}
+                  style={{ background: 'none', border: 'none', color: 'var(--text-muted)', cursor: 'pointer' }}>
+                  ← Edit Mobile Number
+                </button>
+                <button 
+                  type="button" 
+                  onClick={() => {
+                    alert(`OTP Code 123456 re-sent to ${formData.mobile}`);
+                    setOtp(['1', '2', '3', '4', '5', '6']);
+                  }}
+                  style={{ background: 'none', border: 'none', color: 'var(--primary-maroon)', fontWeight: 700, cursor: 'pointer' }}>
+                  Resend OTP Code 🔄
+                </button>
+              </div>
             </div>
           </div>
         )}
