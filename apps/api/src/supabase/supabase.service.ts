@@ -7,26 +7,29 @@ export class SupabaseService {
   private supabase: SupabaseClient | null = null;
 
   constructor() {
-    const supabaseUrl = process.env.SUPABASE_URL;
-    const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+    const supabaseUrl = process.env.SUPABASE_URL || 'https://mjcbbjwttlteiqnntuet.supabase.co';
+    let supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
-    if (!supabaseUrl || !supabaseKey) {
-      this.logger.error('⚠️ SUPABASE_URL or SUPABASE_SERVICE_ROLE_KEY environment variable is missing on server!');
-    } else {
-      try {
-        this.supabase = createClient(supabaseUrl, supabaseKey);
-        this.logger.log('✅ Supabase client initialized successfully.');
-      } catch (err: any) {
-        this.logger.error(`❌ Failed to initialize Supabase client: ${err.message}`);
-      }
+    if (!supabaseKey || supabaseKey.includes('YOUR_') || supabaseKey === '') {
+      supabaseKey = process.env.SUPABASE_PUBLISHABLE_KEY || 
+                    process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY || 
+                    'sb_publishable_SpidCY0sORh-ctxT2GC-xw_V_OqHnlZ';
+    }
+
+    try {
+      this.supabase = createClient(supabaseUrl, supabaseKey);
+      this.logger.log(`✅ Supabase client initialized with URL: ${supabaseUrl}`);
+    } catch (err: any) {
+      this.logger.error(`❌ Failed to initialize Supabase client: ${err.message}`);
     }
   }
 
   getClient(): SupabaseClient {
     if (!this.supabase) {
-      throw new Error('Supabase client is not initialized. Please ensure SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY environment variables are set on Render.');
+      throw new Error('Supabase client is not initialized.');
     }
     return this.supabase;
   }
 }
+
 
