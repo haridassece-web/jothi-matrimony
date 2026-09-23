@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { 
   Heart, Search, User, ShieldCheck, CreditCard, 
-  MessageSquare, Star, Globe, LogOut, Lock, Sparkles, Menu, X
+  MessageSquare, Star, Globe, LogOut, Lock, Sparkles, Menu, X, LogIn
 } from 'lucide-react';
 
 export default function Navbar({ activePage, setActivePage }) {
@@ -267,6 +267,25 @@ export default function Navbar({ activePage, setActivePage }) {
             </div>
           ) : (
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
+              <button 
+                onClick={() => navigateTo('login')} 
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '0.35rem',
+                  padding: '0.45rem 0.8rem',
+                  borderRadius: 'var(--radius-md)',
+                  border: '1.5px solid var(--primary-maroon)',
+                  background: '#FFF',
+                  color: 'var(--primary-maroon)',
+                  fontWeight: 700,
+                  fontSize: '0.85rem',
+                  cursor: 'pointer'
+                }}>
+                <LogIn size={15} />
+                <span>{language === 'ta' ? 'உள்நுழை' : 'Login'}</span>
+              </button>
+
               <button 
                 onClick={() => navigateTo('payment')} 
                 className="btn btn-gold btn-sm"

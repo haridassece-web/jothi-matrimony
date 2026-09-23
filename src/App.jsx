@@ -8,6 +8,7 @@ import FloatingContactButtons from './components/FloatingContactButtons';
 // Pages
 import LandingPage from './pages/LandingPage';
 import RegisterPage from './pages/RegisterPage';
+import LoginPage from './pages/LoginPage';
 import PaymentPage from './pages/PaymentPage';
 import PaymentSuccessPage from './pages/PaymentSuccessPage';
 import ProfileSetupPage from './pages/ProfileSetupPage';
@@ -97,6 +98,10 @@ function AppContent() {
 
             {activePage === 'register' && (
               <RegisterPage setActivePage={setActivePage} />
+            )}
+
+            {activePage === 'login' && (
+              <LoginPage setActivePage={setActivePage} />
             )}
 
             {activePage === 'payment' && (

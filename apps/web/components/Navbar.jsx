@@ -6,7 +6,7 @@ import { usePathname, useRouter } from 'next/navigation';
 import { useAuth } from '../context/AuthContext';
 import { 
   Heart, Search, User, ShieldCheck, CreditCard, 
-  MessageSquare, Star, Globe, LogOut, Lock, Sparkles, Menu, X
+  MessageSquare, Star, Globe, LogOut, Lock, Sparkles, Menu, X, LogIn
 } from 'lucide-react';
 
 export default function Navbar() {
@@ -253,6 +253,24 @@ export default function Navbar() {
             </div>
           ) : (
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
+              <Link 
+                href="/login" 
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '0.35rem',
+                  padding: '0.45rem 0.8rem',
+                  borderRadius: 'var(--radius-md)',
+                  border: '1.5px solid var(--primary-maroon)',
+                  background: '#FFF',
+                  color: 'var(--primary-maroon)',
+                  fontWeight: 700,
+                  fontSize: '0.85rem'
+                }}>
+                <LogIn size={15} />
+                <span>{language === 'ta' ? 'உள்நுழை' : 'Login'}</span>
+              </Link>
+
               <Link 
                 href="/payment" 
                 className="btn btn-gold btn-sm"
