@@ -263,32 +263,29 @@ export default function LandingPage({ setActivePage }) {
                 <span className="badge badge-maroon" style={{ marginBottom: '0.6rem' }}>
                   🏛️ சென்னை ஜோதி மேட்ரிமோனி
                 </span>
-                <h3 style={{ fontSize: '1.4rem', color: 'var(--primary-maroon-dark)', marginBottom: '0.75rem', lineHeight: 1.4 }}>
-                  எங்களிடம் அனைத்து சமூகத்தினர்க்கும், திருமண வரன்கள் ஜோதிட முறையில் அமைத்து தருகிறோம்.
+                <h3 style={{ fontSize: '1.25rem', color: 'var(--primary-maroon-dark)', marginBottom: '0.75rem', lineHeight: 1.5 }}>
+                  எங்களிடம் அனைத்து சமூகத்தினர்க்கும், திருமண வரன்கள் ஜோதிட முறையில் அமைத்து தருகிறோம். ஜாதகம் பார்த்து வரன்கள் அமைத்து தரப்படும்.
                 </h3>
-                <p style={{ fontSize: '1.05rem', fontWeight: 600, color: 'var(--gold-dark)', marginBottom: '0.6rem' }}>
-                  ஜாதகம் பார்த்து வரன்கள் அமைத்து தரப்படும்.
-                </p>
-                <p style={{ fontSize: '0.92rem', color: 'var(--text-muted)', margin: 0 }}>
-                  சிறந்த சேவையை எங்கள் அனைத்து வாடிக்கையாளர்களுக்கும் வழங்கி வருகிறோம்.
+                <p style={{ fontSize: '0.95rem', color: 'var(--text-muted)', lineHeight: 1.6, margin: 0 }}>
+                  சிறந்த சேவையை எங்கள் அனைத்து வாடிக்கையாளர்களுக்கும் வழங்க முனைப்புடன் செயல்படுகிறோம்.
                 </p>
               </div>
 
               {/* English Section */}
               <div>
                 <span className="badge badge-gold" style={{ marginBottom: '0.6rem' }}>
-                  📍 Located in Chennai • Excellent Service
+                  📍 Located in Chennai • Excellent Customer Service
                 </span>
-                <h3 style={{ fontSize: '1.35rem', color: 'var(--primary-maroon-dark)', marginBottom: '0.75rem', lineHeight: 1.4 }}>
-                  Chennai Jothi Matrimony is located in Chennai.
+                <h3 style={{ fontSize: '1.25rem', color: 'var(--primary-maroon-dark)', marginBottom: '0.75rem', lineHeight: 1.5 }}>
+                  Chennai Jothi Matrimony is located by Chennai. We work hard to provide excellent customer service to all our clients.
                 </h3>
                 <p style={{ fontSize: '0.95rem', color: 'var(--text-main)', marginBottom: '0.6rem', lineHeight: 1.6 }}>
-                  We work hard to provide excellent customer service to all our clients. We provide astrological matchmaking for all communities. Horoscopes will be set and given.
+                  We provide astrological matchmaking for all communities. Horoscopes will be set and given.
                 </p>
                 <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap', marginTop: '1rem' }}>
                   <span className="badge badge-green">✓ All Communities</span>
-                  <span className="badge badge-gold">✓ Horoscope Set & Given</span>
-                  <span className="badge badge-maroon">✓ Dedicated Support</span>
+                  <span className="badge badge-gold">✓ Horoscopes Set & Given</span>
+                  <span className="badge badge-maroon">✓ Excellent Customer Service</span>
                 </div>
               </div>
             </div>
