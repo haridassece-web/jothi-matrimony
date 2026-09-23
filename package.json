@@ -13,6 +13,7 @@
     "build": "npm run build --workspaces --if-present",
     "build:api": "npm --prefix apps/api run build",
     "build:web": "npm --prefix apps/web run build",
+    "start": "node apps/api/dist/main.js",
     "start:api": "npm --prefix apps/api run start",
     "start:web": "npm --prefix apps/web run start",
     "lint": "oxlint"
