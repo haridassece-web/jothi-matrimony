@@ -162,22 +162,19 @@ export default function LandingPage() {
                 color: '#1A0D03'
               }}>
                 <div style={{ textAlign: 'center', marginBottom: '1rem' }}>
-                  <div style={{
-                    width: '70px',
-                    height: '70px',
-                    borderRadius: '12px',
-                    background: 'var(--maroon-gradient)',
-                    border: '2px solid var(--gold-primary)',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    color: 'var(--gold-light)',
-                    fontWeight: 800,
-                    fontSize: '1.6rem',
-                    margin: '0 auto 0.4rem'
-                  }}>
-                    JM
-                  </div>
+                  <img 
+                    src="/logo.jpg" 
+                    alt="Chennai Jothi Matrimony Official Emblem" 
+                    style={{
+                      width: '85px',
+                      height: '85px',
+                      borderRadius: '12px',
+                      objectFit: 'cover',
+                      border: '2px solid var(--gold-primary)',
+                      boxShadow: '0 4px 12px rgba(122, 12, 46, 0.2)',
+                      margin: '0 auto 0.4rem'
+                    }}
+                  />
                   <h3 style={{ margin: 0, fontSize: '1.2rem', color: '#4A061B', fontWeight: 800 }}>
                     Chennai Jothi Matrimony
                   </h3>

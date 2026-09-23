@@ -80,23 +80,19 @@ export default function Navbar() {
           href="/"
           style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', cursor: 'pointer', flexShrink: 0 }}
         >
-          <div style={{
-            width: '42px',
-            height: '42px',
-            borderRadius: '8px',
-            background: 'var(--maroon-gradient)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            color: 'var(--gold-light)',
-            fontWeight: 800,
-            fontSize: '1.1rem',
-            boxShadow: '0 2px 6px rgba(122, 12, 46, 0.15)',
-            border: '1.5px solid var(--gold-primary)',
-            flexShrink: 0
-          }}>
-            JM
-          </div>
+          <img 
+            src="/logo.jpg" 
+            alt="Chennai Jothi Matrimony Logo" 
+            style={{
+              width: '44px',
+              height: '44px',
+              borderRadius: '8px',
+              objectFit: 'cover',
+              border: '1.5px solid var(--gold-primary)',
+              boxShadow: '0 2px 6px rgba(122, 12, 46, 0.15)',
+              flexShrink: 0
+            }}
+          />
           <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
             <div style={{ 
               fontSize: '1.15rem', 

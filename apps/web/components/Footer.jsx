@@ -28,21 +28,17 @@ export default function Footer() {
           {/* Brand Info */}
           <div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.4rem' }}>
-              <div style={{
-                width: '30px',
-                height: '30px',
-                borderRadius: '5px',
-                background: 'var(--maroon-gradient)',
-                border: '1.5px solid var(--gold-primary)',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                color: 'var(--gold-light)',
-                fontWeight: 800,
-                fontSize: '0.8rem'
-              }}>
-                JM
-              </div>
+              <img 
+                src="/logo.jpg" 
+                alt="Chennai Jothi Matrimony Logo" 
+                style={{
+                  width: '32px',
+                  height: '32px',
+                  borderRadius: '6px',
+                  objectFit: 'cover',
+                  border: '1.5px solid var(--gold-primary)'
+                }}
+              />
               <span style={{ 
                 fontSize: '1.05rem', 
                 fontWeight: 800, 
