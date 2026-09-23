@@ -171,49 +171,90 @@ export default function RazorpayModal({ isOpen, onClose, onSuccess }) {
             </div>
 
             {tab === 'upi' && (
-              <div style={{ textAlign: 'center', padding: '0.5rem 0' }}>
+              <div style={{ textAlign: 'center', padding: '0.25rem 0' }}>
+                {/* Real GPay / UPI QR Image */}
                 <div style={{ 
-                  background: '#FFF', 
-                  border: '2px dashed #CBD5E1', 
-                  borderRadius: '12px', 
-                  padding: '1rem', 
+                  background: '#FFFFFF', 
+                  border: '2px solid #3399FF', 
+                  borderRadius: '16px', 
+                  padding: '0.85rem', 
                   display: 'inline-block',
-                  marginBottom: '1rem'
+                  marginBottom: '0.75rem',
+                  boxShadow: '0 6px 16px rgba(51, 153, 255, 0.15)'
                 }}>
-                  <div style={{
-                    width: '150px',
-                    height: '150px',
-                    margin: '0 auto',
-                    background: 'linear-gradient(45deg, #1E293B 25%, transparent 25%, transparent 75%, #1E293B 75%, #1E293B), linear-gradient(45deg, #1E293B 25%, transparent 25%, transparent 75%, #1E293B 75%, #1E293B)',
-                    backgroundSize: '20px 20px',
-                    borderRadius: '8px',
+                  <img 
+                    src="/upi-qr.jpg" 
+                    alt="Scan GPay / UPI QR Code to pay ₹1,000" 
+                    style={{
+                      width: '210px',
+                      height: 'auto',
+                      borderRadius: '8px',
+                      display: 'block',
+                      margin: '0 auto'
+                    }}
+                  />
+                </div>
+
+                {/* UPI Details Box */}
+                <div style={{
+                  background: '#F8FAFC',
+                  border: '1px solid #E2E8F0',
+                  borderRadius: '8px',
+                  padding: '0.65rem',
+                  marginBottom: '0.85rem',
+                  textAlign: 'center'
+                }}>
+                  <div style={{ fontSize: '0.78rem', color: '#64748B', fontWeight: 600 }}>
+                    Official Payee: <strong>Haridass Ramalingam (HDFC Bank)</strong>
+                  </div>
+                  <div style={{ 
+                    fontSize: '0.9rem', 
+                    color: '#0F172A', 
+                    fontWeight: 700, 
+                    marginTop: '2px',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    color: '#FFF',
-                    fontWeight: 700,
-                    fontSize: '0.8rem',
-                    textAlign: 'center'
+                    gap: '0.4rem'
                   }}>
-                    [ SCAN WITH <br/> GPAY / PHONEPE ]
+                    <span>UPI ID: <strong>haridass.ece@okhdfcbank</strong></span>
+                    <button 
+                      type="button"
+                      onClick={() => {
+                        navigator.clipboard.writeText('haridass.ece@okhdfcbank');
+                        alert('UPI ID copied to clipboard: haridass.ece@okhdfcbank');
+                      }}
+                      style={{
+                        background: '#E0F2FE',
+                        color: '#0284C7',
+                        border: '1px solid #7DD3FC',
+                        borderRadius: '4px',
+                        padding: '1px 6px',
+                        fontSize: '0.7rem',
+                        fontWeight: 700,
+                        cursor: 'pointer'
+                      }}>
+                      Copy
+                    </button>
                   </div>
                 </div>
 
-                <div style={{ fontSize: '0.85rem', color: '#475569', marginBottom: '1rem', fontWeight: 500 }}>
-                  Scan using Google Pay, PhonePe, Paytm or BHIM UPI app
+                <div style={{ fontSize: '0.8rem', color: '#475569', marginBottom: '0.85rem', fontWeight: 500 }}>
+                  Scan using <strong>Google Pay (GPay)</strong>, PhonePe, Paytm, or any UPI App
                 </div>
 
                 <button 
-                  onClick={() => handleExecutePayment('Razorpay UPI Instant')}
+                  onClick={() => handleExecutePayment('GPay / UPI Instant Payment')}
                   className="btn btn-full"
                   style={{
-                    background: '#3399FF',
+                    background: 'linear-gradient(135deg, #059669 0%, #10B981 100%)',
                     color: '#FFF',
                     fontWeight: 700,
-                    fontSize: '1rem',
-                    borderRadius: '8px'
+                    fontSize: '0.95rem',
+                    borderRadius: '8px',
+                    boxShadow: '0 4px 12px rgba(16, 185, 129, 0.3)'
                   }}>
-                  <span>Simulate GPay / PhonePe ₹1,000 Pay</span>
+                  <span>✓ I Have Paid ₹1,000 via GPay / UPI</span>
                   <ArrowRight size={18} />
                 </button>
               </div>
