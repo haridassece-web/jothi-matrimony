@@ -8,7 +8,7 @@ export class SupabaseService {
 
   constructor() {
     const supabaseUrl = process.env.SUPABASE_URL || 'https://mjcbbjwttlteiqnntuet.supabase.co';
-    let supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+    let supabaseKey = process.env.SUPABASE_SECRET_KEY || process.env.SUPABASE_SERVICE_ROLE_KEY;
 
     if (!supabaseKey || supabaseKey.includes('YOUR_') || supabaseKey === '') {
       supabaseKey = process.env.SUPABASE_PUBLISHABLE_KEY || 
