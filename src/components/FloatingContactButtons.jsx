@@ -7,64 +7,60 @@ export default function FloatingContactButtons() {
       className="floating-contact-bar"
       style={{
         position: 'fixed',
-        bottom: '20px',
-        right: '20px',
+        bottom: '22px',
+        right: '22px',
         zIndex: 9999,
         display: 'flex',
         flexDirection: 'column',
-        gap: '10px',
-        alignItems: 'flex-end'
+        gap: '12px',
+        alignItems: 'center'
       }}
     >
-      {/* WhatsApp Floating CTA */}
+      {/* WhatsApp Symbol Only Button */}
       <a 
         href="https://wa.me/919043773977?text=Vanakkam!%20I%20am%20interested%20in%20Chennai%20Jothi%20Matrimony%20alliance%20registration."
         target="_blank"
         rel="noopener noreferrer"
-        title="Chat on WhatsApp"
+        title="WhatsApp Us (+91 90437 73977)"
         style={{
-          display: 'flex',
-          alignItems: 'center',
-          gap: '8px',
+          width: '52px',
+          height: '52px',
+          borderRadius: '50%',
           background: '#25D366',
           color: '#FFFFFF',
-          padding: '10px 16px',
-          borderRadius: '30px',
-          fontWeight: 700,
-          fontSize: '0.88rem',
-          boxShadow: '0 6px 20px rgba(37, 211, 102, 0.4)',
-          textDecoration: 'none',
-          transition: 'all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275)'
-        }}
-        className="whatsapp-float"
-      >
-        <MessageCircle size={20} fill="#FFF" color="#25D366" />
-        <span>WhatsApp Us</span>
-      </a>
-
-      {/* Direct Call Floating CTA */}
-      <a 
-        href="tel:9043773977"
-        title="Call Chennai Jothi Matrimony"
-        style={{
           display: 'flex',
           alignItems: 'center',
-          gap: '8px',
+          justifyContent: 'center',
+          boxShadow: '0 6px 20px rgba(37, 211, 102, 0.5)',
+          textDecoration: 'none',
+          transition: 'transform 0.25s ease, boxShadow 0.25s ease'
+        }}
+        className="whatsapp-float-symbol"
+      >
+        <MessageCircle size={28} fill="#FFF" color="#25D366" />
+      </a>
+
+      {/* Direct Call Symbol Only Button */}
+      <a 
+        href="tel:9043773977"
+        title="Call Chennai Jothi Matrimony (9043773977 / 9444934527)"
+        style={{
+          width: '52px',
+          height: '52px',
+          borderRadius: '50%',
           background: 'linear-gradient(135deg, #7A0C2E 0%, #A11440 100%)',
           color: '#FFFFFF',
-          padding: '10px 16px',
-          borderRadius: '30px',
-          fontWeight: 700,
-          fontSize: '0.88rem',
-          boxShadow: '0 6px 20px rgba(122, 12, 46, 0.35)',
-          border: '1.5px solid #D4AF37',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          boxShadow: '0 6px 20px rgba(122, 12, 46, 0.45)',
+          border: '2px solid #D4AF37',
           textDecoration: 'none',
-          transition: 'all 0.3s ease'
+          transition: 'transform 0.25s ease, boxShadow 0.25s ease'
         }}
-        className="call-float"
+        className="call-float-symbol"
       >
-        <PhoneCall size={18} color="#FBF5B7" />
-        <span>Call: 9043773977</span>
+        <PhoneCall size={24} color="#FBF5B7" />
       </a>
     </div>
   );
