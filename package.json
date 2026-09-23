@@ -1,0 +1,20 @@
+{
+  "name": "jothi-matrimony",
+  "private": true,
+  "version": "1.0.0",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "npm run dev:web",
+    "dev:web": "npm --prefix apps/web run dev",
+    "dev:api": "npm --prefix apps/api run dev",
+    "build": "npm run build --workspaces --if-present",
+    "lint": "oxlint"
+  },
+  "devDependencies": {
+    "oxlint": "^1.81.0"
+  }
+}
+

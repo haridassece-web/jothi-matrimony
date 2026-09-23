@@ -1,0 +1,382 @@
+/* Jothi Matrimony - Global CSS & Design System */
+
+:root {
+  --primary-maroon: #7A0C2E;
+  --primary-maroon-dark: #58061F;
+  --primary-maroon-light: #9B1B43;
+  --gold-primary: #D4AF37;
+  --gold-dark: #B8860B;
+  --gold-light: #F3E5AB;
+  --gold-gradient: linear-gradient(135deg, #BF953F 0%, #FCF6BA 25%, #B38728 50%, #FBF5B7 75%, #AA771C 100%);
+  --maroon-gradient: linear-gradient(135deg, #7A0C2E 0%, #A11440 100%);
+  
+  --bg-silk: #FFFDF9;
+  --bg-card: #FFFFFF;
+  --bg-surface: #F8F4EE;
+  
+  --text-main: #2C221E;
+  --text-muted: #6B5E57;
+  --text-light: #9A8C84;
+  
+  --border-light: #EFE4D6;
+  --border-gold: #E2C57B;
+  
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 20px;
+  --radius-full: 9999px;
+  
+  --shadow-sm: 0 2px 8px rgba(122, 12, 46, 0.05);
+  --shadow-md: 0 8px 24px rgba(122, 12, 46, 0.08);
+  --shadow-lg: 0 16px 40px rgba(122, 12, 46, 0.12);
+  --shadow-gold: 0 8px 25px rgba(212, 175, 55, 0.25);
+  
+  --font-heading: 'Outfit', 'Noto Sans Tamil', sans-serif;
+  --font-body: 'Inter', 'Noto Sans Tamil', sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-body);
+  background-color: var(--bg-silk);
+  color: var(--text-main);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  background-image: 
+    radial-gradient(circle at 10% 20%, rgba(212, 175, 55, 0.03) 0%, transparent 40%),
+    radial-gradient(circle at 90% 80%, rgba(122, 12, 46, 0.03) 0%, transparent 40%);
+  min-height: 100vh;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading);
+  color: var(--primary-maroon-dark);
+  font-weight: 700;
+  line-height: 1.25;
+}
+
+a {
+  color: var(--primary-maroon);
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+a:hover {
+  color: var(--gold-dark);
+}
+
+button {
+  font-family: var(--font-body);
+  cursor: pointer;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #F3ECE2;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--gold-primary);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--primary-maroon);
+}
+
+/* Utility Classes */
+.container {
+  width: 100%;
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 0 1.25rem;
+}
+
+.text-gold {
+  color: var(--gold-dark);
+}
+
+.gold-gradient-text {
+  background: var(--gold-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-weight: 800;
+}
+
+.bg-maroon {
+  background: var(--maroon-gradient);
+  color: #FFF;
+}
+
+.bg-silk {
+  background-color: var(--bg-silk);
+}
+
+/* Button Variants */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  font-weight: 600;
+  font-size: 0.95rem;
+  border-radius: var(--radius-md);
+  border: 1px solid transparent;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  text-align: center;
+  user-select: none;
+}
+
+.btn-primary {
+  background: var(--maroon-gradient);
+  color: #FFFFFF;
+  box-shadow: 0 4px 14px rgba(122, 12, 46, 0.3);
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(122, 12, 46, 0.4);
+  background: linear-gradient(135deg, #8C1138 0%, #B8194A 100%);
+}
+
+.btn-gold {
+  background: linear-gradient(135deg, #D4AF37 0%, #AA7C11 100%);
+  color: #1A0D03;
+  font-weight: 700;
+  box-shadow: var(--shadow-gold);
+}
+
+.btn-gold:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 22px rgba(212, 175, 55, 0.45);
+}
+
+.btn-outline {
+  border: 1.5px solid var(--primary-maroon);
+  color: var(--primary-maroon);
+  background: transparent;
+}
+
+.btn-outline:hover {
+  background: var(--primary-maroon);
+  color: #FFFFFF;
+}
+
+.btn-outline-gold {
+  border: 1.5px solid var(--gold-dark);
+  color: var(--gold-dark);
+  background: transparent;
+}
+
+.btn-outline-gold:hover {
+  background: #FFFBF0;
+  border-color: var(--gold-primary);
+}
+
+.btn-secondary {
+  background: var(--bg-surface);
+  color: var(--text-main);
+  border: 1px solid var(--border-light);
+}
+
+.btn-secondary:hover {
+  background: #EFE8DD;
+}
+
+.btn-sm {
+  padding: 0.4rem 0.9rem;
+  font-size: 0.85rem;
+  border-radius: var(--radius-sm);
+}
+
+.btn-lg {
+  padding: 0.95rem 2rem;
+  font-size: 1.05rem;
+}
+
+.btn-full {
+  width: 100%;
+}
+
+/* Card Styling */
+.card {
+  background: var(--bg-card);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-light);
+  box-shadow: var(--shadow-sm);
+  transition: all 0.3s ease;
+  overflow: hidden;
+}
+
+.card:hover {
+  box-shadow: var(--shadow-md);
+  border-color: var(--border-gold);
+}
+
+/* Badges */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.25rem 0.65rem;
+  border-radius: var(--radius-full);
+  font-size: 0.78rem;
+  font-weight: 600;
+}
+
+.badge-gold {
+  background: #FFF8E7;
+  color: #8C6A0A;
+  border: 1px solid #F0D999;
+}
+
+.badge-green {
+  background: #EAF8F0;
+  color: #12753E;
+  border: 1px solid #B4E8C9;
+}
+
+.badge-maroon {
+  background: #FDF2F5;
+  color: var(--primary-maroon);
+  border: 1px solid #F5C2D0;
+}
+
+/* Modal Overlay */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(20, 8, 12, 0.7);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 1rem;
+}
+
+.modal-content {
+  background: #FFFFFF;
+  border-radius: var(--radius-lg);
+  max-width: 520px;
+  width: 100%;
+  box-shadow: var(--shadow-lg);
+  overflow: hidden;
+  animation: modalIn 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes modalIn {
+  from { opacity: 0; transform: scale(0.95) translateY(10px); }
+  to { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+/* Rasi Box Grid */
+.rasi-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: repeat(4, 70px);
+  gap: 2px;
+  background-color: var(--gold-dark);
+  padding: 2px;
+  border-radius: var(--radius-sm);
+}
+
+.rasi-box {
+  background: #FFFDF9;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.72rem;
+  text-align: center;
+  padding: 2px;
+  font-weight: 500;
+  position: relative;
+}
+
+.rasi-center-box {
+  grid-column: 2 / span 2;
+  grid-row: 2 / span 2;
+  background: #FDF9EE;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  color: var(--primary-maroon-dark);
+}
+
+/* Kolam Overlay Decor */
+.kolam-bg {
+  position: relative;
+}
+
+.kolam-bg::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 250px;
+  height: 250px;
+  background: radial-gradient(circle, rgba(212, 175, 55, 0.1) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+/* Animations */
+@keyframes pulseGlow {
+  0% { box-shadow: 0 0 0 0 rgba(212, 175, 55, 0.4); }
+  70% { box-shadow: 0 0 0 12px rgba(212, 175, 55, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(212, 175, 55, 0); }
+}
+
+.pulse-button {
+  animation: pulseGlow 2s infinite;
+}
+
+/* Form inputs */
+.form-group {
+  margin-bottom: 1.2rem;
+}
+
+.form-label {
+  display: block;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--text-main);
+  margin-bottom: 0.35rem;
+}
+
+.form-input, .form-select, .form-textarea {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border-radius: var(--radius-sm);
+  border: 1.5px solid var(--border-light);
+  background: #FFFFFF;
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  color: var(--text-main);
+  transition: border-color 0.2s;
+}
+
+.form-input:focus, .form-select:focus, .form-textarea:focus {
+  outline: none;
+  border-color: var(--primary-maroon);
+  box-shadow: 0 0 0 3px rgba(122, 12, 46, 0.1);
+}
+
+/* Responsive Utilities */
+@media (max-width: 768px) {
+  .container {
+    padding: 0 1rem;
+  }
+  .rasi-grid {
+    grid-template-rows: repeat(4, 55px);
+  }
+}
