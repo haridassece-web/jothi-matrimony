@@ -79,17 +79,18 @@ export default function RazorpayModal({ isOpen, onClose, onSuccess }) {
 
   return (
     <div className="modal-overlay" style={{ zIndex: 9999 }}>
-      <div className="modal-content" style={{ maxWidth: '460px', padding: 0, overflow: 'hidden', border: '1px solid #3399FF' }}>
+      <div className="modal-content" style={{ maxWidth: '460px', maxHeight: '90vh', display: 'flex', flexDirection: 'column', padding: 0, border: '1px solid #3399FF' }}>
         
         {/* Razorpay Top Header */}
         <div style={{
           background: 'linear-gradient(135deg, #0C2340 0%, #1A365D 100%)',
           color: '#FFFFFF',
-          padding: '1.25rem 1.5rem',
+          padding: '1rem 1.25rem',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
-          borderBottom: '3px solid #3399FF'
+          borderBottom: '3px solid #3399FF',
+          flexShrink: 0
         }}>
           <div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.2rem' }}>
@@ -106,16 +107,16 @@ export default function RazorpayModal({ isOpen, onClose, onSuccess }) {
               </span>
               <span style={{ fontSize: '0.75rem', color: '#90CDF4' }}>256-bit SSL</span>
             </div>
-            <div style={{ fontSize: '1.2rem', fontWeight: 800, color: '#FFF' }}>
+            <div style={{ fontSize: '1.15rem', fontWeight: 800, color: '#FFF' }}>
               Chennai Jothi Matrimony
             </div>
-            <div style={{ fontSize: '0.8rem', color: '#CBD5E0' }}>
+            <div style={{ fontSize: '0.78rem', color: '#CBD5E0' }}>
               Registration Fee • 1 Year Access
             </div>
           </div>
 
           <div style={{ textAlign: 'right' }}>
-            <div style={{ fontSize: '1.4rem', fontWeight: 800, color: '#68D391' }}>
+            <div style={{ fontSize: '1.3rem', fontWeight: 800, color: '#68D391' }}>
               ₹1,000
             </div>
             <button 
@@ -141,13 +142,13 @@ export default function RazorpayModal({ isOpen, onClose, onSuccess }) {
 
         {/* Modal Body */}
         {paymentState === 'IDLE' && (
-          <div style={{ padding: '1.25rem' }}>
+          <div style={{ padding: '1rem 1.25rem 1.25rem', overflowY: 'auto', flex: 1 }}>
             {/* Payment Method Tabs */}
             <div style={{
               display: 'grid',
               gridTemplateColumns: 'repeat(4, 1fr)',
               gap: '6px',
-              marginBottom: '1.25rem',
+              marginBottom: '1rem',
               background: '#F1F5F9',
               padding: '4px',
               borderRadius: '8px'
@@ -171,23 +172,27 @@ export default function RazorpayModal({ isOpen, onClose, onSuccess }) {
             </div>
 
             {tab === 'upi' && (
-              <div style={{ textAlign: 'center', padding: '0.25rem 0' }}>
-                {/* Real GPay / UPI QR Image */}
+              <div style={{ textAlign: 'center', padding: '0.2rem 0' }}>
+                {/* Clean QR Image Container */}
                 <div style={{ 
                   background: '#FFFFFF', 
                   border: '2px solid #3399FF', 
-                  borderRadius: '16px', 
-                  padding: '0.85rem', 
+                  borderRadius: '12px', 
+                  padding: '0.4rem', 
                   display: 'inline-block',
-                  marginBottom: '0.75rem',
-                  boxShadow: '0 6px 16px rgba(51, 153, 255, 0.15)'
+                  marginBottom: '0.6rem',
+                  boxShadow: '0 4px 14px rgba(51, 153, 255, 0.15)',
+                  maxHeight: '210px',
+                  overflow: 'hidden'
                 }}>
                   <img 
                     src="/upi-qr.jpg" 
                     alt="Scan GPay / UPI QR Code to pay ₹1,000" 
                     style={{
-                      width: '210px',
-                      height: 'auto',
+                      width: '185px',
+                      height: '200px',
+                      objectFit: 'cover',
+                      objectPosition: 'center 20%',
                       borderRadius: '8px',
                       display: 'block',
                       margin: '0 auto'
@@ -200,15 +205,15 @@ export default function RazorpayModal({ isOpen, onClose, onSuccess }) {
                   background: '#F8FAFC',
                   border: '1px solid #E2E8F0',
                   borderRadius: '8px',
-                  padding: '0.65rem',
-                  marginBottom: '0.85rem',
+                  padding: '0.5rem 0.75rem',
+                  marginBottom: '0.75rem',
                   textAlign: 'center'
                 }}>
                   <div style={{ fontSize: '0.78rem', color: '#64748B', fontWeight: 600 }}>
                     Official Payee: <strong>Haridass Ramalingam (HDFC Bank)</strong>
                   </div>
                   <div style={{ 
-                    fontSize: '0.9rem', 
+                    fontSize: '0.88rem', 
                     color: '#0F172A', 
                     fontWeight: 700, 
                     marginTop: '2px',
@@ -239,10 +244,11 @@ export default function RazorpayModal({ isOpen, onClose, onSuccess }) {
                   </div>
                 </div>
 
-                <div style={{ fontSize: '0.8rem', color: '#475569', marginBottom: '0.85rem', fontWeight: 500 }}>
-                  Scan using <strong>Google Pay (GPay)</strong>, PhonePe, Paytm, or any UPI App
+                <div style={{ fontSize: '0.78rem', color: '#475569', marginBottom: '0.75rem', fontWeight: 500 }}>
+                  Scan using <strong>Google Pay (GPay)</strong>, PhonePe, Paytm, or BHIM
                 </div>
 
+                {/* Confirm Payment Action Button */}
                 <button 
                   onClick={() => handleExecutePayment('GPay / UPI Instant Payment')}
                   className="btn btn-full"
@@ -250,9 +256,11 @@ export default function RazorpayModal({ isOpen, onClose, onSuccess }) {
                     background: 'linear-gradient(135deg, #059669 0%, #10B981 100%)',
                     color: '#FFF',
                     fontWeight: 700,
-                    fontSize: '0.95rem',
+                    fontSize: '1rem',
+                    padding: '0.85rem 1rem',
                     borderRadius: '8px',
-                    boxShadow: '0 4px 12px rgba(16, 185, 129, 0.3)'
+                    boxShadow: '0 4px 14px rgba(16, 185, 129, 0.4)',
+                    cursor: 'pointer'
                   }}>
                   <span>✓ I Have Paid ₹1,000 via GPay / UPI</span>
                   <ArrowRight size={18} />

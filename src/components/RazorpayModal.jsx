@@ -77,17 +77,18 @@ export default function RazorpayModal({ isOpen, onClose, onSuccess }) {
 
   return (
     <div className="modal-overlay" style={{ zIndex: 9999 }}>
-      <div className="modal-content" style={{ maxWidth: '460px', padding: 0, overflow: 'hidden', border: '1px solid #3399FF' }}>
+      <div className="modal-content" style={{ maxWidth: '460px', maxHeight: '90vh', display: 'flex', flexDirection: 'column', padding: 0, border: '1px solid #3399FF' }}>
         
         {/* Razorpay Top Header */}
         <div style={{
           background: 'linear-gradient(135deg, #0C2340 0%, #1A365D 100%)',
           color: '#FFFFFF',
-          padding: '1.25rem 1.5rem',
+          padding: '1rem 1.25rem',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
-          borderBottom: '3px solid #3399FF'
+          borderBottom: '3px solid #3399FF',
+          flexShrink: 0
         }}>
           <div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.2rem' }}>
@@ -139,7 +140,7 @@ export default function RazorpayModal({ isOpen, onClose, onSuccess }) {
 
         {/* Modal Body depending on Payment State */}
         {paymentState === 'IDLE' && (
-          <div style={{ padding: '1.25rem' }}>
+          <div style={{ padding: '1rem 1.25rem 1.25rem', overflowY: 'auto', flex: 1 }}>
             {/* Payment Method Tabs */}
             <div style={{
               display: 'grid',
