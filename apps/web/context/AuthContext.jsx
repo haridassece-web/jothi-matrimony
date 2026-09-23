@@ -282,11 +282,31 @@ export function AuthProvider({ children }) {
     }));
   };
 
+  const [allProfiles, setAllProfiles] = useState(MOCK_PROFILES);
+
+  useEffect(() => {
+    async function loadLiveProfiles() {
+      try {
+        const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'https://jothi-matrimony.onrender.com';
+        const res = await fetch(`${apiUrl}/profiles`);
+        if (res.ok) {
+          const liveData = await res.json();
+          if (Array.isArray(liveData) && liveData.length > 0) {
+            setAllProfiles(liveData);
+          }
+        }
+      } catch (err) {
+        console.warn('Backend live profiles fetch fallback:', err);
+      }
+    }
+    loadLiveProfiles();
+  }, []);
+
   return (
     <AuthContext.Provider
       value={{
         ...state,
-        allProfiles: MOCK_PROFILES,
+        allProfiles: allProfiles,
         toggleLanguage,
         registerBasicProfile,
         processPaymentSuccess,
