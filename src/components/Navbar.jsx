@@ -111,10 +111,17 @@ export default function Navbar({ activePage, setActivePage }) {
               சென்னை ஜோதி மேட்ரிமோனி • Triplicane, Chennai
             </div>
           </div>
-        </div>
+        {/* Mobile Hamburger Toggle Button */}
+        <button 
+          className="mobile-menu-btn" 
+          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+          aria-label="Toggle Navigation Menu"
+        >
+          {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+        </button>
 
-        {/* Desktop Navigation Links */}
-        <nav style={{ display: 'flex', alignItems: 'center', gap: '1.1rem' }} className="desktop-nav">
+        {/* Navigation Links */}
+        <nav className={`nav-desktop ${mobileMenuOpen ? 'mobile-open' : ''}`}>
           <button 
             onClick={() => navigateTo('home')} 
             className={`nav-link ${activePage === 'home' ? 'active' : ''}`}

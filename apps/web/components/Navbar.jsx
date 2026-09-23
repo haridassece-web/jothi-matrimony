@@ -111,11 +111,21 @@ export default function Navbar() {
           </div>
         </Link>
 
-        {/* Desktop Navigation Links */}
-        <nav style={{ display: 'flex', alignItems: 'center', gap: '1.1rem' }}>
+        {/* Mobile Hamburger Toggle Button */}
+        <button 
+          className="mobile-menu-btn" 
+          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+          aria-label="Toggle Navigation Menu"
+        >
+          {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+        </button>
+
+        {/* Navigation Links */}
+        <nav className={`nav-desktop ${mobileMenuOpen ? 'mobile-open' : ''}`}>
           <Link 
             href="/" 
             style={navLinkStyle(pathname === '/')}
+            onClick={() => setMobileMenuOpen(false)}
           >
             {language === 'ta' ? 'முகப்பு' : 'Home'}
           </Link>

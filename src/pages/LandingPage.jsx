@@ -20,12 +20,7 @@ export default function LandingPage({ setActivePage }) {
         borderBottom: '4px solid var(--gold-dark)'
       }} className="kolam-bg">
         <div className="container" style={{ position: 'relative', zIndex: 2 }}>
-          <div style={{
-            display: 'grid',
-            gridTemplateColumns: '1fr 1fr',
-            gap: '2.5rem',
-            alignItems: 'center'
-          }}>
+          <div className="hero-grid">
             {/* Left Content */}
             <div>
               <div className="badge badge-gold" style={{ marginBottom: '0.8rem', padding: '0.3rem 0.85rem', fontSize: '0.8rem' }}>
