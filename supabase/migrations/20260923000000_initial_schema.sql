@@ -7,14 +7,13 @@ CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 -- 1. USERS TABLE
 -- ============================================================================
 CREATE TABLE IF NOT EXISTS public.users (
-  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-  auth_user_id UUID UNIQUE REFERENCES auth.users(id) ON DELETE CASCADE,
-  email VARCHAR(255) UNIQUE NOT NULL,
-  phone VARCHAR(50) UNIQUE NOT NULL,
-  role VARCHAR(20) DEFAULT 'user', -- 'user' | 'admin'
-  status VARCHAR(20) DEFAULT 'active', -- 'active' | 'suspended' | 'deleted'
-  created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
-  updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  mobile VARCHAR(15) UNIQUE NOT NULL,
+  full_name VARCHAR(150),
+  email VARCHAR(150),
+  gender VARCHAR(20),
+  date_of_birth DATE,
+  created_at TIMESTAMPTZ DEFAULT NOW()
 );
 
 -- ============================================================================
