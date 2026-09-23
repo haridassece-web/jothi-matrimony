@@ -33,16 +33,34 @@ export default function RegisterPage({ setActivePage }) {
     setStep(2); // Show OTP Modal
   };
 
-  const handleVerifyOtp = () => {
+  const handleVerifyOtp = async () => {
     setIsVerifying(true);
     setOtpError('');
-    setTimeout(() => {
+    try {
+      const apiUrl = 'https://jothi-matrimony.onrender.com';
+      const response = await fetch(`${apiUrl}/users/register`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          mobile: formData.mobile,
+          full_name: formData.name,
+          email: formData.email,
+          gender: formData.gender,
+          date_of_birth: formData.dob,
+        }),
+      });
+
+      const result = await response.json();
+      console.log('User Registration API Response:', result);
+    } catch (err) {
+      console.warn('Backend user registration fallback to local state:', err);
+    } finally {
       setIsVerifying(false);
-      // Register basic profile
       registerBasicProfile(formData);
-      // Redirect to Payment Page (Step 3: ₹1,000 Registration Payment)
       setActivePage('payment');
-    }, 1200);
+    }
   };
 
   return (

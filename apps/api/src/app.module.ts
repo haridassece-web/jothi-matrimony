@@ -1,5 +1,7 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
+import { UsersController } from './users/users.controller';
+import { UsersService } from './users/users.service';
 import { ProfilesController } from './profiles/profiles.controller';
 import { ProfilesService } from './profiles/profiles.service';
 import { HoroscopeController } from './horoscope/horoscope.controller';
@@ -9,7 +11,7 @@ import { SupabaseService } from './supabase/supabase.service';
 
 @Module({
   imports: [],
-  controllers: [AppController, ProfilesController, HoroscopeController, PaymentsController],
-  providers: [ProfilesService, PaymentsService, SupabaseService],
+  controllers: [AppController, UsersController, ProfilesController, HoroscopeController, PaymentsController],
+  providers: [UsersService, ProfilesService, PaymentsService, SupabaseService],
 })
 export class AppModule {}

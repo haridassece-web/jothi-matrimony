@@ -36,13 +36,33 @@ export default function RegisterPage() {
     setStep(2);
   };
 
-  const handleVerifyOtp = () => {
+  const handleVerifyOtp = async () => {
     setIsVerifying(true);
-    setTimeout(() => {
+    try {
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'https://jothi-matrimony.onrender.com';
+      const response = await fetch(`${apiUrl}/users/register`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          mobile: formData.mobile,
+          full_name: formData.name,
+          email: formData.email,
+          gender: formData.gender,
+          date_of_birth: formData.dob,
+        }),
+      });
+
+      const result = await response.json();
+      console.log('User Registration API Response:', result);
+    } catch (err) {
+      console.warn('Backend user registration fallback to local state:', err);
+    } finally {
       setIsVerifying(false);
       registerBasicProfile(formData);
       router.push('/payment');
-    }, 1200);
+    }
   };
 
   return (
