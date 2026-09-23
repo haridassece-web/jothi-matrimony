@@ -40,6 +40,8 @@ export default function RegisterPage() {
     setIsVerifying(true);
     try {
       const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'https://jothi-matrimony.onrender.com';
+      
+      // 1. Send registration payload to Render API backend
       const response = await fetch(`${apiUrl}/users/register`, {
         method: 'POST',
         headers: {
