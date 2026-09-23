@@ -37,8 +37,8 @@ export default function RegisterPage({ setActivePage }) {
     setIsVerifying(true);
     setOtpError('');
     try {
-      const apiUrl = 'https://jothi-matrimony.onrender.com';
-      const response = await fetch(`${apiUrl}/users/register`, {
+      const baseUrl = import.meta.env?.VITE_API_URL || 'https://jothi-matrimony.onrender.com';
+      const response = await fetch(`${baseUrl}/users/register`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -53,7 +53,7 @@ export default function RegisterPage({ setActivePage }) {
       });
 
       const result = await response.json();
-      console.log('User Registration API Response:', result);
+      console.log(result);
     } catch (err) {
       console.warn('Backend user registration fallback to local state:', err);
     } finally {
