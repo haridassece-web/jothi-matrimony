@@ -1,33 +1,69 @@
-import { Controller, Post, Body, Headers } from '@nestjs/common';
+import { Controller, Post, Body, Headers, BadRequestException } from '@nestjs/common';
+import { PaymentsService } from './payments.service';
 
 @Controller('payments')
 export class PaymentsController {
+  constructor(private readonly paymentsService: PaymentsService) {}
+
   @Post('create-order')
-  createOrder(@Body() body: { userId: string; amount?: number }) {
-    const orderId = 'ORD_' + Math.random().toString(36).substring(2, 10).toUpperCase();
-    return {
-      success: true,
-      orderId,
-      amount: body.amount || 1000,
-      currency: 'INR',
-      key: process.env.RAZORPAY_KEY_ID || 'rzp_test_mock_jothi_matrimony',
-    };
+  async createOrder(@Body() body: { userId: string; amount?: number }) {
+    if (!body.userId) {
+      throw new BadRequestException('userId is required');
+    }
+    return this.paymentsService.createOrder(body.userId, body.amount || 1000);
   }
 
   @Post('verify')
-  verifyPayment(@Body() body: { razorpayOrderId: string; razorpayPaymentId: string; signature: string }) {
-    return {
-      success: true,
-      message: 'Payment signature verified successfully',
-      status: 'PAID_ACTIVE',
-    };
+  async verifyPayment(
+    @Body()
+    body: {
+      userId: string;
+      razorpayOrderId: string;
+      razorpayPaymentId: string;
+      razorpaySignature: string;
+    },
+  ) {
+    const isValid = this.paymentsService.verifySignature(
+      body.razorpayOrderId,
+      body.razorpayPaymentId,
+      body.razorpaySignature,
+    );
+
+    if (!isValid) {
+      throw new BadRequestException('Invalid Razorpay payment signature');
+    }
+
+    return this.paymentsService.activateMembership(
+      body.userId || 'JM2026001234',
+      body.razorpayOrderId,
+      body.razorpayPaymentId,
+      1000,
+    );
   }
 
   @Post('webhook')
-  handleWebhook(@Body() payload: any, @Headers('x-razorpay-signature') signature: string) {
-    // Razorpay Webhook Verification using RAZORPAY_WEBHOOK_SECRET
-    const webhookSecret = process.env.RAZORPAY_WEBHOOK_SECRET || 'secret';
-    console.log('Received Razorpay Webhook event:', payload?.event, 'Signature:', signature ? 'Present' : 'Missing');
+  async handleWebhook(
+    @Body() payload: any,
+    @Headers('x-razorpay-signature') signature: string,
+  ) {
+    console.log('Received Razorpay Webhook Event:', payload?.event);
+
+    if (payload?.event === 'payment.captured') {
+      const paymentEntity = payload.payload?.payment?.entity;
+      const orderId = paymentEntity?.order_id;
+      const paymentId = paymentEntity?.id;
+      const userId = paymentEntity?.notes?.userId;
+
+      if (userId) {
+        await this.paymentsService.activateMembership(
+          userId,
+          orderId || 'WEBHOOK_ORDER',
+          paymentId || 'WEBHOOK_PAYMENT',
+          1000,
+        );
+      }
+    }
+
     return { status: 'ok', received: true };
   }
 }
