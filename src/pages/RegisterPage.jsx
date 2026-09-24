@@ -1,116 +1,227 @@
 import React, { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
-import { User, Phone, Mail, MapPin, Calendar, ShieldCheck, ArrowRight, CheckCircle } from 'lucide-react';
+import {
+  User,
+  Phone,
+  Mail,
+  MapPin,
+  ShieldCheck,
+  ArrowRight
+} from 'lucide-react';
+
+const API_URL =
+  import.meta.env.VITE_API_URL ||
+  'https://jothi-matrimony.onrender.com';
 
 export default function RegisterPage({ setActivePage }) {
   const { registerBasicProfile, language } = useAuth();
 
-  const [step, setStep] = useState(1); // 1: Profile For & Details, 2: OTP Modal
+  const [step, setStep] = useState(1);
   const [formData, setFormData] = useState({
     profileFor: 'Myself',
     name: '',
     gender: 'Male',
-    dob: '1997-06-15',
-    mobile: '98401 23456',
+    dob: '',
+    mobile: '',
     email: '',
     city: 'Chennai'
   });
 
   const [otp, setOtp] = useState(['', '', '', '', '', '']);
-  const [generatedOtp, setGeneratedOtp] = useState('');
   const [otpError, setOtpError] = useState('');
+  const [isSendingOtp, setIsSendingOtp] = useState(false);
   const [isVerifying, setIsVerifying] = useState(false);
+  const [resendSeconds, setResendSeconds] = useState(0);
 
-  const generateNewOtp = (mobileNum) => {
-    const code = Math.floor(100000 + Math.random() * 900000).toString();
-    setGeneratedOtp(code);
-    setOtp(['', '', '', '', '', '']);
-    setOtpError('');
-    return code;
+  const cleanMobile = () => formData.mobile.replace(/\D/g, '');
+
+  const startResendTimer = () => {
+    setResendSeconds(60);
+
+    const timer = setInterval(() => {
+      setResendSeconds((seconds) => {
+        if (seconds <= 1) {
+          clearInterval(timer);
+          return 0;
+        }
+        return seconds - 1;
+      });
+    }, 1000);
   };
 
-  const handleBasicSubmit = (e) => {
+  const handleBasicSubmit = async (e) => {
     e.preventDefault();
+
     if (!formData.name.trim()) {
       alert('Please enter your full name');
       return;
     }
-    const cleanNum = formData.mobile.replace(/\D/g, '');
-    if (!cleanNum || cleanNum.length < 10) {
-      alert('Please enter a valid 10-digit mobile number');
+
+    if (!formData.dob) {
+      alert('Please select date of birth');
       return;
     }
-    generateNewOtp(formData.mobile);
-    setStep(2); // Show OTP Modal
+
+    const mobile = cleanMobile();
+
+    if (!/^[6-9]\d{9}$/.test(mobile)) {
+      alert('Please enter a valid 10-digit Indian mobile number');
+      return;
+    }
+
+    await sendOtp();
   };
 
-  const handleOtpChange = (val, index) => {
-    if (!/^\d*$/.test(val)) return;
+  const sendOtp = async () => {
+    const mobile = cleanMobile();
+
+    if (!/^[6-9]\d{9}$/.test(mobile)) {
+      setOtpError('Please enter a valid 10-digit mobile number.');
+      return;
+    }
+
+    try {
+      setIsSendingOtp(true);
+      setOtpError('');
+
+      const response = await fetch(`${API_URL}/auth/send-otp`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          mobile: `+91${mobile}`
+        })
+      });
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(result.message || 'Unable to send OTP.');
+      }
+
+      setOtp(['', '', '', '', '', '']);
+      setStep(2);
+      startResendTimer();
+
+      setTimeout(() => {
+        document.getElementById('jothi-reg-otp-0')?.focus();
+      }, 100);
+    } catch (error) {
+      setOtpError(error.message || 'Failed to send OTP.');
+    } finally {
+      setIsSendingOtp(false);
+    }
+  };
+
+  const handleOtpChange = (value, index) => {
+    if (!/^\d*$/.test(value)) return;
+
     const newOtp = [...otp];
-    newOtp[index] = val.slice(-1);
+    newOtp[index] = value.slice(-1);
     setOtp(newOtp);
     setOtpError('');
 
-    if (val && index < 5) {
-      const nextEl = document.getElementById(`vite-reg-otp-${index + 1}`);
-      if (nextEl) nextEl.focus();
+    if (value && index < 5) {
+      document.getElementById(`jothi-reg-otp-${index + 1}`)?.focus();
     }
   };
 
   const handleOtpKeyDown = (e, index) => {
     if (e.key === 'Backspace' && !otp[index] && index > 0) {
-      const prevEl = document.getElementById(`vite-reg-otp-${index - 1}`);
-      if (prevEl) prevEl.focus();
+      document.getElementById(`jothi-reg-otp-${index - 1}`)?.focus();
     }
+  };
+
+  const handleOtpPaste = (e) => {
+    const pasted = e.clipboardData
+      .getData('text')
+      .replace(/\D/g, '')
+      .slice(0, 6);
+
+    if (!pasted) return;
+
+    e.preventDefault();
+
+    const newOtp = ['', '', '', '', '', ''];
+    pasted.split('').forEach((digit, index) => {
+      newOtp[index] = digit;
+    });
+
+    setOtp(newOtp);
+    setOtpError('');
+
+    const focusIndex = Math.min(pasted.length, 5);
+    document.getElementById(`jothi-reg-otp-${focusIndex}`)?.focus();
+  };
+
+  const registerUser = async () => {
+    const response = await fetch(`${API_URL}/users/register`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        mobile: `+91${cleanMobile()}`,
+        full_name: formData.name.trim(),
+        email: formData.email.trim() || null,
+        gender: formData.gender,
+        date_of_birth: formData.dob,
+        city: formData.city.trim()
+      })
+    });
+
+    const result = await response.json();
+
+    if (!response.ok) {
+      throw new Error(result.message || 'Registration failed.');
+    }
+
+    registerBasicProfile(formData);
+    setActivePage('payment');
   };
 
   const handleVerifyOtp = async () => {
     const entered = otp.join('');
-    if (entered.length < 6) {
-      setOtpError('Please enter all 6 digits of the OTP code sent to your mobile.');
+
+    if (!/^\d{6}$/.test(entered)) {
+      setOtpError('Please enter all 6 digits of the OTP.');
       return;
     }
 
-    if (entered !== generatedOtp) {
-      setOtpError(`Incorrect OTP code. Please check SMS notification for ${formData.mobile}.`);
-      return;
-    }
-
-    setIsVerifying(true);
-    setOtpError('');
     try {
-      const API_URL = import.meta.env.VITE_API_URL || 'https://jothi-matrimony.onrender.com';
+      setIsVerifying(true);
+      setOtpError('');
 
-      const response = await fetch(`${API_URL}/users/register`, {
-        method: "POST",
+      const response = await fetch(`${API_URL}/auth/verify-otp`, {
+        method: 'POST',
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-          mobile: formData.mobile,
-          full_name: formData.name,
-          email: formData.email,
-          gender: formData.gender,
-          date_of_birth: formData.dob,
-        }),
+          mobile: `+91${cleanMobile()}`,
+          otp: entered
+        })
       });
 
       const result = await response.json();
-      console.log('Registration Success:', result);
-    } catch (err) {
-      console.warn('Backend user registration fallback to local state:', err);
+
+      if (!response.ok) {
+        throw new Error(result.message || 'Invalid OTP.');
+      }
+
+      await registerUser();
+    } catch (error) {
+      setOtpError(error.message || 'OTP verification failed.');
     } finally {
       setIsVerifying(false);
-      registerBasicProfile(formData);
-      setActivePage('payment');
     }
   };
 
   return (
     <div style={{ padding: '3.5rem 0', minHeight: '80vh' }}>
       <div className="container" style={{ maxWidth: '620px' }}>
-        
-        {/* Progress Bar */}
+
         <div style={{
           display: 'flex',
           alignItems: 'center',
@@ -126,118 +237,190 @@ export default function RegisterPage({ setActivePage }) {
             height: '2px',
             background: 'var(--border-light)',
             zIndex: 1
-          }}></div>
+          }} />
 
-          <div style={{ zIndex: 2, background: 'var(--bg-silk)', padding: '0 0.5rem', textAlign: 'center' }}>
-            <div style={{
-              width: '36px', height: '36px', borderRadius: '50%',
-              background: 'var(--maroon-gradient)', color: '#FFF',
-              display: 'flex', alignItems: 'center', justifyContent: 'center',
-              fontWeight: 700, margin: '0 auto 0.3rem'
-            }}>1</div>
-            <div style={{ fontSize: '0.78rem', fontWeight: 600, color: 'var(--primary-maroon)' }}>
-              {language === 'ta' ? 'அடிப்படை விவரங்கள்' : 'Basic Details'}
+          {[
+            [1, language === 'ta' ? 'அடிப்படை விவரங்கள்' : 'Basic Details'],
+            [2, language === 'ta' ? 'OTP சரிபார்ப்பு' : 'OTP Verification'],
+            [3, language === 'ta' ? '₹1,000 கட்டணம்' : '₹1,000 Payment']
+          ].map(([number, label]) => (
+            <div
+              key={number}
+              style={{
+                zIndex: 2,
+                background: 'var(--bg-silk)',
+                padding: '0 0.5rem',
+                textAlign: 'center'
+              }}
+            >
+              <div style={{
+                width: '36px',
+                height: '36px',
+                borderRadius: '50%',
+                background:
+                  step >= number
+                    ? 'var(--maroon-gradient)'
+                    : '#E2D5C8',
+                color: step >= number ? '#FFF' : '#6B5E57',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                fontWeight: 700,
+                margin: '0 auto 0.3rem'
+              }}>
+                {number}
+              </div>
+              <div style={{
+                fontSize: '0.78rem',
+                fontWeight: 600,
+                color:
+                  step >= number
+                    ? 'var(--primary-maroon)'
+                    : 'var(--text-muted)'
+              }}>
+                {label}
+              </div>
             </div>
-          </div>
-
-          <div style={{ zIndex: 2, background: 'var(--bg-silk)', padding: '0 0.5rem', textAlign: 'center' }}>
-            <div style={{
-              width: '36px', height: '36px', borderRadius: '50%',
-              background: 'var(--bg-surface)', border: '2px solid var(--gold-dark)',
-              color: 'var(--gold-dark)', display: 'flex', alignItems: 'center', justifyContent: 'center',
-              fontWeight: 700, margin: '0 auto 0.3rem'
-            }}>2</div>
-            <div style={{ fontSize: '0.78rem', fontWeight: 600, color: 'var(--gold-dark)' }}>
-              {language === 'ta' ? 'OTP சரிபார்ப்பு' : 'OTP Verification'}
-            </div>
-          </div>
-
-          <div style={{ zIndex: 2, background: 'var(--bg-silk)', padding: '0 0.5rem', textAlign: 'center' }}>
-            <div style={{
-              width: '36px', height: '36px', borderRadius: '50%',
-              background: '#E2D5C8', color: '#6B5E57',
-              display: 'flex', alignItems: 'center', justifyContent: 'center',
-              fontWeight: 700, margin: '0 auto 0.3rem'
-            }}>3</div>
-            <div style={{ fontSize: '0.78rem', fontWeight: 500, color: 'var(--text-muted)' }}>
-              {language === 'ta' ? '₹1,000 கட்டணம்' : '₹1,000 Payment'}
-            </div>
-          </div>
+          ))}
         </div>
 
-        {/* Card Form */}
-        <div className="card" style={{ padding: '2.5rem', borderRadius: 'var(--radius-lg)' }}>
-          <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
-            <h2 style={{ fontSize: '1.8rem', color: 'var(--primary-maroon-dark)', marginBottom: '0.4rem' }}>
-              {language === 'ta' ? 'ஜோதி மேட்ரிமோனி கணக்கு உருவாக்குக' : 'Create Your Matrimony Profile'}
+        <div className="card" style={{
+          padding: '2.5rem',
+          borderRadius: 'var(--radius-lg)'
+        }}>
+          <div style={{
+            textAlign: 'center',
+            marginBottom: '2rem'
+          }}>
+            <h2 style={{
+              fontSize: '1.8rem',
+              color: 'var(--primary-maroon-dark)',
+              marginBottom: '0.4rem'
+            }}>
+              {language === 'ta'
+                ? 'ஜோதி மேட்ரிமோனி கணக்கு உருவாக்குக'
+                : 'Create Your Matrimony Profile'}
             </h2>
-            <p style={{ color: 'var(--text-muted)', fontSize: '0.92rem' }}>
-              Step 1 of 3: Provide basic contact information to begin.
+
+            <p style={{
+              color: 'var(--text-muted)',
+              fontSize: '0.92rem'
+            }}>
+              {step === 1
+                ? 'Step 1 of 3: Provide basic contact information.'
+                : 'Step 2 of 3: Verify your mobile number.'}
             </p>
           </div>
 
           <form onSubmit={handleBasicSubmit}>
-            
-            {/* Step 1: Profile For */}
             <div className="form-group">
               <label className="form-label">
-                {language === 'ta' ? 'யாருக்காக வரன் தேடுகிறீர்கள்?' : 'Who are you registering for?'}
+                Who are you registering for?
               </label>
+
               <div style={{
                 display: 'grid',
                 gridTemplateColumns: 'repeat(3, 1fr)',
                 gap: '0.6rem'
               }}>
-                {['Myself', 'Son', 'Daughter', 'Brother', 'Sister', 'Relative'].map((rel, idx) => (
-                  <button 
-                    type="button"
-                    key={idx}
-                    onClick={() => {
-                      let gen = formData.gender;
-                      if (rel === 'Son' || rel === 'Brother') gen = 'Male';
-                      if (rel === 'Daughter' || rel === 'Sister') gen = 'Female';
-                      setFormData({...formData, profileFor: rel, gender: gen});
-                    }}
-                    style={{
-                      padding: '0.65rem 0.5rem',
-                      borderRadius: 'var(--radius-sm)',
-                      border: formData.profileFor === rel ? '2px solid var(--primary-maroon)' : '1px solid var(--border-light)',
-                      background: formData.profileFor === rel ? '#FDF2F5' : '#FFF',
-                      color: formData.profileFor === rel ? 'var(--primary-maroon)' : 'var(--text-main)',
-                      fontWeight: formData.profileFor === rel ? 700 : 500,
-                      fontSize: '0.85rem',
-                      cursor: 'pointer'
-                    }}>
-                    {rel}
-                  </button>
-                ))}
+                {['Myself', 'Son', 'Daughter', 'Brother', 'Sister', 'Relative']
+                  .map((rel) => (
+                    <button
+                      type="button"
+                      key={rel}
+                      onClick={() => {
+                        let gen = formData.gender;
+
+                        if (rel === 'Son' || rel === 'Brother') {
+                          gen = 'Male';
+                        }
+
+                        if (rel === 'Daughter' || rel === 'Sister') {
+                          gen = 'Female';
+                        }
+
+                        setFormData({
+                          ...formData,
+                          profileFor: rel,
+                          gender: gen
+                        });
+                      }}
+                      style={{
+                        padding: '0.65rem 0.5rem',
+                        borderRadius: 'var(--radius-sm)',
+                        border:
+                          formData.profileFor === rel
+                            ? '2px solid var(--primary-maroon)'
+                            : '1px solid var(--border-light)',
+                        background:
+                          formData.profileFor === rel
+                            ? '#FDF2F5'
+                            : '#FFF',
+                        color:
+                          formData.profileFor === rel
+                            ? 'var(--primary-maroon)'
+                            : 'var(--text-main)',
+                        fontWeight:
+                          formData.profileFor === rel ? 700 : 500,
+                        fontSize: '0.85rem',
+                        cursor: 'pointer'
+                      }}
+                    >
+                      {rel}
+                    </button>
+                  ))}
               </div>
             </div>
 
-            {/* Basic Details */}
             <div className="form-group">
-              <label className="form-label">Full Name of Bride / Groom</label>
+              <label className="form-label">
+                Full Name of Bride / Groom
+              </label>
+
               <div style={{ position: 'relative' }}>
-                <User size={18} style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-muted)' }} />
-                <input 
-                  type="text" 
-                  className="form-input" 
+                <User size={18} style={{
+                  position: 'absolute',
+                  left: '12px',
+                  top: '50%',
+                  transform: 'translateY(-50%)',
+                  color: 'var(--text-muted)'
+                }} />
+
+                <input
+                  type="text"
+                  className="form-input"
                   placeholder="e.g. Haridass Ram / Priya Sundaram"
                   style={{ paddingLeft: '2.5rem' }}
                   value={formData.name}
-                  onChange={(e) => setFormData({...formData, name: e.target.value})}
+                  onChange={(e) =>
+                    setFormData({
+                      ...formData,
+                      name: e.target.value
+                    })
+                  }
                   required
                 />
               </div>
             </div>
 
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+            <div style={{
+              display: 'grid',
+              gridTemplateColumns: '1fr 1fr',
+              gap: '1rem'
+            }}>
               <div className="form-group">
                 <label className="form-label">Gender</label>
-                <select 
+
+                <select
                   className="form-select"
                   value={formData.gender}
-                  onChange={(e) => setFormData({...formData, gender: e.target.value})}>
+                  onChange={(e) =>
+                    setFormData({
+                      ...formData,
+                      gender: e.target.value
+                    })
+                  }
+                >
                   <option value="Male">Male (ஆண்)</option>
                   <option value="Female">Female (பெண்)</option>
                 </select>
@@ -245,28 +428,53 @@ export default function RegisterPage({ setActivePage }) {
 
               <div className="form-group">
                 <label className="form-label">Date of Birth</label>
-                <input 
-                  type="date" 
+
+                <input
+                  type="date"
                   className="form-input"
                   value={formData.dob}
-                  onChange={(e) => setFormData({...formData, dob: e.target.value})}
+                  onChange={(e) =>
+                    setFormData({
+                      ...formData,
+                      dob: e.target.value
+                    })
+                  }
                   required
                 />
               </div>
             </div>
 
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+            <div style={{
+              display: 'grid',
+              gridTemplateColumns: '1fr 1fr',
+              gap: '1rem'
+            }}>
               <div className="form-group">
-                <label className="form-label">Mobile Number (For OTP)</label>
+                <label className="form-label">
+                  Mobile Number (For OTP)
+                </label>
+
                 <div style={{ position: 'relative' }}>
-                  <Phone size={18} style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-muted)' }} />
-                  <input 
-                    type="tel" 
-                    className="form-input" 
+                  <Phone size={18} style={{
+                    position: 'absolute',
+                    left: '12px',
+                    top: '50%',
+                    transform: 'translateY(-50%)',
+                    color: 'var(--text-muted)'
+                  }} />
+
+                  <input
+                    type="tel"
+                    className="form-input"
                     placeholder="+91 98400 12345"
                     style={{ paddingLeft: '2.5rem' }}
                     value={formData.mobile}
-                    onChange={(e) => setFormData({...formData, mobile: e.target.value})}
+                    onChange={(e) =>
+                      setFormData({
+                        ...formData,
+                        mobile: e.target.value
+                      })
+                    }
                     required
                   />
                 </div>
@@ -274,15 +482,28 @@ export default function RegisterPage({ setActivePage }) {
 
               <div className="form-group">
                 <label className="form-label">City / Town</label>
+
                 <div style={{ position: 'relative' }}>
-                  <MapPin size={18} style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-muted)' }} />
-                  <input 
-                    type="text" 
-                    className="form-input" 
+                  <MapPin size={18} style={{
+                    position: 'absolute',
+                    left: '12px',
+                    top: '50%',
+                    transform: 'translateY(-50%)',
+                    color: 'var(--text-muted)'
+                  }} />
+
+                  <input
+                    type="text"
+                    className="form-input"
                     placeholder="e.g. Chennai, Coimbatore, Madurai"
                     style={{ paddingLeft: '2.5rem' }}
                     value={formData.city}
-                    onChange={(e) => setFormData({...formData, city: e.target.value})}
+                    onChange={(e) =>
+                      setFormData({
+                        ...formData,
+                        city: e.target.value
+                      })
+                    }
                     required
                   />
                 </div>
@@ -291,68 +512,86 @@ export default function RegisterPage({ setActivePage }) {
 
             <div className="form-group">
               <label className="form-label">Email Address</label>
+
               <div style={{ position: 'relative' }}>
-                <Mail size={18} style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-muted)' }} />
-                <input 
-                  type="email" 
-                  className="form-input" 
+                <Mail size={18} style={{
+                  position: 'absolute',
+                  left: '12px',
+                  top: '50%',
+                  transform: 'translateY(-50%)',
+                  color: 'var(--text-muted)'
+                }} />
+
+                <input
+                  type="email"
+                  className="form-input"
                   placeholder="e.g. user@gmail.com"
                   style={{ paddingLeft: '2.5rem' }}
                   value={formData.email}
-                  onChange={(e) => setFormData({...formData, email: e.target.value})}
+                  onChange={(e) =>
+                    setFormData({
+                      ...formData,
+                      email: e.target.value
+                    })
+                  }
                 />
               </div>
             </div>
 
-            <button type="submit" className="btn btn-primary btn-full btn-lg" style={{ marginTop: '1rem' }}>
-              <span>Continue to Mobile OTP Verification</span>
+            <button
+              type="submit"
+              disabled={isSendingOtp}
+              className="btn btn-primary btn-full btn-lg"
+              style={{ marginTop: '1rem' }}
+            >
+              <span>
+                {isSendingOtp
+                  ? 'Sending OTP...'
+                  : 'Send Mobile OTP'}
+              </span>
               <ArrowRight size={18} />
             </button>
           </form>
         </div>
 
-        {/* OTP Modal */}
         {step === 2 && (
           <div className="modal-overlay" style={{ zIndex: 9999 }}>
-            <div className="modal-content" style={{ padding: '2rem', textAlign: 'center' }}>
+            <div className="modal-content" style={{
+              padding: '2rem',
+              textAlign: 'center'
+            }}>
               <div style={{
-                width: '56px', height: '56px', borderRadius: '50%',
-                background: '#F0FDF4', color: '#166534',
-                display: 'flex', alignItems: 'center', justifyContent: 'center',
-                margin: '0 auto 1rem', border: '1px solid #BBF7D0'
+                width: '56px',
+                height: '56px',
+                borderRadius: '50%',
+                background: '#F0FDF4',
+                color: '#166534',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                margin: '0 auto 1rem',
+                border: '1px solid #BBF7D0'
               }}>
                 <ShieldCheck size={32} />
               </div>
 
-              <h3 style={{ fontSize: '1.4rem', color: 'var(--primary-maroon-dark)', marginBottom: '0.4rem' }}>
+              <h3 style={{
+                fontSize: '1.4rem',
+                color: 'var(--primary-maroon-dark)',
+                marginBottom: '0.4rem'
+              }}>
                 Mobile OTP Verification
               </h3>
-              <p style={{ fontSize: '0.88rem', color: 'var(--text-muted)', marginBottom: '1rem' }}>
-                Verification code sent to <strong>{formData.mobile}</strong>
+
+              <p style={{
+                fontSize: '0.88rem',
+                color: 'var(--text-muted)',
+                marginBottom: '1rem'
+              }}>
+                Enter the 6-digit OTP sent by SMS to{' '}
+                <strong>+91 {cleanMobile()}</strong>
               </p>
 
-              {/* Dynamic SMS Notification Banner */}
-              {generatedOtp && (
-                <div style={{
-                  background: '#ECFDF5',
-                  border: '1px solid #6EE7B7',
-                  borderRadius: '10px',
-                  padding: '0.75rem 1rem',
-                  fontSize: '0.86rem',
-                  color: '#065F46',
-                  fontWeight: 600,
-                  marginBottom: '1.25rem',
-                  textAlign: 'left',
-                  boxShadow: '0 2px 8px rgba(16, 185, 129, 0.15)'
-                }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', marginBottom: '2px', fontWeight: 800 }}>
-                    <span>💬 SMS & WhatsApp Notification</span>
-                  </div>
-                  <div>Your OTP code for <strong>{formData.mobile}</strong> is: <span style={{ background: '#D1FAE5', padding: '2px 8px', borderRadius: '4px', fontSize: '1.1rem', fontWeight: 900, color: '#047857', letterSpacing: '0.1em' }}>{generatedOtp}</span></div>
-                </div>
-              )}
-
-              {/* Error Message Alert */}
               {otpError && (
                 <div style={{
                   background: '#FEF2F2',
@@ -368,17 +607,28 @@ export default function RegisterPage({ setActivePage }) {
                 </div>
               )}
 
-              {/* 6 OTP Input Boxes */}
-              <div style={{ display: 'flex', gap: '0.5rem', justifyContent: 'center', marginBottom: '1.25rem' }}>
+              <div style={{
+                display: 'flex',
+                gap: '0.5rem',
+                justifyContent: 'center',
+                marginBottom: '1.25rem'
+              }}>
                 {otp.map((digit, i) => (
-                  <input 
+                  <input
                     key={i}
-                    id={`vite-reg-otp-${i}`}
+                    id={`jothi-reg-otp-${i}`}
                     type="text"
+                    inputMode="numeric"
+                    autoComplete={i === 0 ? 'one-time-code' : 'off'}
                     maxLength={1}
                     value={digit}
-                    onChange={(e) => handleOtpChange(e.target.value, i)}
-                    onKeyDown={(e) => handleOtpKeyDown(e, i)}
+                    onChange={(e) =>
+                      handleOtpChange(e.target.value, i)
+                    }
+                    onKeyDown={(e) =>
+                      handleOtpKeyDown(e, i)
+                    }
+                    onPaste={i === 0 ? handleOtpPaste : undefined}
                     style={{
                       width: '44px',
                       height: '48px',
@@ -386,7 +636,9 @@ export default function RegisterPage({ setActivePage }) {
                       fontWeight: 800,
                       textAlign: 'center',
                       borderRadius: '8px',
-                      border: digit ? '2.5px solid var(--primary-maroon)' : '1.5px solid var(--border-light)',
+                      border: digit
+                        ? '2.5px solid var(--primary-maroon)'
+                        : '1.5px solid var(--border-light)',
                       background: digit ? '#FFFDF9' : '#FFFFFF',
                       color: 'var(--primary-maroon-dark)'
                     }}
@@ -394,35 +646,65 @@ export default function RegisterPage({ setActivePage }) {
                 ))}
               </div>
 
-              <button 
-                onClick={handleVerifyOtp} 
+              <button
+                onClick={handleVerifyOtp}
                 disabled={isVerifying}
                 className="btn btn-primary btn-full btn-lg"
-                style={{ marginBottom: '1rem' }}>
-                {isVerifying ? 'Verifying OTP Code...' : 'Verify OTP & Proceed to Payment →'}
+                style={{ marginBottom: '1rem' }}
+              >
+                {isVerifying
+                  ? 'Verifying OTP...'
+                  : 'Verify OTP & Proceed to Payment →'}
               </button>
 
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '0.82rem' }}>
-                <button 
-                  type="button" 
-                  onClick={() => setStep(1)}
-                  style={{ background: 'none', border: 'none', color: 'var(--text-muted)', cursor: 'pointer' }}>
+              <div style={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                fontSize: '0.82rem'
+              }}>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setStep(1);
+                    setOtpError('');
+                  }}
+                  style={{
+                    background: 'none',
+                    border: 'none',
+                    color: 'var(--text-muted)',
+                    cursor: 'pointer'
+                  }}
+                >
                   ← Edit Mobile Number
                 </button>
-                <button 
-                  type="button" 
-                  onClick={() => {
-                    const newCode = generateNewOtp(formData.mobile);
-                    alert(`📲 New SMS & WhatsApp OTP sent to ${formData.mobile}: ${newCode}`);
+
+                <button
+                  type="button"
+                  disabled={resendSeconds > 0 || isSendingOtp}
+                  onClick={sendOtp}
+                  style={{
+                    background: 'none',
+                    border: 'none',
+                    color:
+                      resendSeconds > 0
+                        ? 'var(--text-muted)'
+                        : 'var(--primary-maroon)',
+                    fontWeight: 700,
+                    cursor:
+                      resendSeconds > 0
+                        ? 'not-allowed'
+                        : 'pointer'
                   }}
-                  style={{ background: 'none', border: 'none', color: 'var(--primary-maroon)', fontWeight: 700, cursor: 'pointer' }}>
-                  Resend OTP Code 🔄
+                >
+                  {resendSeconds > 0
+                    ? `Resend in ${resendSeconds}s`
+                    : 'Resend OTP 🔄'}
                 </button>
               </div>
             </div>
           </div>
         )}
-
       </div>
     </div>
   );

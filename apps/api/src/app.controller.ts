@@ -14,8 +14,10 @@ export class AppController {
   @Get('health')
   getHealth() {
     return {
-      status: 'ok',
+      ok: true,
+      service: 'jothi-matrimony-api',
       timestamp: new Date().toISOString(),
     };
   }
 }
+
