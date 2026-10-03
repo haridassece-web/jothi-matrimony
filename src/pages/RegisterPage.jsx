@@ -69,7 +69,15 @@ export default function RegisterPage({ setActivePage }) {
       return;
     }
 
-    await sendOtp();
+    setIsSendingOtp(true);
+    try {
+      await registerUser();
+    } catch (error) {
+      registerBasicProfile(formData);
+      setActivePage('payment');
+    } finally {
+      setIsSendingOtp(false);
+    }
   };
 
   const sendOtp = async () => {
@@ -451,7 +459,7 @@ export default function RegisterPage({ setActivePage }) {
             }}>
               <div className="form-group">
                 <label className="form-label">
-                  Mobile Number (For OTP)
+                  Mobile Number
                 </label>
 
                 <div style={{ position: 'relative' }}>
@@ -546,8 +554,8 @@ export default function RegisterPage({ setActivePage }) {
             >
               <span>
                 {isSendingOtp
-                  ? 'Sending OTP...'
-                  : 'Send Mobile OTP'}
+                  ? 'Saving Details...'
+                  : 'Proceed to ₹1,000 Registration Payment'}
               </span>
               <ArrowRight size={18} />
             </button>

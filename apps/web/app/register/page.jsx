@@ -73,7 +73,15 @@ export default function RegisterPage() {
       return;
     }
 
-    await sendOtp();
+    setIsSendingOtp(true);
+    try {
+      await registerUser();
+    } catch (error) {
+      registerBasicProfile(formData);
+      router.push('/payment');
+    } finally {
+      setIsSendingOtp(false);
+    }
   };
 
   const sendOtp = async () => {
@@ -455,7 +463,7 @@ export default function RegisterPage() {
             }}>
               <div className="form-group">
                 <label className="form-label">
-                  Mobile Number (For OTP)
+                  Mobile Number
                 </label>
 
                 <div style={{ position: 'relative' }}>
@@ -550,8 +558,8 @@ export default function RegisterPage() {
             >
               <span>
                 {isSendingOtp
-                  ? 'Sending OTP...'
-                  : 'Send Mobile OTP'}
+                  ? 'Saving Details...'
+                  : 'Proceed to ₹1,000 Registration Payment'}
               </span>
               <ArrowRight size={18} />
             </button>
