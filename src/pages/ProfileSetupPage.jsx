@@ -172,20 +172,17 @@ export default function ProfileSetupPage({ setActivePage }) {
                 </div>
 
                 <div className="form-group">
-                  <label className="form-label">Subcaste</label>
-                  <input 
-                    type="text" 
-                    className="form-input" 
-                    list="subcaste-options"
-                    placeholder="Enter or select subcaste..."
+                  <label className="form-label">Subcaste (உட்பிரிவு)</label>
+                  <select 
+                    className="form-select"
                     value={form.subcaste}
-                    onChange={(e) => setForm({...form, subcaste: e.target.value})}
-                  />
-                  <datalist id="subcaste-options">
+                    onChange={(e) => setForm({...form, subcaste: e.target.value})}>
+                    <option value="">Select Subcaste...</option>
                     {(SUBCASTE_MAP[form.caste] || []).map((sc, i) => (
-                      <option key={i} value={sc} />
+                      <option key={i} value={sc}>{sc}</option>
                     ))}
-                  </datalist>
+                    <option value="Other / Not Specified">Other / Not Specified</option>
+                  </select>
                 </div>
                 </div>
               </div>

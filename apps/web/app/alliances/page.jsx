@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '../../context/AuthContext';
-import { CASTE_LIST, CITIES_LIST, HEIGHT_LIST } from '@jothi-matrimony/shared';
+import { CASTE_LIST, CITIES_LIST, HEIGHT_LIST, SUBCASTE_MAP } from '@jothi-matrimony/shared';
 import { Search, Filter, Star, Heart, Eye, Sparkles } from 'lucide-react';
 
 export default function AlliancesPage() {
@@ -16,24 +16,32 @@ export default function AlliancesPage() {
 
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCaste, setSelectedCaste] = useState('All Communities');
+  const [selectedSubcaste, setSelectedSubcaste] = useState('All Subcastes');
   const [selectedCity, setSelectedCity] = useState('All Cities');
   const [selectedHeight, setSelectedHeight] = useState('All Heights');
   const [genderFilter, setGenderFilter] = useState('All');
   const [minAge, setMinAge] = useState(20);
   const [maxAge, setMaxAge] = useState(40);
 
+  const availableSubcastes = selectedCaste !== 'All Communities' && SUBCASTE_MAP[selectedCaste] 
+    ? SUBCASTE_MAP[selectedCaste] 
+    : [];
+
   const filteredProfiles = allProfiles.filter(p => {
     const matchSearch = p.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
                         p.profession.toLowerCase().includes(searchTerm.toLowerCase()) ||
                         p.caste.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                        (p.subcaste && p.subcaste.toLowerCase().includes(searchTerm.toLowerCase())) ||
                         p.id.toLowerCase().includes(searchTerm.toLowerCase());
     const matchCaste = selectedCaste === 'All Communities' || p.caste === selectedCaste;
+    const matchSubcaste = selectedSubcaste === 'All Subcastes' || 
+                          (p.subcaste && p.subcaste.toLowerCase().includes(selectedSubcaste.toLowerCase()));
     const matchCity = selectedCity === 'All Cities' || p.city.includes(selectedCity);
     const matchHeight = selectedHeight === 'All Heights' || (p.height && p.height.includes(selectedHeight.split(' ')[0]));
     const matchGender = genderFilter === 'All' || p.gender === genderFilter;
     const matchAge = p.age >= minAge && p.age <= maxAge;
 
-    return matchSearch && matchCaste && matchCity && matchHeight && matchGender && matchAge;
+    return matchSearch && matchCaste && matchSubcaste && matchCity && matchHeight && matchGender && matchAge;
   });
 
   return (
@@ -102,9 +110,32 @@ export default function AlliancesPage() {
                 className="form-select" 
                 style={{ fontSize: '0.88rem' }}
                 value={selectedCaste}
-                onChange={(e) => setSelectedCaste(e.target.value)}>
+                onChange={(e) => {
+                  setSelectedCaste(e.target.value);
+                  setSelectedSubcaste('All Subcastes');
+                }}>
                 {CASTE_LIST.map((c, i) => (
                   <option key={i} value={c}>{c}</option>
+                ))}
+              </select>
+            </div>
+
+            {/* Dynamic Subcaste Dropdown */}
+            <div className="form-group">
+              <label className="form-label">Subcaste (உட்பிரிவு)</label>
+              <select 
+                className="form-select" 
+                style={{ fontSize: '0.88rem' }}
+                value={selectedSubcaste}
+                disabled={selectedCaste === 'All Communities' && availableSubcastes.length === 0}
+                onChange={(e) => setSelectedSubcaste(e.target.value)}>
+                <option value="All Subcastes">
+                  {selectedCaste === 'All Communities' 
+                    ? 'All Subcastes (Select Community First)' 
+                    : `All Subcastes of ${selectedCaste}`}
+                </option>
+                {availableSubcastes.map((sc, i) => (
+                  <option key={i} value={sc}>{sc}</option>
                 ))}
               </select>
             </div>
@@ -160,6 +191,7 @@ export default function AlliancesPage() {
               onClick={() => {
                 setSearchTerm('');
                 setSelectedCaste('All Communities');
+                setSelectedSubcaste('All Subcastes');
                 setSelectedCity('All Cities');
                 setSelectedHeight('All Heights');
                 setGenderFilter('All');
