@@ -179,52 +179,37 @@ export default function RazorpayModal({ isOpen, onClose, onSuccess }) {
 
             {tab === 'upi' && (
               <div style={{ textAlign: 'center', padding: '0.25rem 0' }}>
-                {/* UPI Details Box */}
+                {/* Official Payee Details Box */}
                 <div style={{
                   background: '#F8FAFC',
                   border: '1px solid #E2E8F0',
                   borderRadius: '8px',
-                  padding: '0.65rem',
-                  marginBottom: '0.85rem',
+                  padding: '0.65rem 0.85rem',
+                  marginBottom: '0.75rem',
                   textAlign: 'center'
                 }}>
-                  <div style={{ fontSize: '0.78rem', color: '#64748B', fontWeight: 600 }}>
-                    Official Payee: <strong>Haridass Ramalingam (HDFC Bank)</strong>
+                  <div style={{ fontSize: '0.8rem', color: '#64748B', fontWeight: 600 }}>
+                    Official Payee: <strong>Chandra babu M (State Bank of India)</strong>
                   </div>
                   <div style={{ 
-                    fontSize: '0.9rem', 
+                    fontSize: '0.85rem', 
                     color: '#0F172A', 
                     fontWeight: 700, 
-                    marginTop: '2px',
+                    marginTop: '4px',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    gap: '0.4rem'
+                    gap: '0.4rem',
+                    flexWrap: 'wrap'
                   }}>
-                    <span>UPI ID: <strong>haridass.ece@okhdfcbank</strong></span>
-                    <button 
-                      type="button"
-                      onClick={() => {
-                        navigator.clipboard.writeText('haridass.ece@okhdfcbank');
-                        alert('UPI ID copied to clipboard: haridass.ece@okhdfcbank');
-                      }}
-                      style={{
-                        background: '#E0F2FE',
-                        color: '#0284C7',
-                        border: '1px solid #7DD3FC',
-                        borderRadius: '4px',
-                        padding: '1px 6px',
-                        fontSize: '0.7rem',
-                        fontWeight: 700,
-                        cursor: 'pointer'
-                      }}>
-                      Copy
-                    </button>
+                    <span>A/C: <strong>10146632327</strong></span>
+                    <span>•</span>
+                    <span>IFSC: <strong>SBIN0003275</strong></span>
                   </div>
                 </div>
 
-                <div style={{ fontSize: '0.8rem', color: '#475569', marginBottom: '0.85rem', fontWeight: 500 }}>
-                  Scan using <strong>Google Pay (GPay)</strong>, PhonePe, Paytm, or any UPI App
+                <div style={{ fontSize: '0.78rem', color: '#475569', marginBottom: '0.75rem', fontWeight: 500 }}>
+                  Pay using <strong>Google Pay (GPay)</strong>, PhonePe, Paytm, or NetBanking
                 </div>
 
                 <button 
