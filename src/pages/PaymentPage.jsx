@@ -117,8 +117,9 @@ export default function PaymentPage({ setActivePage, onOpenRazorpay }) {
           {/* Pay Button */}
           <button 
             onClick={onOpenRazorpay}
+            type="button"
             className="btn btn-gold btn-full btn-lg pulse-button"
-            style={{ fontSize: '1.1rem', letterSpacing: '0.02em', marginBottom: '1rem' }}>
+            style={{ fontSize: '1.1rem', letterSpacing: '0.02em', marginBottom: '1rem', cursor: 'pointer' }}>
             <CreditCard size={20} />
             <span>[ PAY ₹1,000 NOW ]</span>
           </button>

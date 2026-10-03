@@ -125,9 +125,10 @@ export default function PaymentPage() {
               {/* Pay Button */}
               <button 
                 onClick={handleOpenRazorpay}
+                type="button"
                 disabled={isProcessing}
                 className="btn btn-gold btn-full btn-lg pulse-button"
-                style={{ fontSize: '1.1rem', letterSpacing: '0.02em', marginBottom: '1rem' }}>
+                style={{ fontSize: '1.1rem', letterSpacing: '0.02em', marginBottom: '1rem', cursor: 'pointer' }}>
                 <CreditCard size={20} />
                 <span>{isProcessing ? 'INITIALIZING PAYMENT...' : '[ PAY ₹1,000 NOW ]'}</span>
               </button>
