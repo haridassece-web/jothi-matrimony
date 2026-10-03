@@ -35,6 +35,22 @@ export default function CheckoutWrapper({ children, onPaymentSuccess }) {
           name: "Chennai Jothi Matrimony",
           description: "1 Year Registration Fee",
           order_id: order.id,
+          config: {
+            display: {
+              blocks: {
+                upi: {
+                  name: "Pay via UPI",
+                  instruments: [
+                    {
+                      method: "upi",
+                      flows: ["intent", "collect"] // Explicitly leaves out "qr"
+                    }
+                  ]
+                }
+              },
+              sequence: ["block.upi", "block.other"]
+            }
+          },
           prefill: {
             contact: user?.phone || user?.mobile || '',
             email: user?.email || '',

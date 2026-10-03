@@ -155,7 +155,7 @@ export default function RazorpayModal({ isOpen, onClose, onSuccess }) {
                 onClick={() => setTab('upi')}
                 style={tabBtnStyle(tab === 'upi')}>
                 <QrCode size={16} />
-                <span>UPI / QR</span>
+                <span>UPI / GPay</span>
               </button>
               <button 
                 onClick={() => setTab('card')}

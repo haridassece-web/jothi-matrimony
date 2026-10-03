@@ -155,7 +155,7 @@ export default function RazorpayModal({ isOpen, onClose, onSuccess }) {
             }}>
               <button onClick={() => setTab('upi')} style={tabBtnStyle(tab === 'upi')}>
                 <QrCode size={16} />
-                <span>UPI / QR</span>
+                <span>UPI / GPay</span>
               </button>
               <button onClick={() => setTab('card')} style={tabBtnStyle(tab === 'card')}>
                 <CreditCard size={16} />
@@ -218,7 +218,7 @@ export default function RazorpayModal({ isOpen, onClose, onSuccess }) {
                 </div>
 
                 <div style={{ fontSize: '0.78rem', color: '#475569', marginBottom: '0.75rem', fontWeight: 500 }}>
-                  Scan using <strong>Google Pay (GPay)</strong>, PhonePe, Paytm, or BHIM
+                  Pay using <strong>Google Pay (GPay)</strong>, PhonePe, Paytm, or BHIM UPI ID
                 </div>
 
                 {/* Confirm Payment Action Button */}
