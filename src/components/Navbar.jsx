@@ -209,6 +209,23 @@ export default function Navbar({ activePage, setActivePage }) {
             </>
           )}
 
+          {/* Admin Portal Direct Access Button */}
+          <button 
+            onClick={() => navigateTo('admin')} 
+            className={`nav-link ${activePage === 'admin' ? 'active' : ''}`}
+            style={{
+              ...navLinkStyle(activePage === 'admin'),
+              color: 'var(--primary-maroon-dark)',
+              fontWeight: 800,
+              background: '#FFF8E7',
+              border: '1.5px solid var(--gold-dark)',
+              borderRadius: '8px',
+              padding: '0.35rem 0.75rem'
+            }}
+          >
+            👑 {language === 'ta' ? 'நிர்வாகி' : 'Admin Portal'}
+          </button>
+
           {/* Language Toggle Button */}
           <button 
             onClick={toggleLanguage}

@@ -19,6 +19,7 @@ import InterestsPage from './pages/InterestsPage';
 import ShortlistPage from './pages/ShortlistPage';
 import MessagesPage from './pages/MessagesPage';
 import ProfilePage from './pages/ProfilePage';
+import AdminPage from './pages/AdminPage';
 
 import { Lock, Sparkles } from 'lucide-react';
 
@@ -160,6 +161,13 @@ function AppContent() {
 
             {activePage === 'profile' && (
               <ProfilePage setActivePage={setActivePage} />
+            )}
+
+            {activePage === 'admin' && (
+              <AdminPage 
+                setActivePage={setActivePage} 
+                onSelectProfile={handleSelectProfile} 
+              />
             )}
 
             {activePage === 'about' && (

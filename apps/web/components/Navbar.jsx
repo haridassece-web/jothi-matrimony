@@ -195,6 +195,22 @@ export default function Navbar() {
             </>
           ) : null}
 
+          {/* Admin Portal Direct Access Button */}
+          <Link 
+            href="/admin" 
+            style={{
+              ...navLinkStyle(pathname === '/admin'),
+              color: 'var(--primary-maroon-dark)',
+              fontWeight: 800,
+              background: '#FFF8E7',
+              border: '1.5px solid var(--gold-dark)',
+              borderRadius: '8px',
+              padding: '0.35rem 0.75rem'
+            }}
+          >
+            👑 {language === 'ta' ? 'நிர்வாகி' : 'Admin Portal'}
+          </Link>
+
           {/* Language Toggle Button */}
           <button 
             onClick={toggleLanguage}
