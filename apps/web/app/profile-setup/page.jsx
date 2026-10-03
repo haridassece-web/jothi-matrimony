@@ -6,7 +6,7 @@ import { useAuth } from '../../context/AuthContext';
 import RasiChart from '../../components/RasiChart';
 import { CASTE_LIST, SUBCASTE_MAP, HEIGHT_LIST, RELIGION_LIST, EDUCATION_LIST, PROFESSION_LIST, INCOME_LIST } from '@jothi-matrimony/shared';
 import { NAKSHATRAS, RASIS, LAGNAMS } from '@jothi-matrimony/shared';
-import { CheckCircle2, User, Briefcase, Users, Sparkles, Image as ImageIcon, Heart, ArrowRight, ArrowLeft } from 'lucide-react';
+import { CheckCircle2, User, Briefcase, Users, Sparkles, Image as ImageIcon, Heart, ArrowRight, ArrowLeft, Upload, Trash2, Plus, Star } from 'lucide-react';
 
 export default function ProfileSetupPage() {
   const router = useRouter();
@@ -43,10 +43,15 @@ export default function ProfileSetupPage() {
 
     rasi: 'Simmam (Leo)',
     nakshatra: 'Magam',
-    lagnam: 'Kanni',
+    lagnam: 'Kanni (Virgo)',
     chevvaiDosham: 'No',
 
-    photo: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=600',
+    photo: user?.photo || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=600',
+    photos: Array.isArray(user?.photos) && user.photos.length > 0 
+      ? user.photos 
+      : Array.isArray(user?.gallery) && user.gallery.length > 0 
+        ? user.gallery 
+        : [user?.photo || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=600'],
     about: 'Educated, family-oriented Tamil professional with modern values and deep respect for culture.',
     
     prefAgeMin: 24,
@@ -54,6 +59,84 @@ export default function ProfileSetupPage() {
     prefCaste: 'Iyer / Open',
     prefLocation: 'Chennai / Tamil Nadu'
   });
+
+  const handlePhotoFileUpload = (e) => {
+    const files = Array.from(e.target.files || []);
+    if (!files.length) return;
+
+    const currentPhotos = form.photos && form.photos.length ? form.photos : [form.photo || ''];
+    const remainingSlots = 10 - currentPhotos.length;
+    if (remainingSlots <= 0) {
+      alert('⚠️ Maximum 10 photos limit reached! Please remove an existing photo to upload new ones.');
+      return;
+    }
+
+    const filesToUpload = files.slice(0, remainingSlots);
+    let loadedCount = 0;
+    const newBase64Photos = [];
+
+    filesToUpload.forEach((file) => {
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        if (event.target?.result) {
+          newBase64Photos.push(event.target.result);
+        }
+        loadedCount++;
+        if (loadedCount === filesToUpload.length) {
+          const updatedPhotos = [...currentPhotos, ...newBase64Photos].slice(0, 10);
+          setForm(prev => ({
+            ...prev,
+            photos: updatedPhotos,
+            photo: updatedPhotos[0] || prev.photo
+          }));
+        }
+      };
+      reader.readAsDataURL(file);
+    });
+  };
+
+  const handleAddPhotoUrl = () => {
+    const currentPhotos = form.photos && form.photos.length ? form.photos : [form.photo || ''];
+    if (currentPhotos.length >= 10) {
+      alert('⚠️ Maximum 10 photos limit reached!');
+      return;
+    }
+    const url = prompt('Enter image URL (e.g. https://...):');
+    if (url && url.trim()) {
+      const updatedPhotos = [...currentPhotos, url.trim()].slice(0, 10);
+      setForm(prev => ({
+        ...prev,
+        photos: updatedPhotos,
+        photo: updatedPhotos[0] || prev.photo
+      }));
+    }
+  };
+
+  const handleRemovePhoto = (index) => {
+    const currentPhotos = form.photos && form.photos.length ? form.photos : [form.photo || ''];
+    if (currentPhotos.length <= 1) {
+      alert('⚠️ Profile must have at least 1 photo!');
+      return;
+    }
+    const updatedPhotos = currentPhotos.filter((_, i) => i !== index);
+    setForm(prev => ({
+      ...prev,
+      photos: updatedPhotos,
+      photo: updatedPhotos[0] || ''
+    }));
+  };
+
+  const handleSetPrimaryPhoto = (index) => {
+    const currentPhotos = [...(form.photos || [form.photo || ''])];
+    if (index === 0) return;
+    const selected = currentPhotos.splice(index, 1)[0];
+    currentPhotos.unshift(selected);
+    setForm(prev => ({
+      ...prev,
+      photos: currentPhotos,
+      photo: currentPhotos[0]
+    }));
+  };
 
   const handleSave = () => {
     updateFullProfile(form);
@@ -467,32 +550,149 @@ export default function ProfileSetupPage() {
 
           {activeStep === 5 && (
             <div>
-              <h3 style={{ fontSize: '1.25rem', color: 'var(--primary-maroon)', marginBottom: '1.25rem' }}>
-                Profile Photos & Gallery
-              </h3>
-
-              <div style={{ textAlign: 'center', marginBottom: '1.5rem' }}>
-                <div style={{
-                  width: '120px',
-                  height: '120px',
-                  borderRadius: '50%',
-                  overflow: 'hidden',
-                  margin: '0 auto 1rem',
-                  border: '3px solid var(--border-gold)',
-                  boxShadow: 'var(--shadow-md)'
-                }}>
-                  <img src={form.photo} alt="Profile" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '0.75rem', marginBottom: '1.25rem', borderBottom: '2px solid var(--border-gold)', paddingBottom: '0.75rem' }}>
+                <div>
+                  <h3 style={{ fontSize: '1.25rem', color: 'var(--primary-maroon)', margin: 0 }}>
+                    Profile Photos & Gallery (புகைப்படங்கள் - 10 வரை)
+                  </h3>
+                  <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)', margin: '0.25rem 0 0' }}>
+                    Upload up to 10 photos from your device or paste image URLs. Photo 1 is your Main Profile Picture.
+                  </p>
                 </div>
+                <div className="badge badge-gold" style={{ fontSize: '0.9rem', padding: '0.5rem 1rem' }}>
+                  📸 {(form.photos || []).length} / 10 Photos Uploaded
+                </div>
+              </div>
 
-                <div className="form-group" style={{ maxWidth: '400px', margin: '0 auto' }}>
-                  <label className="form-label">Photo Image URL</label>
+              {/* Upload Controls Bar */}
+              <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap', marginBottom: '1.5rem', background: '#FFFDF9', padding: '1.25rem', borderRadius: 'var(--radius-md)', border: '1.5px dashed var(--border-gold)' }}>
+                <label className="btn btn-primary" style={{ cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                  <Upload size={18} />
+                  <span>Upload Photos from Device (Max 10)</span>
                   <input 
-                    type="text" 
-                    className="form-input" 
-                    value={form.photo}
-                    onChange={(e) => setForm({...form, photo: e.target.value})}
+                    type="file" 
+                    multiple 
+                    accept="image/*" 
+                    onChange={handlePhotoFileUpload} 
+                    style={{ display: 'none' }} 
                   />
-                </div>
+                </label>
+
+                <button 
+                  type="button"
+                  onClick={handleAddPhotoUrl}
+                  className="btn btn-outline"
+                  style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                  <Plus size={18} />
+                  <span>Add Photo via Image URL</span>
+                </button>
+              </div>
+
+              {/* 10 Photo Slots Grid */}
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(130px, 1fr))', gap: '1rem', marginBottom: '1.5rem' }}>
+                {Array.from({ length: 10 }).map((_, index) => {
+                  const photoUrl = (form.photos || [])[index];
+                  const isPrimary = index === 0;
+
+                  return (
+                    <div 
+                      key={index}
+                      style={{
+                        position: 'relative',
+                        height: '160px',
+                        borderRadius: 'var(--radius-md)',
+                        overflow: 'hidden',
+                        border: isPrimary ? '3px solid var(--gold-dark)' : '1.5px solid var(--border-gold)',
+                        background: '#F8FAFC',
+                        boxShadow: isPrimary ? 'var(--shadow-md)' : 'none',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                        justifyContent: 'center'
+                      }}>
+                      
+                      {photoUrl ? (
+                        <>
+                          <img 
+                            src={photoUrl} 
+                            alt={`Photo ${index + 1}`} 
+                            style={{ width: '100%', height: '100%', objectFit: 'cover' }} 
+                          />
+                          
+                          {/* Slot Tag */}
+                          <div style={{
+                            position: 'absolute',
+                            top: '4px',
+                            left: '4px',
+                            background: isPrimary ? 'var(--primary-maroon)' : 'rgba(0,0,0,0.65)',
+                            color: '#FFF',
+                            fontSize: '0.68rem',
+                            fontWeight: 700,
+                            padding: '2px 6px',
+                            borderRadius: '4px'
+                          }}>
+                            {isPrimary ? '⭐ Main' : `#${index + 1}`}
+                          </div>
+
+                          {/* Hover / Overlay Action Bar */}
+                          <div style={{
+                            position: 'absolute',
+                            bottom: 0,
+                            left: 0,
+                            right: 0,
+                            background: 'rgba(0,0,0,0.75)',
+                            display: 'flex',
+                            justify: 'space-around',
+                            alignItems: 'center',
+                            padding: '4px'
+                          }}>
+                            {!isPrimary && (
+                              <button 
+                                type="button"
+                                title="Make Main Profile Picture"
+                                onClick={() => handleSetPrimaryPhoto(index)}
+                                style={{ background: 'none', border: 'none', color: '#FFD700', cursor: 'pointer', padding: '2px' }}>
+                                <Star size={14} fill="#FFD700" />
+                              </button>
+                            )}
+                            <button 
+                              type="button"
+                              title="Delete Photo"
+                              onClick={() => handleRemovePhoto(index)}
+                              style={{ background: 'none', border: 'none', color: '#EF4444', cursor: 'pointer', padding: '2px' }}>
+                              <Trash2 size={14} />
+                            </button>
+                          </div>
+                        </>
+                      ) : (
+                        <label style={{
+                          width: '100%',
+                          height: '100%',
+                          display: 'flex',
+                          flexDirection: 'column',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          cursor: 'pointer',
+                          color: 'var(--text-muted)',
+                          gap: '6px',
+                          padding: '0.5rem',
+                          textAlign: 'center'
+                        }}>
+                          <Plus size={22} style={{ color: 'var(--gold-dark)' }} />
+                          <span style={{ fontSize: '0.75rem', fontWeight: 600 }}>
+                            Add Slot #{index + 1}
+                          </span>
+                          <input 
+                            type="file" 
+                            accept="image/*" 
+                            onChange={handlePhotoFileUpload} 
+                            style={{ display: 'none' }} 
+                          />
+                        </label>
+                      )}
+                    </div>
+                  );
+                })}
               </div>
             </div>
           )}

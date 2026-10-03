@@ -19,6 +19,13 @@ export default function AllianceDetailPage({ selectedProfileId, setActivePage })
 
   // Find target profile
   const profile = allProfiles.find(p => p.id === selectedProfileId) || allProfiles[0];
+  const photoList = (profile.photos && profile.photos.length) ? profile.photos : (profile.gallery && profile.gallery.length) ? profile.gallery : [profile.photo];
+
+  const [selectedPhoto, setSelectedPhoto] = useState(profile.photo);
+
+  React.useEffect(() => {
+    setSelectedPhoto(profile.photo);
+  }, [profile]);
 
   const isSaved = shortlist.includes(profile.id);
   const isInterestSent = interests.sent.includes(profile.id);
@@ -45,32 +52,57 @@ export default function AllianceDetailPage({ selectedProfileId, setActivePage })
           border: '2px solid var(--border-gold)',
           boxShadow: 'var(--shadow-md)'
         }}>
-          <div style={{ display: 'flex', gap: '2rem', flexWrap: 'wrap', alignItems: 'center' }}>
+          <div style={{ display: 'flex', gap: '2rem', flexWrap: 'wrap', alignItems: 'flex-start' }}>
             
-            {/* Profile Photo */}
-            <div style={{ position: 'relative' }}>
-              <img 
-                src={profile.photo} 
-                alt={profile.name} 
-                style={{
-                  width: '150px',
-                  height: '180px',
-                  borderRadius: 'var(--radius-md)',
-                  objectFit: 'cover',
-                  border: '3px solid var(--gold-dark)',
-                  boxShadow: 'var(--shadow-md)'
-                }}
-              />
-              <span className="badge badge-green" style={{
-                position: 'absolute',
-                bottom: '-10px',
-                left: '50%',
-                transform: 'translateX(-50%)',
-                fontSize: '0.75rem',
-                whiteSpace: 'nowrap'
-              }}>
-                <ShieldCheck size={12} /> Verified Profile
-              </span>
+            {/* Profile Photo & Interactive 10-Photo Gallery */}
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.75rem' }}>
+              <div style={{ position: 'relative' }}>
+                <img 
+                  src={selectedPhoto || profile.photo} 
+                  alt={profile.name} 
+                  style={{
+                    width: '160px',
+                    height: '190px',
+                    borderRadius: 'var(--radius-md)',
+                    objectFit: 'cover',
+                    border: '3px solid var(--gold-dark)',
+                    boxShadow: 'var(--shadow-md)'
+                  }}
+                />
+                <span className="badge badge-green" style={{
+                  position: 'absolute',
+                  bottom: '-10px',
+                  left: '50%',
+                  transform: 'translateX(-50%)',
+                  fontSize: '0.75rem',
+                  whiteSpace: 'nowrap'
+                }}>
+                  <ShieldCheck size={12} /> Verified Profile
+                </span>
+              </div>
+
+              {/* Photo Thumbnails (Up to 10 photos) */}
+              {photoList.length > 1 && (
+                <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap', maxWidth: '170px', justifyContent: 'center', marginTop: '0.5rem' }}>
+                  {photoList.map((img, idx) => (
+                    <img 
+                      key={idx}
+                      src={img}
+                      alt={`Photo ${idx + 1}`}
+                      onClick={() => setSelectedPhoto(img)}
+                      style={{
+                        width: '32px',
+                        height: '38px',
+                        borderRadius: '4px',
+                        objectFit: 'cover',
+                        cursor: 'pointer',
+                        border: selectedPhoto === img ? '2px solid var(--primary-maroon)' : '1px solid #CBD5E1',
+                        opacity: selectedPhoto === img ? 1 : 0.7
+                      }}
+                    />
+                  ))}
+                </div>
+              )}
             </div>
 
             {/* Profile Summary */}
