@@ -282,7 +282,7 @@ export function AuthProvider({ children }) {
     }));
   };
 
-  const [allProfiles, setAllProfiles] = useState(MOCK_PROFILES);
+  const [liveProfiles, setLiveProfiles] = useState(MOCK_PROFILES);
 
   useEffect(() => {
     async function loadLiveProfiles() {
@@ -292,7 +292,7 @@ export function AuthProvider({ children }) {
         if (res.ok) {
           const liveData = await res.json();
           if (Array.isArray(liveData) && liveData.length > 0) {
-            setAllProfiles(liveData);
+            setLiveProfiles(liveData);
           }
         }
       } catch (err) {
@@ -382,11 +382,17 @@ export function AuthProvider({ children }) {
     return { success: true, user: fallbackUser };
   };
 
+  const baseList = liveProfiles || MOCK_PROFILES;
+  const customProfiles = state.customProfiles || [];
+  const allProfiles = state.user 
+    ? [state.user, ...customProfiles, ...baseList.filter(p => p.id !== state.user.id)]
+    : [...customProfiles, ...baseList];
+
   return (
     <AuthContext.Provider
       value={{
         ...state,
-        allProfiles: allProfiles,
+        allProfiles,
         toggleLanguage,
         registerBasicProfile,
         processPaymentSuccess,

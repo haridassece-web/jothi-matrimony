@@ -14,17 +14,30 @@ export default function AdminPage({ setActivePage, onSelectProfile }) {
   const [selectedRegFormProfile, setSelectedRegFormProfile] = useState(null);
   const [activeTab, setActiveTab] = useState('profiles'); // 'profiles' | 'payments' | 'unlocks'
 
+  React.useEffect(() => {
+    if (allProfiles && allProfiles.length) {
+      setProfilesList(allProfiles);
+    }
+  }, [allProfiles]);
+
   // Admin summary statistics
-  const totalProfiles = profilesList.length;
-  const verifiedCount = profilesList.filter(p => p.verified).length;
+  const totalProfiles = (profilesList || []).length;
+  const verifiedCount = (profilesList || []).filter(p => p && p.verified).length;
   const totalRevenue = totalProfiles * 1000;
 
-  const filtered = profilesList.filter(p => 
-    p.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    p.caste.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    (p.regNo && p.regNo.includes(searchTerm)) ||
-    p.id.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const filtered = (profilesList || []).filter(p => {
+    if (!p) return false;
+    const searchLower = (searchTerm || '').toLowerCase();
+    const nameStr = p.name ? String(p.name).toLowerCase() : '';
+    const casteStr = p.caste ? String(p.caste).toLowerCase() : '';
+    const regNoStr = p.regNo ? String(p.regNo).toLowerCase() : '';
+    const idStr = p.id ? String(p.id).toLowerCase() : '';
+    
+    return nameStr.includes(searchLower) ||
+      casteStr.includes(searchLower) ||
+      regNoStr.includes(searchLower) ||
+      idStr.includes(searchLower);
+  });
 
   const toggleVerify = (id) => {
     setProfilesList(prev => prev.map(p => {

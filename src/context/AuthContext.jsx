@@ -322,11 +322,16 @@ export function AuthProvider({ children }) {
     return { success: true, user: fallbackUser };
   };
 
+  const customProfiles = state.customProfiles || [];
+  const allProfiles = state.user 
+    ? [state.user, ...customProfiles, ...MOCK_PROFILES.filter(p => p.id !== state.user.id)]
+    : [...customProfiles, ...MOCK_PROFILES];
+
   return (
     <AuthContext.Provider
       value={{
         ...state,
-        allProfiles: MOCK_PROFILES,
+        allProfiles,
         toggleLanguage,
         registerBasicProfile,
         processPaymentSuccess,
