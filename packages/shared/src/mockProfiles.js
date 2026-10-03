@@ -662,3 +662,16 @@ export const HEIGHT_LIST = [
   "7' 0\" (213 cm)"
 ];
 
+export const RELIGION_LIST = [
+  "All Religions",
+  "Hindu",
+  "Muslim",
+  "Christian",
+  "Jain",
+  "Sikh",
+  "Buddhist",
+  "Parsi / Zoroastrian",
+  "Inter-religion / Open to All"
+];
+
+

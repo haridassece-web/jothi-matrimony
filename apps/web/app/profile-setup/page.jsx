@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '../../context/AuthContext';
 import RasiChart from '../../components/RasiChart';
-import { CASTE_LIST, SUBCASTE_MAP, HEIGHT_LIST } from '@jothi-matrimony/shared';
+import { CASTE_LIST, SUBCASTE_MAP, HEIGHT_LIST, RELIGION_LIST } from '@jothi-matrimony/shared';
 import { NAKSHATRAS, RASIS } from '@jothi-matrimony/shared';
 import { CheckCircle2, User, Briefcase, Users, Sparkles, Image as ImageIcon, Heart, ArrowRight, ArrowLeft } from 'lucide-react';
 
@@ -140,6 +140,18 @@ export default function ProfileSetupPage() {
                     onChange={(e) => setForm({...form, height: e.target.value})}>
                     {HEIGHT_LIST.map((h, i) => (
                       <option key={i} value={h}>{h}</option>
+                    ))}
+                  </select>
+                </div>
+
+                <div className="form-group">
+                  <label className="form-label">Religion (மதம்)</label>
+                  <select 
+                    className="form-select"
+                    value={form.religion}
+                    onChange={(e) => setForm({...form, religion: e.target.value})}>
+                    {RELIGION_LIST.filter(r => r !== 'All Religions').map((r, i) => (
+                      <option key={i} value={r}>{r}</option>
                     ))}
                   </select>
                 </div>

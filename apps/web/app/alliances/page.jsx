@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '../../context/AuthContext';
-import { CASTE_LIST, CITIES_LIST, HEIGHT_LIST, SUBCASTE_MAP } from '@jothi-matrimony/shared';
+import { CASTE_LIST, CITIES_LIST, HEIGHT_LIST, SUBCASTE_MAP, RELIGION_LIST } from '@jothi-matrimony/shared';
 import { Search, Filter, Star, Heart, Eye, Sparkles } from 'lucide-react';
 
 export default function AlliancesPage() {
@@ -15,6 +15,7 @@ export default function AlliancesPage() {
   } = useAuth();
 
   const [searchTerm, setSearchTerm] = useState('');
+  const [selectedReligion, setSelectedReligion] = useState('All Religions');
   const [selectedCaste, setSelectedCaste] = useState('All Communities');
   const [selectedSubcaste, setSelectedSubcaste] = useState('All Subcastes');
   const [selectedCity, setSelectedCity] = useState('All Cities');
@@ -31,8 +32,11 @@ export default function AlliancesPage() {
     const matchSearch = p.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
                         p.profession.toLowerCase().includes(searchTerm.toLowerCase()) ||
                         p.caste.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                        (p.religion && p.religion.toLowerCase().includes(searchTerm.toLowerCase())) ||
                         (p.subcaste && p.subcaste.toLowerCase().includes(searchTerm.toLowerCase())) ||
                         p.id.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchReligion = selectedReligion === 'All Religions' || 
+                          (p.religion && p.religion.toLowerCase().includes(selectedReligion.toLowerCase()));
     const matchCaste = selectedCaste === 'All Communities' || p.caste === selectedCaste;
     const matchSubcaste = selectedSubcaste === 'All Subcastes' || 
                           (p.subcaste && p.subcaste.toLowerCase().includes(selectedSubcaste.toLowerCase()));
@@ -41,7 +45,7 @@ export default function AlliancesPage() {
     const matchGender = genderFilter === 'All' || p.gender === genderFilter;
     const matchAge = p.age >= minAge && p.age <= maxAge;
 
-    return matchSearch && matchCaste && matchSubcaste && matchCity && matchHeight && matchGender && matchAge;
+    return matchSearch && matchReligion && matchCaste && matchSubcaste && matchCity && matchHeight && matchGender && matchAge;
   });
 
   return (
@@ -102,6 +106,20 @@ export default function AlliancesPage() {
                   onChange={(e) => setSearchTerm(e.target.value)}
                 />
               </div>
+            </div>
+
+            {/* Religion Filter */}
+            <div className="form-group">
+              <label className="form-label">Religion (மதம்)</label>
+              <select 
+                className="form-select" 
+                style={{ fontSize: '0.88rem' }}
+                value={selectedReligion}
+                onChange={(e) => setSelectedReligion(e.target.value)}>
+                {RELIGION_LIST.map((r, i) => (
+                  <option key={i} value={r}>{r}</option>
+                ))}
+              </select>
             </div>
 
             <div className="form-group">
@@ -190,6 +208,7 @@ export default function AlliancesPage() {
             <button 
               onClick={() => {
                 setSearchTerm('');
+                setSelectedReligion('All Religions');
                 setSelectedCaste('All Communities');
                 setSelectedSubcaste('All Subcastes');
                 setSelectedCity('All Cities');
