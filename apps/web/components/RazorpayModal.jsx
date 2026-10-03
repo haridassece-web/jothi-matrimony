@@ -173,33 +173,6 @@ export default function RazorpayModal({ isOpen, onClose, onSuccess }) {
 
             {tab === 'upi' && (
               <div style={{ textAlign: 'center', padding: '0.2rem 0' }}>
-                {/* Clean QR Image Container */}
-                <div style={{ 
-                  background: '#FFFFFF', 
-                  border: '2px solid #3399FF', 
-                  borderRadius: '12px', 
-                  padding: '0.4rem', 
-                  display: 'inline-block',
-                  marginBottom: '0.6rem',
-                  boxShadow: '0 4px 14px rgba(51, 153, 255, 0.15)',
-                  maxHeight: '210px',
-                  overflow: 'hidden'
-                }}>
-                  <img 
-                    src="/upi-qr.jpg" 
-                    alt="Scan GPay / UPI QR Code to pay ₹1,000" 
-                    style={{
-                      width: '185px',
-                      height: '200px',
-                      objectFit: 'cover',
-                      objectPosition: 'center 20%',
-                      borderRadius: '8px',
-                      display: 'block',
-                      margin: '0 auto'
-                    }}
-                  />
-                </div>
-
                 {/* UPI Details Box */}
                 <div style={{
                   background: '#F8FAFC',
@@ -315,10 +288,54 @@ export default function RazorpayModal({ isOpen, onClose, onSuccess }) {
               </div>
             )}
 
+            {/* Tab 3: NetBanking & Direct Bank Transfer */}
             {tab === 'netbanking' && (
               <div>
+                {/* Direct Bank Account Details */}
+                <div style={{
+                  background: '#F8FAFC',
+                  border: '1px solid #E2E8F0',
+                  borderRadius: '10px',
+                  padding: '0.85rem',
+                  marginBottom: '1rem',
+                  fontSize: '0.82rem'
+                }}>
+                  <div style={{ fontWeight: 700, color: '#0F172A', marginBottom: '0.5rem', display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+                    🏦 Direct Bank Transfer (SBI Account):
+                  </div>
+                  <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '0.35rem', color: '#334155' }}>
+                    <div><strong>Bank:</strong> State Bank of India (SBI)</div>
+                    <div><strong>Account Name:</strong> Chandra babu M</div>
+                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                      <span><strong>Account No:</strong> 10146632327</span>
+                      <button 
+                        type="button"
+                        onClick={() => {
+                          navigator.clipboard.writeText('10146632327');
+                          alert('Account Number copied: 10146632327');
+                        }}
+                        style={{ background: '#E0F2FE', color: '#0284C7', border: '1px solid #7DD3FC', borderRadius: '4px', padding: '1px 6px', fontSize: '0.7rem', fontWeight: 700, cursor: 'pointer' }}>
+                        Copy
+                      </button>
+                    </div>
+                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                      <span><strong>IFSC Code:</strong> SBIN0003275</span>
+                      <button 
+                        type="button"
+                        onClick={() => {
+                          navigator.clipboard.writeText('SBIN0003275');
+                          alert('IFSC Code copied: SBIN0003275');
+                        }}
+                        style={{ background: '#E0F2FE', color: '#0284C7', border: '1px solid #7DD3FC', borderRadius: '4px', padding: '1px 6px', fontSize: '0.7rem', fontWeight: 700, cursor: 'pointer' }}>
+                        Copy
+                      </button>
+                    </div>
+                    <div><strong>Branch:</strong> Vivekananda house (Chennai)</div>
+                  </div>
+                </div>
+
                 <div style={{ fontSize: '0.85rem', color: '#475569', marginBottom: '0.75rem', fontWeight: 600 }}>
-                  Select Your Bank:
+                  Or Select NetBanking Portal:
                 </div>
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.6rem', marginBottom: '1rem' }}>
                   {['SBI Bank', 'HDFC Bank', 'ICICI Bank', 'Axis Bank', 'Indian Overseas Bank', 'Canara Bank'].map((bank, idx) => (
