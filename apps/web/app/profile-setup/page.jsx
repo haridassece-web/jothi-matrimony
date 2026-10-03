@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import { useAuth } from '../../context/AuthContext';
 import RasiChart from '../../components/RasiChart';
 import { CASTE_LIST, SUBCASTE_MAP, HEIGHT_LIST, RELIGION_LIST, EDUCATION_LIST, PROFESSION_LIST, INCOME_LIST } from '@jothi-matrimony/shared';
-import { NAKSHATRAS, RASIS } from '@jothi-matrimony/shared';
+import { NAKSHATRAS, RASIS, LAGNAMS } from '@jothi-matrimony/shared';
 import { CheckCircle2, User, Briefcase, Users, Sparkles, Image as ImageIcon, Heart, ArrowRight, ArrowLeft } from 'lucide-react';
 
 export default function ProfileSetupPage() {
@@ -30,6 +30,8 @@ export default function ProfileSetupPage() {
     annualIncome: '₹18,000,000 / annum',
     city: 'Chennai',
     nativeTown: 'Kanchipuram',
+    address: 'No. 14, 2nd Cross Street, Mylapore, Chennai - 600004',
+    houseProperty: 'Own House (சொந்த வீடு)',
     
     fatherName: 'S. Ramachandran',
     fatherOccupation: 'Government Senior Officer (Retd)',
@@ -334,13 +336,39 @@ export default function ProfileSetupPage() {
                 />
               </div>
 
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+                <div className="form-group">
+                  <label className="form-label">Native Town / Village (சொந்த ஊர் / கிராமம்)</label>
+                  <input 
+                    type="text" 
+                    className="form-input" 
+                    placeholder="e.g. Kanchipuram / Thanjavur / Village..."
+                    value={form.nativeTown}
+                    onChange={(e) => setForm({...form, nativeTown: e.target.value})}
+                  />
+                </div>
+
+                <div className="form-group">
+                  <label className="form-label">House Property (வீட்டு வசதி)</label>
+                  <select 
+                    className="form-select"
+                    value={form.houseProperty}
+                    onChange={(e) => setForm({...form, houseProperty: e.target.value})}>
+                    <option value="Own House (சொந்த வீடு)">Own House (சொந்த வீடு)</option>
+                    <option value="Rented House (வாடகை வீடு)">Rented House (வாடகை வீடு)</option>
+                    <option value="Lease / Company Quarter">Lease / Company Quarter</option>
+                  </select>
+                </div>
+              </div>
+
               <div className="form-group">
-                <label className="form-label">Native Town / Village</label>
-                <input 
-                  type="text" 
-                  className="form-input" 
-                  value={form.nativeTown}
-                  onChange={(e) => setForm({...form, nativeTown: e.target.value})}
+                <label className="form-label">Current Residential Address (தற்போதைய இருப்பிடம் / முகவரி)</label>
+                <textarea 
+                  rows={3} 
+                  className="form-textarea"
+                  placeholder="Door No, Street Name, Landmark, City, Pincode..."
+                  value={form.address}
+                  onChange={(e) => setForm({...form, address: e.target.value})}
                 />
               </div>
             </div>
@@ -349,10 +377,46 @@ export default function ProfileSetupPage() {
           {activeStep === 4 && (
             <div>
               <h3 style={{ fontSize: '1.25rem', color: 'var(--primary-maroon)', marginBottom: '1.25rem' }}>
-                Horoscope & 12-Box Rasi Chart (ஜாதக விவரங்கள்)
+                Birth & Horoscope Details (பிறந்த விவரங்கள் & ஜாதகம்)
               </h3>
 
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginBottom: '1.5rem' }}>
+              {/* DOB, TOB, Place of Birth */}
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '1rem', marginBottom: '1.25rem' }}>
+                <div className="form-group">
+                  <label className="form-label">Date of Birth (பிறந்த தேதி)</label>
+                  <input 
+                    type="date" 
+                    className="form-input" 
+                    value={form.dob || ''} 
+                    onChange={(e) => setForm({...form, dob: e.target.value})}
+                  />
+                </div>
+
+                <div className="form-group">
+                  <label className="form-label">Time of Birth / TOB (பிறந்த நேரம்)</label>
+                  <input 
+                    type="text" 
+                    className="form-input" 
+                    placeholder="e.g. 08:30 AM / 14:45"
+                    value={form.birthTime || ''} 
+                    onChange={(e) => setForm({...form, birthTime: e.target.value})}
+                  />
+                </div>
+
+                <div className="form-group">
+                  <label className="form-label">Place of Birth (பிறந்த இடம்)</label>
+                  <input 
+                    type="text" 
+                    className="form-input" 
+                    placeholder="e.g. Chennai / Madurai"
+                    value={form.birthPlace || ''} 
+                    onChange={(e) => setForm({...form, birthPlace: e.target.value})}
+                  />
+                </div>
+              </div>
+
+              {/* Rasi, Nakshatram, Lagnam */}
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '1rem', marginBottom: '1.5rem' }}>
                 <div className="form-group">
                   <label className="form-label">Rasi (ராசி)</label>
                   <select 
@@ -373,6 +437,18 @@ export default function ProfileSetupPage() {
                     onChange={(e) => setForm({...form, nakshatra: e.target.value})}>
                     {NAKSHATRAS.map((n, i) => (
                       <option key={i} value={n}>{n}</option>
+                    ))}
+                  </select>
+                </div>
+
+                <div className="form-group">
+                  <label className="form-label">Lagnam / Lakanam (லக்னம்)</label>
+                  <select 
+                    className="form-select"
+                    value={form.lagnam || 'Kanni (Virgo)'}
+                    onChange={(e) => setForm({...form, lagnam: e.target.value})}>
+                    {LAGNAMS.map((l, i) => (
+                      <option key={i} value={l}>{l}</option>
                     ))}
                   </select>
                 </div>

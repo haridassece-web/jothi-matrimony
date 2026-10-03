@@ -138,20 +138,24 @@ export default function ChennaiJothiRegistrationForm({ profile, onPrint }) {
                 <td colSpan={3}>{profile.education}</td>
               </tr>
               <tr>
-                <td style={{ fontWeight: 700, color: '#800000' }}>பிறந்த தேதி, நேரம் :</td>
-                <td colSpan={3}>{profile.dob} {profile.birthTime ? `(${profile.birthTime})` : ''}</td>
+                <td style={{ fontWeight: 700, color: '#800000' }}>பிறந்த தேதி, நேரம் (DOB/TOB) :</td>
+                <td colSpan={3}><strong>{profile.dob}</strong> {profile.birthTime ? `(${profile.birthTime})` : ''}</td>
               </tr>
               <tr>
-                <td style={{ fontWeight: 700, color: '#800000' }}>பிறந்த ஊர், வரிசை :</td>
-                <td colSpan={3}>{profile.birthPlace || profile.nativeTown} {profile.siblingPosition ? `[${profile.siblingPosition}]` : ''}</td>
+                <td style={{ fontWeight: 700, color: '#800000' }}>பிறந்த இடம் (Place of Birth) :</td>
+                <td colSpan={3}><strong>{profile.birthPlace || profile.nativeTown || profile.city}</strong></td>
+              </tr>
+              <tr>
+                <td style={{ fontWeight: 700, color: '#800000' }}>சொந்த ஊர் / கிராமம் (Native) :</td>
+                <td colSpan={3}><strong>{profile.nativeTown || profile.city}</strong> {profile.siblingPosition ? `[${profile.siblingPosition}]` : ''}</td>
               </tr>
               <tr>
                 <td style={{ fontWeight: 700, color: '#800000' }}>நிறம், உயரம் :</td>
                 <td colSpan={3}>{profile.complexion || 'Fair'} / {profile.height}</td>
               </tr>
               <tr>
-                <td style={{ fontWeight: 700, color: '#800000' }}>நட்சத்திரம், ராசி :</td>
-                <td colSpan={3}><strong>{profile.nakshatra}</strong> ({profile.padam || '1'} ஆம் பாதம்), <strong>{profile.rasi}</strong></td>
+                <td style={{ fontWeight: 700, color: '#800000' }}>நட்சத்திரம், ராசி, லக்னம் :</td>
+                <td colSpan={3}><strong>{profile.nakshatra}</strong> ({profile.padam || '1'} ஆம் பாதம்), <strong>{profile.rasi}</strong> ராசி, <strong>{profile.lagnam || 'Kanni (Virgo)'}</strong> லக்னம்</td>
               </tr>
               <tr>
                 <td style={{ fontWeight: 700, color: '#800000' }}>பணி (Occupation) :</td>
@@ -171,15 +175,15 @@ export default function ChennaiJothiRegistrationForm({ profile, onPrint }) {
               </tr>
               <tr>
                 <td style={{ fontWeight: 700, color: '#800000' }}>உடன் பிறப்பு :</td>
-                <td colSpan={3}>{profile.family?.siblings || 'Nil'}</td>
+                <td colSpan={3}>{profile.family?.siblings || profile.siblings || 'Nil'}</td>
               </tr>
               <tr>
                 <td style={{ fontWeight: 700, color: '#800000' }}>சொந்த / வாடகை வீடு :</td>
-                <td colSpan={3}>{profile.family?.houseProperty || 'சொந்த வீடு'}</td>
+                <td colSpan={3}>{profile.houseProperty || profile.family?.houseProperty || 'சொந்த வீடு'}</td>
               </tr>
               <tr>
-                <td style={{ fontWeight: 700, color: '#800000' }}>இருப்பிடம் (Address) :</td>
-                <td colSpan={3}>{profile.address || `${profile.city}, ${profile.state || 'Tamil Nadu'}`}</td>
+                <td style={{ fontWeight: 700, color: '#800000' }}>தற்போதைய முகவரி (Address) :</td>
+                <td colSpan={3}><strong>{profile.address || `${profile.city}, ${profile.state || 'Tamil Nadu'}`}</strong></td>
               </tr>
               <tr>
                 <td style={{ fontWeight: 700, color: '#800000' }}>எதிர்பார்ப்பு :</td>

@@ -10,7 +10,13 @@ export const NAKSHATRAS = [
 ];
 
 export const RASIS = [
-  "Mesham (Aries)", "Rishabam (Taurus)", "Mithunam (Gemini)", "Katakamd (Cancer)",
+  "Mesham (Aries)", "Rishabam (Taurus)", "Mithunam (Gemini)", "Katakam (Cancer)",
+  "Simmam (Leo)", "Kanni (Virgo)", "Thulaam (Libra)", "Vrichigam (Scorpio)",
+  "Dhanusu (Sagittarius)", "Makaram (Capricorn)", "Kumbam (Aquarius)", "Meenam (Pisces)"
+];
+
+export const LAGNAMS = [
+  "Mesham (Aries)", "Rishabam (Taurus)", "Mithunam (Gemini)", "Katakam (Cancer)",
   "Simmam (Leo)", "Kanni (Virgo)", "Thulaam (Libra)", "Vrichigam (Scorpio)",
   "Dhanusu (Sagittarius)", "Makaram (Capricorn)", "Kumbam (Aquarius)", "Meenam (Pisces)"
 ];
