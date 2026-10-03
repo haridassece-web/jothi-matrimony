@@ -7,6 +7,7 @@ import { useRouter } from 'next/navigation';
 import { useAuth } from '../../context/AuthContext';
 import RazorpayModal from '../../components/RazorpayModal';
 import CheckoutWrapper from '../../components/CheckoutWrapper';
+import RazorpayPaymentButton from '../../components/RazorpayPaymentButton';
 import { ShieldCheck, CheckCircle2, Lock, Sparkles, CreditCard, Landmark, Copy, Check } from 'lucide-react';
 
 export default function PaymentPage() {
@@ -124,7 +125,22 @@ export default function PaymentPage() {
                 ))}
               </div>
 
-              {/* Pay Button */}
+              {/* Embedded Razorpay Payment Button */}
+              <div style={{
+                background: '#F8FAFC',
+                border: '2px dashed #0284C7',
+                borderRadius: 'var(--radius-md)',
+                padding: '1rem',
+                marginBottom: '1.25rem',
+                textAlign: 'center'
+              }}>
+                <div style={{ fontSize: '0.85rem', fontWeight: 700, color: '#0369A1', marginBottom: '0.5rem' }}>
+                  💳 Pay via Official Razorpay Gateway Button (pl_TjVL3MecrAQliL)
+                </div>
+                <RazorpayPaymentButton paymentButtonId="pl_TjVL3MecrAQliL" />
+              </div>
+
+              {/* Fallback Custom Pay Button */}
               <button 
                 onClick={handleOpenRazorpay}
                 type="button"
@@ -132,7 +148,7 @@ export default function PaymentPage() {
                 className="btn btn-gold btn-full btn-lg pulse-button"
                 style={{ fontSize: '1.1rem', letterSpacing: '0.02em', marginBottom: '1rem', cursor: 'pointer' }}>
                 <CreditCard size={20} />
-                <span>{isProcessing ? 'INITIALIZING PAYMENT...' : '[ PAY ₹1,000 NOW ]'}</span>
+                <span>{isProcessing ? 'INITIALIZING PAYMENT...' : '[ OPEN RAZORPAY UPI / CARDS MODAL ]'}</span>
               </button>
 
               <div style={{

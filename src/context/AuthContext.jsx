@@ -23,17 +23,17 @@ export function AuthProvider({ children }) {
       paymentDetails: null,
       registrationId: null,
       language: 'en', // 'en' | 'ta'
-      shortlist: ['JM202600101', 'JM202600103'],
+      shortlist: ['JM202600709', 'JM202600711'],
       interests: {
-        sent: ['JM202600101'],
-        received: ['JM202600102'],
-        accepted: ['JM202600102']
+        sent: ['JM202600709'],
+        received: ['JM202600710'],
+        accepted: ['JM202600710']
       },
-      unlockedContacts: ['JM202600102'],
+      unlockedContacts: ['JM202600710'],
       messages: {
-        'JM202600102': [
+        'JM202600710': [
           { sender: 'them', text: 'Vanakkam! Thank you for accepting my interest.', timestamp: '10:30 AM' },
-          { sender: 'me', text: 'Vanakkam Karthik sir! Glad to connect.', timestamp: '10:32 AM' }
+          { sender: 'me', text: 'Vanakkam Manikandan sir! Glad to connect.', timestamp: '10:32 AM' }
         ]
       }
     };

@@ -2,9 +2,10 @@ import React, { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 import RasiChart from '../components/RasiChart';
 import PoruthamModal from '../components/PoruthamModal';
+import ChennaiJothiRegistrationForm from '../components/ChennaiJothiRegistrationForm';
 import { 
   Star, Heart, Phone, Mail, MapPin, Briefcase, GraduationCap, 
-  Users, Sparkles, ShieldCheck, Lock, CheckCircle2, ArrowLeft, MessageSquare 
+  Users, Sparkles, ShieldCheck, Lock, CheckCircle2, ArrowLeft, MessageSquare, FileText, Printer, X
 } from 'lucide-react';
 
 export default function AllianceDetailPage({ selectedProfileId, setActivePage }) {
@@ -14,6 +15,7 @@ export default function AllianceDetailPage({ selectedProfileId, setActivePage })
   } = useAuth();
 
   const [isPoruthamModalOpen, setIsPoruthamModalOpen] = useState(false);
+  const [showRegFormSheet, setShowRegFormSheet] = useState(false);
 
   // Find target profile
   const profile = allProfiles.find(p => p.id === selectedProfileId) || allProfiles[0];
@@ -113,6 +115,14 @@ export default function AllianceDetailPage({ selectedProfileId, setActivePage })
                   className="btn btn-gold btn-lg">
                   <Sparkles size={18} />
                   <span>Check Horoscope Match</span>
+                </button>
+
+                <button 
+                  onClick={() => setShowRegFormSheet(true)}
+                  className="btn btn-outline btn-lg"
+                  style={{ borderColor: 'var(--primary-maroon)', color: 'var(--primary-maroon-dark)', background: '#FFFDF9' }}>
+                  <FileText size={18} />
+                  <span>Official Registration Sheet 📄</span>
                 </button>
 
                 <button 
@@ -304,6 +314,55 @@ export default function AllianceDetailPage({ selectedProfileId, setActivePage })
         targetProfile={profile}
         onSendInterest={(id) => sendInterest(id)}
       />
+
+      {/* Official Registration Form Sheet Modal */}
+      {showRegFormSheet && (
+        <div style={{
+          position: 'fixed',
+          top: 0, left: 0, right: 0, bottom: 0,
+          background: 'rgba(15, 23, 42, 0.75)',
+          backdropFilter: 'blur(4px)',
+          zIndex: 9999,
+          display: 'flex',
+          alignItems: 'center',
+          justify: 'center',
+          padding: '1.5rem',
+          overflowY: 'auto'
+        }}>
+          <div style={{
+            background: '#FFF',
+            borderRadius: '12px',
+            maxWidth: '940px',
+            width: '100%',
+            maxHeight: '90vh',
+            overflowY: 'auto',
+            padding: '1.5rem',
+            position: 'relative'
+          }}>
+            <button 
+              onClick={() => setShowRegFormSheet(false)}
+              style={{
+                position: 'absolute',
+                top: '1rem',
+                right: '1rem',
+                background: '#F1F5F9',
+                border: 'none',
+                borderRadius: '50%',
+                width: '36px',
+                height: '36px',
+                display: 'flex',
+                alignItems: 'center',
+                justify: 'center',
+                cursor: 'pointer',
+                zIndex: 10
+              }}>
+              <X size={20} color="#475569" />
+            </button>
+
+            <ChennaiJothiRegistrationForm profile={profile} />
+          </div>
+        </div>
+      )}
 
     </div>
   );

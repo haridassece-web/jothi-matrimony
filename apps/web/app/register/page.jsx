@@ -671,7 +671,7 @@ export default function RegisterPage() {
 
               <div style={{
                 display: 'flex',
-                justify.content: 'space-between',
+                justifyContent: 'space-between',
                 alignItems: 'center',
                 fontSize: '0.82rem'
               }}>

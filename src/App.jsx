@@ -26,7 +26,7 @@ function AppContent() {
   const { registrationStatus, language } = useAuth();
   
   const [activePage, setActivePage] = useState('home'); // 'home' | 'register' | 'payment' | 'payment-success' | 'profile-setup' | 'dashboard' | 'alliances' | 'alliance-detail' | 'interests' | 'shortlist' | 'messages' | 'profile' | 'how-it-works' | 'about'
-  const [selectedProfileId, setSelectedProfileId] = useState('JM202600101');
+  const [selectedProfileId, setSelectedProfileId] = useState('JM202600709');
   const [isRazorpayOpen, setIsRazorpayOpen] = useState(false);
 
   const isPaidMember = registrationStatus === 'PAID_ACTIVE';
