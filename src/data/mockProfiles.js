@@ -676,4 +676,73 @@ export const RELIGION_LIST = [
   "Inter-religion / Open to All"
 ];
 
+export const EDUCATION_LIST = [
+  "8th Standard / Below SSLC",
+  "10th Standard (SSLC)",
+  "12th Standard (HSC) / Higher Secondary",
+  "Diploma / Polytechnic",
+  "ITI / Vocational Training",
+  "B.E. / B.Tech / Engineering",
+  "M.E. / M.Tech",
+  "B.Sc / Bachelor of Science",
+  "M.Sc / Master of Science",
+  "B.Com / Bachelor of Commerce",
+  "M.Com / Master of Commerce",
+  "B.A / Bachelor of Arts",
+  "M.A / Master of Arts",
+  "BBA / BBM",
+  "MBA / PGDM",
+  "BCA / Computer Applications",
+  "MCA / Master of Computer Applications",
+  "MBBS / Doctor of Medicine",
+  "M.D. / M.S. / Medical Specialist",
+  "B.D.S. / M.D.S. (Dental)",
+  "B.Pharm / M.Pharm",
+  "BAMS / BHMS / BSMS (Siddha / Ayurveda)",
+  "B.L. / LL.B. / Law Graduate",
+  "M.L. / LL.M. / Master of Law",
+  "C.A. / Chartered Accountant",
+  "C.S. / Company Secretary",
+  "ICWA / CMA",
+  "B.Arch / M.Arch (Architecture)",
+  "B.Ed / M.Ed (Teaching)",
+  "Ph.D. / Doctorate / Post-Doctoral"
+];
+
+export const PROFESSION_LIST = [
+  "Software Engineer / IT Professional",
+  "Senior Software Architect / Lead",
+  "Government Officer / Civil Services (IAS/IPS/IRS)",
+  "Government Staff / Public Sector",
+  "Assistant Professor / Teacher / Lecturer",
+  "Doctor / Medical Practitioner",
+  "Surgeon / Medical Specialist",
+  "Chartered Accountant (C.A.) / Finance Director",
+  "Bank Officer / Manager",
+  "Civil Engineer / Architect",
+  "Mechanical / Electrical Engineer",
+  "Defense / Military / Police Officer",
+  "Business / Entrepreneur",
+  "Self-Employed / Merchant",
+  "Administrative / HR Professional",
+  "Marketing / Sales Executive",
+  "Legal Practitioner / Advocate",
+  "Scientist / Research Fellow",
+  "Student / Higher Studies",
+  "Homemaker / Not Working",
+  "Other Profession"
+];
+
+export const INCOME_LIST = [
+  "Below ₹2,00,000 / annum",
+  "₹2,00,000 - ₹5,00,000 / annum",
+  "₹5,00,000 - ₹10,00,000 / annum",
+  "₹10,00,000 - ₹15,00,000 / annum",
+  "₹15,00,000 - ₹25,00,000 / annum",
+  "₹25,00,000 - ₹50,00,000 / annum",
+  "Above ₹50,00,000 / annum",
+  "NRI Income ($50k - $150k+)"
+];
+
+
 

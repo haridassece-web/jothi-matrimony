@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
-import { CASTE_LIST, CITIES_LIST, HEIGHT_LIST, SUBCASTE_MAP, RELIGION_LIST } from '../data/mockProfiles';
+import { CASTE_LIST, CITIES_LIST, HEIGHT_LIST, SUBCASTE_MAP, RELIGION_LIST, EDUCATION_LIST } from '../data/mockProfiles';
 import { Search, Filter, Star, Heart, Eye, Sparkles, CheckCircle2 } from 'lucide-react';
 
 export default function AlliancesPage({ setActivePage, onSelectProfile }) {
@@ -13,6 +13,7 @@ export default function AlliancesPage({ setActivePage, onSelectProfile }) {
   const [selectedReligion, setSelectedReligion] = useState('All Religions');
   const [selectedCaste, setSelectedCaste] = useState('All Communities');
   const [selectedSubcaste, setSelectedSubcaste] = useState('All Subcastes');
+  const [selectedEducation, setSelectedEducation] = useState('All Qualifications');
   const [selectedCity, setSelectedCity] = useState('All Cities');
   const [selectedHeight, setSelectedHeight] = useState('All Heights');
   const [genderFilter, setGenderFilter] = useState('All');
@@ -30,6 +31,7 @@ export default function AlliancesPage({ setActivePage, onSelectProfile }) {
     const matchSearch = p.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
                         p.profession.toLowerCase().includes(searchTerm.toLowerCase()) ||
                         p.caste.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                        (p.education && p.education.toLowerCase().includes(searchTerm.toLowerCase())) ||
                         (p.religion && p.religion.toLowerCase().includes(searchTerm.toLowerCase())) ||
                         (p.subcaste && p.subcaste.toLowerCase().includes(searchTerm.toLowerCase())) ||
                         p.id.toLowerCase().includes(searchTerm.toLowerCase());
@@ -47,6 +49,10 @@ export default function AlliancesPage({ setActivePage, onSelectProfile }) {
     const matchSubcaste = selectedSubcaste === 'All Subcastes' || 
                           (p.subcaste && p.subcaste.toLowerCase().includes(selectedSubcaste.toLowerCase()));
 
+    // Education filter
+    const matchEducation = selectedEducation === 'All Qualifications' || 
+                           (p.education && p.education.toLowerCase().includes(selectedEducation.split('/')[0].trim().toLowerCase()));
+
     // City filter
     const matchCity = selectedCity === 'All Cities' || p.city.includes(selectedCity);
 
@@ -59,7 +65,7 @@ export default function AlliancesPage({ setActivePage, onSelectProfile }) {
     // Age filter
     const matchAge = p.age >= minAge && p.age <= maxAge;
 
-    return matchSearch && matchReligion && matchCaste && matchSubcaste && matchCity && matchHeight && matchGender && matchAge;
+    return matchSearch && matchReligion && matchCaste && matchSubcaste && matchEducation && matchCity && matchHeight && matchGender && matchAge;
   });
 
   return (
@@ -174,6 +180,21 @@ export default function AlliancesPage({ setActivePage, onSelectProfile }) {
               </select>
             </div>
 
+            {/* Education Filter */}
+            <div className="form-group">
+              <label className="form-label">Qualification / Degree</label>
+              <select 
+                className="form-select" 
+                style={{ fontSize: '0.88rem' }}
+                value={selectedEducation}
+                onChange={(e) => setSelectedEducation(e.target.value)}>
+                <option value="All Qualifications">All Qualifications (8th to Ph.D.)</option>
+                {EDUCATION_LIST.map((edu, i) => (
+                  <option key={i} value={edu}>{edu}</option>
+                ))}
+              </select>
+            </div>
+
             {/* City */}
             <div className="form-group">
               <label className="form-label">Location / City</label>
@@ -229,6 +250,7 @@ export default function AlliancesPage({ setActivePage, onSelectProfile }) {
                 setSelectedReligion('All Religions');
                 setSelectedCaste('All Communities');
                 setSelectedSubcaste('All Subcastes');
+                setSelectedEducation('All Qualifications');
                 setSelectedCity('All Cities');
                 setSelectedHeight('All Heights');
                 setGenderFilter('All');

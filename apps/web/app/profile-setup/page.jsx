@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '../../context/AuthContext';
 import RasiChart from '../../components/RasiChart';
-import { CASTE_LIST, SUBCASTE_MAP, HEIGHT_LIST, RELIGION_LIST } from '@jothi-matrimony/shared';
+import { CASTE_LIST, SUBCASTE_MAP, HEIGHT_LIST, RELIGION_LIST, EDUCATION_LIST, PROFESSION_LIST, INCOME_LIST } from '@jothi-matrimony/shared';
 import { NAKSHATRAS, RASIS } from '@jothi-matrimony/shared';
 import { CheckCircle2, User, Briefcase, Users, Sparkles, Image as ImageIcon, Heart, ArrowRight, ArrowLeft } from 'lucide-react';
 
@@ -231,13 +231,16 @@ export default function ProfileSetupPage() {
 
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
                 <div className="form-group">
-                  <label className="form-label">Education / Degree</label>
-                  <input 
-                    type="text" 
-                    className="form-input" 
+                  <label className="form-label">Education / Qualification (8th Std to Ph.D.)</label>
+                  <select 
+                    className="form-select" 
                     value={form.education}
-                    onChange={(e) => setForm({...form, education: e.target.value})}
-                  />
+                    onChange={(e) => setForm({...form, education: e.target.value})}>
+                    <option value="">Select Qualification...</option>
+                    {EDUCATION_LIST.map((edu, i) => (
+                      <option key={i} value={edu}>{edu}</option>
+                    ))}
+                  </select>
                 </div>
 
                 <div className="form-group">
@@ -245,6 +248,7 @@ export default function ProfileSetupPage() {
                   <input 
                     type="text" 
                     className="form-input" 
+                    placeholder="e.g. Anna University, Madras University..."
                     value={form.institution}
                     onChange={(e) => setForm({...form, institution: e.target.value})}
                   />
@@ -253,13 +257,16 @@ export default function ProfileSetupPage() {
 
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
                 <div className="form-group">
-                  <label className="form-label">Profession / Job Title</label>
-                  <input 
-                    type="text" 
-                    className="form-input" 
+                  <label className="form-label">Profession / Career Field</label>
+                  <select 
+                    className="form-select" 
                     value={form.profession}
-                    onChange={(e) => setForm({...form, profession: e.target.value})}
-                  />
+                    onChange={(e) => setForm({...form, profession: e.target.value})}>
+                    <option value="">Select Profession...</option>
+                    {PROFESSION_LIST.map((prof, i) => (
+                      <option key={i} value={prof}>{prof}</option>
+                    ))}
+                  </select>
                 </div>
 
                 <div className="form-group">
@@ -267,6 +274,7 @@ export default function ProfileSetupPage() {
                   <input 
                     type="text" 
                     className="form-input" 
+                    placeholder="e.g. TCS, Govt Sector, Self..."
                     value={form.company}
                     onChange={(e) => setForm({...form, company: e.target.value})}
                   />
@@ -274,13 +282,16 @@ export default function ProfileSetupPage() {
               </div>
 
               <div className="form-group">
-                <label className="form-label">Annual Income</label>
-                <input 
-                  type="text" 
-                  className="form-input" 
+                <label className="form-label">Annual Income / Salary Range</label>
+                <select 
+                  className="form-select" 
                   value={form.annualIncome}
-                  onChange={(e) => setForm({...form, annualIncome: e.target.value})}
-                />
+                  onChange={(e) => setForm({...form, annualIncome: e.target.value})}>
+                  <option value="">Select Annual Income...</option>
+                  {INCOME_LIST.map((inc, i) => (
+                    <option key={i} value={inc}>{inc}</option>
+                  ))}
+                </select>
               </div>
             </div>
           )}
