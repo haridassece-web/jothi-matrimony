@@ -22,10 +22,13 @@ export default function AlliancesPage({ setActivePage, onSelectProfile }) {
     const matchSearch = p.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
                         p.profession.toLowerCase().includes(searchTerm.toLowerCase()) ||
                         p.caste.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                        (p.subcaste && p.subcaste.toLowerCase().includes(searchTerm.toLowerCase())) ||
                         p.id.toLowerCase().includes(searchTerm.toLowerCase());
 
     // Caste filter
-    const matchCaste = selectedCaste === 'All Communities' || p.caste === selectedCaste;
+    const matchCaste = selectedCaste === 'All Communities' || 
+                       p.caste === selectedCaste || 
+                       (p.caste && p.caste.includes(selectedCaste));
 
     // City filter
     const matchCity = selectedCity === 'All Cities' || p.city.includes(selectedCity);

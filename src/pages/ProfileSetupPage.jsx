@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 import RasiChart from '../components/RasiChart';
-import { CASTE_LIST, CITIES_LIST } from '../data/mockProfiles';
+import { CASTE_LIST, CITIES_LIST, SUBCASTE_MAP } from '../data/mockProfiles';
 import { NAKSHATRAS, RASIS } from '../utils/horoscopeCalculator';
 import { CheckCircle2, User, Briefcase, Users, Sparkles, Image, Heart, ArrowRight, ArrowLeft } from 'lucide-react';
 
@@ -163,7 +163,11 @@ export default function ProfileSetupPage({ setActivePage }) {
                   <select 
                     className="form-select"
                     value={form.caste}
-                    onChange={(e) => setForm({...form, caste: e.target.value})}>
+                    onChange={(e) => {
+                      const newCaste = e.target.value;
+                      const subOpt = SUBCASTE_MAP[newCaste]?.[0] || '';
+                      setForm({...form, caste: newCaste, subcaste: subOpt});
+                    }}>
                     {CASTE_LIST.filter(c => c !== 'All Communities').map((c, i) => (
                       <option key={i} value={c}>{c}</option>
                     ))}
@@ -175,9 +179,17 @@ export default function ProfileSetupPage({ setActivePage }) {
                   <input 
                     type="text" 
                     className="form-input" 
+                    list="subcaste-options"
+                    placeholder="Enter or select subcaste..."
                     value={form.subcaste}
                     onChange={(e) => setForm({...form, subcaste: e.target.value})}
                   />
+                  <datalist id="subcaste-options">
+                    {(SUBCASTE_MAP[form.caste] || []).map((sc, i) => (
+                      <option key={i} value={sc} />
+                    ))}
+                  </datalist>
+                </div>
                 </div>
               </div>
 
