@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '../../context/AuthContext';
-import { CASTE_LIST, CITIES_LIST } from '@jothi-matrimony/shared';
+import { CASTE_LIST, CITIES_LIST, HEIGHT_LIST } from '@jothi-matrimony/shared';
 import { Search, Filter, Star, Heart, Eye, Sparkles } from 'lucide-react';
 
 export default function AlliancesPage() {
@@ -17,6 +17,7 @@ export default function AlliancesPage() {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCaste, setSelectedCaste] = useState('All Communities');
   const [selectedCity, setSelectedCity] = useState('All Cities');
+  const [selectedHeight, setSelectedHeight] = useState('All Heights');
   const [genderFilter, setGenderFilter] = useState('All');
   const [minAge, setMinAge] = useState(20);
   const [maxAge, setMaxAge] = useState(40);
@@ -28,10 +29,11 @@ export default function AlliancesPage() {
                         p.id.toLowerCase().includes(searchTerm.toLowerCase());
     const matchCaste = selectedCaste === 'All Communities' || p.caste === selectedCaste;
     const matchCity = selectedCity === 'All Cities' || p.city.includes(selectedCity);
+    const matchHeight = selectedHeight === 'All Heights' || (p.height && p.height.includes(selectedHeight.split(' ')[0]));
     const matchGender = genderFilter === 'All' || p.gender === genderFilter;
     const matchAge = p.age >= minAge && p.age <= maxAge;
 
-    return matchSearch && matchCaste && matchCity && matchGender && matchAge;
+    return matchSearch && matchCaste && matchCity && matchHeight && matchGender && matchAge;
   });
 
   return (
@@ -120,6 +122,21 @@ export default function AlliancesPage() {
               </select>
             </div>
 
+            {/* Height Filter */}
+            <div className="form-group">
+              <label className="form-label">Height (3.5 ft to 7 ft)</label>
+              <select 
+                className="form-select" 
+                style={{ fontSize: '0.88rem' }}
+                value={selectedHeight}
+                onChange={(e) => setSelectedHeight(e.target.value)}>
+                <option value="All Heights">All Heights (3.5 ft to 7 ft)</option>
+                {HEIGHT_LIST.map((h, i) => (
+                  <option key={i} value={h}>{h}</option>
+                ))}
+              </select>
+            </div>
+
             <div className="form-group">
               <label className="form-label">Age Range ({minAge} - {maxAge} Yrs)</label>
               <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
@@ -144,6 +161,7 @@ export default function AlliancesPage() {
                 setSearchTerm('');
                 setSelectedCaste('All Communities');
                 setSelectedCity('All Cities');
+                setSelectedHeight('All Heights');
                 setGenderFilter('All');
                 setMinAge(20);
                 setMaxAge(40);

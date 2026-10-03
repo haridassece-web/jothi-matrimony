@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 import RasiChart from '../components/RasiChart';
-import { CASTE_LIST, CITIES_LIST, SUBCASTE_MAP } from '../data/mockProfiles';
+import { CASTE_LIST, CITIES_LIST, SUBCASTE_MAP, HEIGHT_LIST } from '../data/mockProfiles';
 import { NAKSHATRAS, RASIS } from '../utils/horoscopeCalculator';
 import { CheckCircle2, User, Briefcase, Users, Sparkles, Image, Heart, ArrowRight, ArrowLeft } from 'lucide-react';
 
@@ -135,12 +135,9 @@ export default function ProfileSetupPage({ setActivePage }) {
                     className="form-select"
                     value={form.height}
                     onChange={(e) => setForm({...form, height: e.target.value})}>
-                    <option value="5' 2&quot; (157 cm)">5' 2" (157 cm)</option>
-                    <option value="5' 4&quot; (163 cm)">5' 4" (163 cm)</option>
-                    <option value="5' 6&quot; (168 cm)">5' 6" (168 cm)</option>
-                    <option value="5' 8&quot; (173 cm)">5' 8" (173 cm)</option>
-                    <option value="5' 10&quot; (178 cm)">5' 10" (178 cm)</option>
-                    <option value="6' 0&quot; (183 cm)">6' 0" (183 cm)</option>
+                    {HEIGHT_LIST.map((h, i) => (
+                      <option key={i} value={h}>{h}</option>
+                    ))}
                   </select>
                 </div>
 
