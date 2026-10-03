@@ -382,11 +382,14 @@ export function AuthProvider({ children }) {
     return { success: true, user: fallbackUser };
   };
 
-  const baseList = liveProfiles || MOCK_PROFILES;
+  const combinedMockAndLive = Array.isArray(liveProfiles) && liveProfiles.length > 0
+    ? [...MOCK_PROFILES, ...liveProfiles.filter(lp => !MOCK_PROFILES.some(mp => mp.id === lp.id))]
+    : MOCK_PROFILES;
+
   const customProfiles = state.customProfiles || [];
   const allProfiles = state.user 
-    ? [state.user, ...customProfiles, ...baseList.filter(p => p.id !== state.user.id)]
-    : [...customProfiles, ...baseList];
+    ? [state.user, ...customProfiles, ...combinedMockAndLive.filter(p => p.id !== state.user.id)]
+    : [...customProfiles, ...combinedMockAndLive];
 
   return (
     <AuthContext.Provider
