@@ -244,13 +244,21 @@ export default function AllianceDetailPage({ params }) {
             {/* PARTNER EXPECTATIONS */}
             <div className="card" style={{ padding: '1.75rem' }}>
               <h3 style={{ fontSize: '1.15rem', color: 'var(--primary-maroon)', marginBottom: '1rem', borderBottom: '2px solid var(--border-gold)', paddingBottom: '0.4rem' }}>
-                PARTNER EXPECTATIONS
+                PARTNER EXPECTATIONS (எதிர்பார்ப்புகள்)
               </h3>
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', fontSize: '0.9rem' }}>
-                <div><strong>Age Preference:</strong> {profile.partnerPreferences?.ageMin} - {profile.partnerPreferences?.ageMax} Yrs</div>
-                <div><strong>Education:</strong> {profile.partnerPreferences?.education}</div>
-                <div><strong>Location:</strong> {profile.partnerPreferences?.location}</div>
-                <div><strong>Community:</strong> {profile.partnerPreferences?.castePreference}</div>
+                <div><strong>Age Preference:</strong> {profile.partnerPreferences?.ageMin || 21} - {profile.partnerPreferences?.ageMax || 32} Yrs</div>
+                <div><strong>Height Preference:</strong> {profile.partnerPreferences?.heightMin || "4' 6\""} - {profile.partnerPreferences?.heightMax || "6' 2\""}</div>
+                <div><strong>Qualification:</strong> {profile.partnerPreferences?.education || 'Any Qualification / Open'}</div>
+                <div><strong>Working Profession:</strong> {profile.partnerPreferences?.profession || 'Any Working / Business'}</div>
+                <div><strong>Community / Caste:</strong> {profile.partnerPreferences?.castePreference || 'Open to All Communities'}</div>
+                <div><strong>Marital Status:</strong> {profile.partnerPreferences?.maritalStatus || 'Never Married'}</div>
+                <div><strong>Location:</strong> {profile.partnerPreferences?.location || 'Chennai / Tamil Nadu / Open'}</div>
+                {profile.partnerPreferences?.notes && (
+                  <div style={{ gridColumn: 'span 2', marginTop: '0.5rem', background: '#FFFDF9', padding: '0.75rem', borderRadius: '4px', borderLeft: '3px solid var(--gold-dark)' }}>
+                    <strong>Specific Expectations:</strong> {profile.partnerPreferences.notes}
+                  </div>
+                )}
               </div>
             </div>
 

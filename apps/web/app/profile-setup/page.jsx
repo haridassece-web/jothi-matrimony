@@ -54,10 +54,16 @@ export default function ProfileSetupPage() {
         : [user?.photo || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=600'],
     about: 'Educated, family-oriented Tamil professional with modern values and deep respect for culture.',
     
-    prefAgeMin: 24,
-    prefAgeMax: 30,
-    prefCaste: 'Iyer / Open',
-    prefLocation: 'Chennai / Tamil Nadu'
+    prefAgeMin: user?.partnerPreferences?.ageMin || 21,
+    prefAgeMax: user?.partnerPreferences?.ageMax || 32,
+    prefHeightMin: user?.partnerPreferences?.heightMin || "4' 6\" (137 cm)",
+    prefHeightMax: user?.partnerPreferences?.heightMax || "6' 2\" (188 cm)",
+    prefEducation: user?.partnerPreferences?.education || 'Any Qualification / Open',
+    prefProfession: user?.partnerPreferences?.profession || 'Any Profession / Working / Business',
+    prefCaste: user?.partnerPreferences?.castePreference || 'Open to All Communities',
+    prefMaritalStatus: user?.partnerPreferences?.maritalStatus || 'Never Married',
+    prefLocation: user?.partnerPreferences?.location || 'Chennai / Tamil Nadu / Open',
+    partnerNotes: user?.partnerPreferences?.notes || 'Looking for an educated, cultured, family-oriented partner with good moral values.'
   });
 
   const handlePhotoFileUpload = (e) => {
@@ -703,26 +709,139 @@ export default function ProfileSetupPage() {
                 Partner Expectations (எதிர்பார்ப்புகள்)
               </h3>
 
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+              {/* Age Range: From Age to To Age */}
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginBottom: '1.25rem' }}>
                 <div className="form-group">
-                  <label className="form-label">Preferred Community / Caste</label>
-                  <input 
-                    type="text" 
-                    className="form-input" 
-                    value={form.prefCaste}
-                    onChange={(e) => setForm({...form, prefCaste: e.target.value})}
-                  />
+                  <label className="form-label">From Age Preference (முதல் வயது)</label>
+                  <select 
+                    className="form-select"
+                    value={form.prefAgeMin}
+                    onChange={(e) => setForm({...form, prefAgeMin: Number(e.target.value)})}>
+                    {Array.from({ length: 48 }, (_, i) => 18 + i).map((a) => (
+                      <option key={a} value={a}>{a} Years</option>
+                    ))}
+                  </select>
                 </div>
 
                 <div className="form-group">
-                  <label className="form-label">Preferred Location</label>
-                  <input 
-                    type="text" 
-                    className="form-input" 
-                    value={form.prefLocation}
-                    onChange={(e) => setForm({...form, prefLocation: e.target.value})}
-                  />
+                  <label className="form-label">To Age Preference (வரை வயது)</label>
+                  <select 
+                    className="form-select"
+                    value={form.prefAgeMax}
+                    onChange={(e) => setForm({...form, prefAgeMax: Number(e.target.value)})}>
+                    {Array.from({ length: 48 }, (_, i) => 18 + i).map((a) => (
+                      <option key={a} value={a}>{a} Years</option>
+                    ))}
+                  </select>
                 </div>
+              </div>
+
+              {/* Height Preference Range: Min Height to Max Height */}
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginBottom: '1.25rem' }}>
+                <div className="form-group">
+                  <label className="form-label">Min Height (குறைந்தபட்ச உயரம்)</label>
+                  <select 
+                    className="form-select"
+                    value={form.prefHeightMin}
+                    onChange={(e) => setForm({...form, prefHeightMin: e.target.value})}>
+                    {HEIGHT_LIST.map((h, i) => (
+                      <option key={i} value={h}>{h}</option>
+                    ))}
+                  </select>
+                </div>
+
+                <div className="form-group">
+                  <label className="form-label">Max Height (அதிகபட்ச உயரம்)</label>
+                  <select 
+                    className="form-select"
+                    value={form.prefHeightMax}
+                    onChange={(e) => setForm({...form, prefHeightMax: e.target.value})}>
+                    {HEIGHT_LIST.map((h, i) => (
+                      <option key={i} value={h}>{h}</option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+
+              {/* Qualification & Working Profession */}
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginBottom: '1.25rem' }}>
+                <div className="form-group">
+                  <label className="form-label">Preferred Qualification (கல்வித் தகுதி)</label>
+                  <select 
+                    className="form-select"
+                    value={form.prefEducation}
+                    onChange={(e) => setForm({...form, prefEducation: e.target.value})}>
+                    <option value="Any Qualification / Open">Any Qualification / Open (ஏதேனும் ஒரு டிகிரி)</option>
+                    {EDUCATION_LIST.map((edu, i) => (
+                      <option key={i} value={edu}>{edu}</option>
+                    ))}
+                  </select>
+                </div>
+
+                <div className="form-group">
+                  <label className="form-label">Preferred Working Profession (பணி / வேலை)</label>
+                  <select 
+                    className="form-select"
+                    value={form.prefProfession}
+                    onChange={(e) => setForm({...form, prefProfession: e.target.value})}>
+                    <option value="Any Profession / Working / Business">Any Profession / Working / Business (ஏதேனும் ஒரு பணி)</option>
+                    {PROFESSION_LIST.map((prof, i) => (
+                      <option key={i} value={prof}>{prof}</option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+
+              {/* Community & Marital Status */}
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginBottom: '1.25rem' }}>
+                <div className="form-group">
+                  <label className="form-label">Preferred Community / Caste (சாதி)</label>
+                  <select 
+                    className="form-select"
+                    value={form.prefCaste}
+                    onChange={(e) => setForm({...form, prefCaste: e.target.value})}>
+                    <option value="Open to All Communities">Open to All Communities (அனைத்து சமூகமும் சம்மதம்)</option>
+                    {CASTE_LIST.filter(c => c !== 'All Communities').map((c, i) => (
+                      <option key={i} value={c}>{c}</option>
+                    ))}
+                  </select>
+                </div>
+
+                <div className="form-group">
+                  <label className="form-label">Preferred Marital Status (திருமண நிலை)</label>
+                  <select 
+                    className="form-select"
+                    value={form.prefMaritalStatus}
+                    onChange={(e) => setForm({...form, prefMaritalStatus: e.target.value})}>
+                    <option value="Never Married">Never Married Only (மணமாகாதவர்)</option>
+                    <option value="Divorced">Divorced</option>
+                    <option value="Widowed">Widowed</option>
+                    <option value="Any Status">Any Marital Status</option>
+                  </select>
+                </div>
+              </div>
+
+              {/* Location Preference & Notes */}
+              <div className="form-group">
+                <label className="form-label">Preferred Location / City (வசிக்கும் இடம் / பணி நகரம்)</label>
+                <input 
+                  type="text" 
+                  className="form-input" 
+                  placeholder="e.g. Chennai / Tamil Nadu / Bangalore / Abroad"
+                  value={form.prefLocation}
+                  onChange={(e) => setForm({...form, prefLocation: e.target.value})}
+                />
+              </div>
+
+              <div className="form-group">
+                <label className="form-label">Additional Expectation Notes (இதர எதிர்பார்ப்புகள்)</label>
+                <textarea 
+                  rows={3}
+                  className="form-textarea"
+                  placeholder="Write any specific partner expectations, family background requirements, etc..."
+                  value={form.partnerNotes}
+                  onChange={(e) => setForm({...form, partnerNotes: e.target.value})}
+                />
               </div>
             </div>
           )}

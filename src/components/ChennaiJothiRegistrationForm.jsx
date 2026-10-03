@@ -186,8 +186,14 @@ export default function ChennaiJothiRegistrationForm({ profile, onPrint }) {
                 <td colSpan={3}><strong>{profile.address || `${profile.city}, ${profile.state || 'Tamil Nadu'}`}</strong></td>
               </tr>
               <tr>
-                <td style={{ fontWeight: 700, color: '#800000' }}>எதிர்பார்ப்பு :</td>
-                <td colSpan={3}>{profile.partnerPreferences?.education || profile.about}</td>
+                <td style={{ fontWeight: 700, color: '#800000' }}>எதிர்பார்ப்பு (Expectation) :</td>
+                <td colSpan={3}>
+                  <strong>வயது:</strong> {profile.partnerPreferences?.ageMin || 21}-{profile.partnerPreferences?.ageMax || 32} Yrs | 
+                  <strong> உயரம்:</strong> {profile.partnerPreferences?.heightMin || "4' 6\""}-{profile.partnerPreferences?.heightMax || "6' 2\""} | 
+                  <strong> கல்வி:</strong> {profile.partnerPreferences?.education || 'Any'} | 
+                  <strong> பணி:</strong> {profile.partnerPreferences?.profession || 'Any'} | 
+                  <strong> சாதி:</strong> {profile.partnerPreferences?.castePreference || 'Open'}
+                </td>
               </tr>
             </tbody>
           </table>
