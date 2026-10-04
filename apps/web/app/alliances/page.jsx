@@ -170,6 +170,8 @@ export default function AlliancesPage() {
               </span>
             )}
           </div>
+        </div>
+
         <div className="alliances-grid">
           
           {/* Left Filters Sidebar */}

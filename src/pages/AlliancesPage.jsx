@@ -190,6 +190,8 @@ export default function AlliancesPage({ setActivePage, onSelectProfile }) {
               </span>
             )}
           </div>
+        </div>
+
         <div className="alliances-grid">
           
           {/* Left Filters Sidebar */}
