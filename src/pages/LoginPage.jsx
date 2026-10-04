@@ -139,7 +139,7 @@ export default function LoginPage({ setActivePage }) {
                 <input 
                   type="text"
                   className="form-input"
-                  placeholder={language === 'ta' ? 'எ.கா. Haridass அல்லது 9840012345' : 'e.g. Haridass / 9840012345 / user@gmail.com'}
+                  placeholder={language === 'ta' ? 'எ.கா. Santhosh அல்லது 9840012345' : 'e.g. Santhosh / 9840012345 / user@gmail.com'}
                   style={{ paddingLeft: '2.5rem', width: '100%', borderRadius: '8px', height: '46px' }}
                   value={username}
                   onChange={(e) => setUsername(e.target.value)}
@@ -230,7 +230,7 @@ export default function LoginPage({ setActivePage }) {
               fontSize: '0.92rem'
             }}>
             <Sparkles size={18} />
-            <span>{language === 'ta' ? 'உடனடி டெமோ உள்நுழைவு (Demo Login)' : 'Quick Demo Login (Haridass Ram)'}</span>
+            <span>{language === 'ta' ? 'உடனடி டெமோ உள்நுழைவு (Demo Login)' : 'Quick Demo Login'}</span>
           </button>
 
           {/* Register Link */}

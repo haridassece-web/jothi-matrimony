@@ -397,7 +397,7 @@ export default function RegisterPage({ setActivePage }) {
                 <input
                   type="text"
                   className="form-input"
-                  placeholder="e.g. Haridass Ram / Priya Sundaram"
+                  placeholder="e.g. Santhosh Kumar / Priya Sundaram"
                   style={{ paddingLeft: '2.5rem' }}
                   value={formData.name}
                   onChange={(e) =>

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 import RasiChart from '../components/RasiChart';
 import { CASTE_LIST, CITIES_LIST, SUBCASTE_MAP, HEIGHT_LIST, RELIGION_LIST, EDUCATION_LIST, PROFESSION_LIST, INCOME_LIST } from '../data/mockProfiles';
-import { NAKSHATRAS, RASIS, LAGNAMS } from '../utils/horoscopeCalculator';
+import { NAKSHATRAS, RASIS, LAGNAMS, calculateThirukanithamHoroscope } from '../utils/horoscopeCalculator';
 import { CheckCircle2, User, Briefcase, Users, Sparkles, Image as ImageIcon, Heart, ArrowRight, ArrowLeft, Upload, Trash2, Plus, Star } from 'lucide-react';
 
 export default function ProfileSetupPage({ setActivePage }) {
@@ -11,36 +11,41 @@ export default function ProfileSetupPage({ setActivePage }) {
   const [activeStep, setActiveStep] = useState(1);
 
   const [form, setForm] = useState({
-    height: "5' 9\" (175 cm)",
-    maritalStatus: 'Never Married',
-    motherTongue: 'Tamil',
-    religion: 'Hindu',
-    caste: 'Iyer',
-    subcaste: 'Vadama',
-    gothram: 'Kashyapa',
+    dob: user?.dob || '1998-07-12',
+    birthTime: user?.birthTime || '07:30 AM',
+    birthPlace: user?.birthPlace || 'Chennai',
+    height: user?.height || "5' 9\" (175 cm)",
+    maritalStatus: user?.maritalStatus || 'Never Married',
+    motherTongue: user?.motherTongue || 'Tamil',
+    religion: user?.religion || 'Hindu',
+    caste: user?.caste || 'Iyer',
+    subcaste: user?.subcaste || 'Vadama',
+    gothram: user?.gothram || 'Kashyapa',
     
-    education: 'M.S. / B.Tech / MBA',
-    institution: 'Anna University / CEG',
-    profession: 'Software Engineer / Professional',
-    company: 'Tech / MNC',
-    annualIncome: '₹18,000,000 / annum',
-    city: 'Chennai',
-    nativeTown: 'Kanchipuram',
-    address: 'No. 14, 2nd Cross Street, Mylapore, Chennai - 600004',
-    houseProperty: 'Own House (சொந்த வீடு)',
+    education: user?.education || 'M.S. / B.Tech / MBA',
+    institution: user?.institution || 'Anna University / CEG',
+    profession: user?.profession || 'Software Engineer / Professional',
+    company: user?.company || 'Tech / MNC',
+    annualIncome: user?.annualIncome || '₹18,000,000 / annum',
+    city: user?.city || 'Chennai',
+    nativeTown: user?.nativeTown || 'Kanchipuram',
+    address: user?.address || 'No. 14, 2nd Cross Street, Mylapore, Chennai - 600004',
+    houseProperty: user?.houseProperty || 'Own House (சொந்த வீடு)',
     
-    fatherName: 'S. Ramachandran',
-    fatherOccupation: 'Government Senior Officer (Retd)',
-    motherName: 'Meenakshi',
-    motherOccupation: 'Homemaker',
-    siblings: '1 Elder Brother (Married)',
-    familyType: 'Nuclear Family',
-    familyStatus: 'Upper Middle Class',
+    fatherName: user?.family?.fatherName || 'S. Ramachandran',
+    fatherOccupation: user?.family?.fatherOccupation || 'Government Senior Officer (Retd)',
+    motherName: user?.family?.motherName || 'Meenakshi',
+    motherOccupation: user?.family?.motherOccupation || 'Homemaker',
+    siblings: user?.family?.siblings || '1 Elder Brother (Married)',
+    familyType: user?.family?.familyType || 'Nuclear Family',
+    familyStatus: user?.family?.familyStatus || 'Upper Middle Class',
 
-    rasi: 'Simmam (Leo)',
-    nakshatra: 'Magam',
-    lagnam: 'Kanni (Virgo)',
-    chevvaiDosham: 'No',
+    rasi: user?.rasi || 'Simmam (Leo)',
+    nakshatra: user?.nakshatra || 'Magam',
+    lagnam: user?.lagnam || 'Kanni (Virgo)',
+    chevvaiDosham: user?.chevvaiDosham || 'No',
+    rasiChart: user?.rasiChart,
+    navamsamChart: user?.navamsamChart,
 
     photo: user?.photo || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=600',
     photos: Array.isArray(user?.photos) && user.photos.length > 0 
@@ -48,7 +53,7 @@ export default function ProfileSetupPage({ setActivePage }) {
       : Array.isArray(user?.gallery) && user.gallery.length > 0 
         ? user.gallery 
         : [user?.photo || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=600'],
-    about: 'Educated, family-oriented Tamil professional with modern values and deep respect for culture.',
+    about: user?.about || 'Educated, family-oriented Tamil professional with modern values and deep respect for culture.',
     
     prefAgeMin: user?.partnerPreferences?.ageMin || 21,
     prefAgeMax: user?.partnerPreferences?.ageMax || 32,
@@ -61,6 +66,27 @@ export default function ProfileSetupPage({ setActivePage }) {
     prefLocation: user?.partnerPreferences?.location || 'Chennai / Tamil Nadu / Open',
     partnerNotes: user?.partnerPreferences?.notes || 'Looking for an educated, cultured, family-oriented partner with good moral values.'
   });
+
+  // Automatic Thirukanitham Panchangam calculation on birth details change
+  React.useEffect(() => {
+    if (form.dob) {
+      const computed = calculateThirukanithamHoroscope({
+        dob: form.dob,
+        birthTime: form.birthTime || "06:00 AM",
+        birthPlace: form.birthPlace || "Chennai"
+      });
+      if (computed) {
+        setForm(prev => ({
+          ...prev,
+          rasi: computed.rasi,
+          nakshatra: computed.nakshatra,
+          lagnam: computed.lagnam,
+          rasiChart: computed.rasiChart,
+          navamsamChart: computed.navamsamChart
+        }));
+      }
+    }
+  }, [form.dob, form.birthTime, form.birthPlace]);
 
   const handlePhotoFileUpload = (e) => {
     const files = Array.from(e.target.files || []);
@@ -545,7 +571,13 @@ export default function ProfileSetupPage({ setActivePage }) {
               </div>
 
               <div style={{ marginBottom: '1.5rem' }}>
-                <RasiChart rasiName={form.rasi} nakshatra={form.nakshatra} />
+                <RasiChart 
+                  chartData={form.rasiChart} 
+                  navamsamData={form.navamsamChart} 
+                  rasiName={form.rasi} 
+                  nakshatra={form.nakshatra} 
+                  lagnam={form.lagnam} 
+                />
               </div>
 
               <div className="form-group">

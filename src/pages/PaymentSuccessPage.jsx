@@ -44,7 +44,7 @@ export default function PaymentSuccessPage({ setActivePage }) {
           </div>
 
           <p style={{ color: 'var(--text-muted)', fontSize: '0.95rem', marginBottom: '2rem', lineHeight: 1.6 }}>
-            Your ₹1,000 registration fee payment has been verified server-side. Your Jothi Matrimony active membership account is now live!
+            Your ₹1,000 registration fee payment has been verified server-side. Your Chennai Jothi Matrimony active membership account is now live!
           </p>
 
           <div style={{

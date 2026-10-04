@@ -3,7 +3,7 @@ import { MOCK_PROFILES } from '../data/mockProfiles';
 
 const AuthContext = createContext();
 
-const STORAGE_KEY = 'jothi_matrimony_state_v1';
+const STORAGE_KEY = 'jothi_matrimony_state_v2';
 
 export function AuthProvider({ children }) {
   // Load initial state from localStorage if available
@@ -23,19 +23,15 @@ export function AuthProvider({ children }) {
       paymentDetails: null,
       registrationId: null,
       language: 'en', // 'en' | 'ta'
-      shortlist: ['JM202600709', 'JM202600711'],
+      shortlist: [],
       interests: {
-        sent: ['JM202600709'],
-        received: ['JM202600710'],
-        accepted: ['JM202600710']
+        sent: [],
+        received: [],
+        accepted: []
       },
-      unlockedContacts: ['JM202600710'],
-      messages: {
-        'JM202600710': [
-          { sender: 'them', text: 'Vanakkam! Thank you for accepting my interest.', timestamp: '10:30 AM' },
-          { sender: 'me', text: 'Vanakkam Manikandan sir! Glad to connect.', timestamp: '10:32 AM' }
-        ]
-      }
+      unlockedContacts: [],
+      deletedProfileIds: [],
+      messages: {}
     };
   };
 
@@ -63,11 +59,11 @@ export function AuthProvider({ children }) {
     const newUser = {
       id: regId,
       profileFor: basicData.profileFor || 'Myself',
-      name: basicData.name || 'Haridass',
+      name: basicData.name || 'Valued Member',
       gender: basicData.gender || 'Male',
       dob: basicData.dob || '1996-05-20',
       mobile: basicData.mobile || '+91 98765 43210',
-      email: basicData.email || 'haridass@jothimatrimony.com',
+      email: basicData.email || 'member@jothimatrimony.com',
       city: basicData.city || 'Chennai',
       registrationFee: 1000,
       createdAt: new Date().toISOString()
@@ -197,8 +193,8 @@ export function AuthProvider({ children }) {
   // Pre-seed demo logged in active paid user if user wants instant demo login!
   const loginDemoUser = () => {
     const demoUser = {
-      id: 'JM2026001234',
-      name: 'Haridass Ram',
+      id: 'JM2026008899',
+      name: 'Santhosh Kumar',
       gender: 'Male',
       age: 28,
       dob: '1998-07-12',
@@ -322,10 +318,36 @@ export function AuthProvider({ children }) {
     return { success: true, user: fallbackUser };
   };
 
-  const customProfiles = state.customProfiles || [];
-  const allProfiles = state.user 
-    ? [state.user, ...customProfiles, ...MOCK_PROFILES.filter(p => p.id !== state.user.id)]
-    : [...customProfiles, ...MOCK_PROFILES];
+  const deleteProfile = async (profileId) => {
+    setState(prev => {
+      const deleted = prev.deletedProfileIds || [];
+      if (deleted.includes(profileId)) return prev;
+      const updatedDeleted = [...deleted, profileId];
+      const updatedCustom = (prev.customProfiles || []).filter(p => p.id !== profileId);
+      const updatedShortlist = (prev.shortlist || []).filter(id => id !== profileId);
+      return {
+        ...prev,
+        deletedProfileIds: updatedDeleted,
+        customProfiles: updatedCustom,
+        shortlist: updatedShortlist
+      };
+    });
+
+    try {
+      const API_URL = import.meta.env.VITE_API_URL || 'https://jothi-matrimony.onrender.com';
+      await fetch(`${API_URL}/profiles/${profileId}`, { method: 'DELETE' });
+    } catch (e) {
+      // ignore offline/network errors
+    }
+  };
+
+  const deletedSet = new Set(state.deletedProfileIds || []);
+  const customProfiles = (state.customProfiles || []).filter(p => !deletedSet.has(p.id));
+  const baseMockProfiles = MOCK_PROFILES.filter(p => !deletedSet.has(p.id));
+
+  const allProfiles = (state.user && !deletedSet.has(state.user.id))
+    ? [state.user, ...customProfiles, ...baseMockProfiles.filter(p => p.id !== state.user.id)]
+    : [...customProfiles, ...baseMockProfiles];
 
   return (
     <AuthContext.Provider
@@ -343,7 +365,8 @@ export function AuthProvider({ children }) {
         sendMessage,
         logout,
         loginDemoUser,
-        login
+        login,
+        deleteProfile
       }}
     >
       {children}

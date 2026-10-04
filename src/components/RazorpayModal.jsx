@@ -14,7 +14,7 @@ export default function RazorpayModal({ isOpen, onClose, onSuccess }) {
     number: '4532 8920 1122 3456',
     expiry: '08/28',
     cvv: '892',
-    name: user?.name || 'Haridass Ram'
+    name: user?.name || 'Valued Member'
   });
   const [paymentInfo, setPaymentInfo] = useState(null);
 

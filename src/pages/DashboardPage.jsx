@@ -12,10 +12,21 @@ export default function DashboardPage({ setActivePage, onSelectProfile }) {
   } = useAuth();
 
   const userName = user?.name ? user.name.split(' ')[0] : 'Member';
+  const isAdmin = user?.role === 'ADMIN' || user?.isAdmin || user?.id === 'ADMIN_001';
 
-  // Filter recommendations based on user gender
-  const targetGender = user?.gender === 'Male' ? 'Female' : 'Male';
-  const recommendedMatches = allProfiles.filter(p => p.gender === targetGender || !user?.gender);
+  // Filter recommendations based on user gender (Grooms get Brides, Brides get Grooms, Admin gets Both)
+  const targetGender = user?.gender === 'Male' ? 'Female' : user?.gender === 'Female' ? 'Male' : null;
+  const recommendedMatches = allProfiles.filter(p => {
+    if (isAdmin) return true;
+    if (targetGender) return p.gender === targetGender;
+    return true;
+  });
+
+  const recommendationTitle = user?.gender === 'Male' && !isAdmin
+    ? 'Recommended Bride Alliances For You (பெண் வரன்கள்)'
+    : user?.gender === 'Female' && !isAdmin
+    ? 'Recommended Groom Alliances For You (ஆண் வரன்கள்)'
+    : 'Recommended Alliances For You (Grooms & Brides)';
 
   return (
     <div style={{ padding: '2.5rem 0', minHeight: '85vh', background: 'var(--bg-silk)' }}>
@@ -54,7 +65,7 @@ export default function DashboardPage({ setActivePage, onSelectProfile }) {
               </h1>
 
               <p style={{ color: '#F8E0E6', fontSize: '1.05rem', margin: 0 }}>
-                <strong>126 Matches Found</strong> matching your horoscope & partner preferences in Tamil Nadu.
+                <strong>{recommendedMatches.length} Matches Found</strong> matching your horoscope & partner preferences in Tamil Nadu.
               </p>
             </div>
 
@@ -92,7 +103,7 @@ export default function DashboardPage({ setActivePage, onSelectProfile }) {
               <Search size={24} />
             </div>
             <div>
-              <div style={{ fontSize: '1.4rem', fontWeight: 800, color: 'var(--primary-maroon-dark)' }}>126</div>
+              <div style={{ fontSize: '1.4rem', fontWeight: 800, color: 'var(--primary-maroon-dark)' }}>{recommendedMatches.length}</div>
               <div style={{ fontSize: '0.82rem', color: 'var(--text-muted)' }}>Matches Found</div>
             </div>
           </div>
@@ -123,7 +134,7 @@ export default function DashboardPage({ setActivePage, onSelectProfile }) {
             </div>
             <div>
               <div style={{ fontSize: '1.4rem', fontWeight: 800, color: '#166534' }}>
-                {interests?.accepted?.length || 1}
+                {interests?.accepted?.length || 0}
               </div>
               <div style={{ fontSize: '0.82rem', color: 'var(--text-muted)' }}>Unlocked Contacts</div>
             </div>
@@ -151,7 +162,7 @@ export default function DashboardPage({ setActivePage, onSelectProfile }) {
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1.25rem' }}>
             <div>
               <h2 style={{ fontSize: '1.6rem', color: 'var(--primary-maroon-dark)', margin: 0 }}>
-                Recommended Alliances For You
+                {recommendationTitle}
               </h2>
               <div style={{ fontSize: '0.88rem', color: 'var(--text-muted)' }}>
                 Based on your Rasi, Nakshatra, age range & community preferences
@@ -161,7 +172,7 @@ export default function DashboardPage({ setActivePage, onSelectProfile }) {
             <button 
               onClick={() => setActivePage('alliances')}
               className="btn btn-outline btn-sm">
-              <span>View All 126 Profiles</span>
+              <span>View All {recommendedMatches.length} Profiles</span>
               <ArrowRight size={16} />
             </button>
           </div>

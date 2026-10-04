@@ -58,7 +58,7 @@ export default function PaymentPage({ setActivePage, onOpenRazorpay }) {
             letterSpacing: '0.05em',
             marginBottom: '1rem'
           }}>
-            JOTHI MATRIMONY
+            CHENNAI JOTHI MATRIMONY
           </div>
 
           <div style={{

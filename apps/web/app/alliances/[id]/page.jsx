@@ -8,7 +8,7 @@ import RasiChart from '../../../components/RasiChart';
 import PoruthamModal from '../../../components/PoruthamModal';
 import { 
   Star, Heart, Phone, Mail, MapPin, Briefcase, GraduationCap, 
-  Users, Sparkles, ShieldCheck, Lock, CheckCircle2, ArrowLeft, MessageSquare 
+  Users, Sparkles, ShieldCheck, Lock, CheckCircle2, ArrowLeft, MessageSquare, Trash2 
 } from 'lucide-react';
 
 export default function AllianceDetailPage({ params }) {
@@ -18,10 +18,15 @@ export default function AllianceDetailPage({ params }) {
 
   const { 
     user, allProfiles, shortlist, interests, unlockedContacts,
-    toggleShortlist, sendInterest, unlockContact, language 
+    toggleShortlist, sendInterest, unlockContact, language, deleteProfile 
   } = useAuth();
 
   const [isPoruthamModalOpen, setIsPoruthamModalOpen] = useState(false);
+
+  const isAdmin = user?.role === 'ADMIN' || user?.isAdmin || user?.id === 'ADMIN_001';
+  const isRegistered = !!user && (user.registrationStatus === 'BASIC_REGISTERED' || user.registrationStatus === 'PAID_ACTIVE' || !!user.name);
+  const isPaid = (user?.paymentStatus === 'PAID' || user?.membershipStatus === 'Active Paid Member' || user?.registrationStatus === 'PAID_ACTIVE');
+  const canViewProfiles = isAdmin || isPaid;
 
   const profile = allProfiles.find(p => p.id === profileId) || allProfiles[0];
   const photoList = (profile.photos && profile.photos.length) ? profile.photos : (profile.gallery && profile.gallery.length) ? profile.gallery : [profile.photo];
@@ -36,6 +41,84 @@ export default function AllianceDetailPage({ params }) {
   const isInterestSent = interests.sent.includes(profile.id);
   const isMutualAccepted = interests.accepted.includes(profile.id);
   const isContactUnlocked = unlockedContacts.includes(profile.id) || isMutualAccepted;
+
+  if (!canViewProfiles) {
+    return (
+      <div style={{ padding: '3.5rem 0', minHeight: '85vh', background: 'var(--bg-silk)' }}>
+        <div className="container" style={{ maxWidth: '720px' }}>
+          <Link 
+            href="/alliances"
+            className="btn btn-outline btn-sm"
+            style={{ marginBottom: '1.5rem' }}>
+            <ArrowLeft size={16} /> Back to Alliances
+          </Link>
+
+          <div className="card" style={{
+            padding: '3rem 2rem',
+            textAlign: 'center',
+            borderRadius: '16px',
+            border: '2px solid var(--border-gold)',
+            background: 'linear-gradient(135deg, #FFFFFF 0%, #FFFDF9 100%)',
+            boxShadow: 'var(--shadow-lg)'
+          }}>
+            <div style={{
+              width: '72px', height: '72px', borderRadius: '50%',
+              background: 'var(--maroon-gradient)', color: '#FFF',
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              margin: '0 auto 1.5rem', border: '3px solid var(--gold-primary)',
+              boxShadow: '0 4px 12px rgba(122, 12, 46, 0.25)'
+            }}>
+              <Lock size={36} />
+            </div>
+
+            <span className="badge badge-gold" style={{ marginBottom: '1rem', background: '#FFD700', color: '#1A0D03', fontWeight: 800 }}>
+              🔒 MANDATORY PROFILE VIEW ACCESS GATE
+            </span>
+
+            <h2 style={{ fontSize: '1.9rem', color: 'var(--primary-maroon-dark)', marginBottom: '0.75rem', fontWeight: 800 }}>
+              Profile Registration & ₹1,000 Fee Required
+            </h2>
+
+            <p style={{ color: 'var(--text-main)', fontSize: '1.05rem', lineHeight: 1.6, marginBottom: '2rem' }}>
+              To view full profile details, photo galleries, horoscope charts, and family background of alliance <strong>{profile?.name || 'Member'}</strong>, you must first register your profile and complete the official <strong>₹1,000 Registration Fee</strong>.
+            </p>
+
+            <div style={{
+              background: '#FFF8E7', border: '1px solid #F0D999', borderRadius: '12px',
+              padding: '1.25rem', marginBottom: '2rem', textAlign: 'left'
+            }}>
+              <div style={{ fontWeight: 800, color: 'var(--primary-maroon-dark)', marginBottom: '0.5rem', fontSize: '0.95rem' }}>
+                📋 3-Step Verification Process:
+              </div>
+              <div style={{ fontSize: '0.9rem', color: 'var(--text-main)', display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
+                <div>1️⃣ <strong>Step 1:</strong> Register Basic Profile Details ({isRegistered ? '✅ Completed' : '⏳ Pending'})</div>
+                <div>2️⃣ <strong>Step 2:</strong> Pay ₹1,000 Official Registration Fee ({isPaid ? '✅ Paid' : '⏳ Unpaid'})</div>
+                <div>3️⃣ <strong>Step 3:</strong> Access & View All Matrimony Profiles & Contacts ({canViewProfiles ? '🔓 Unlocked' : '🔒 Locked'})</div>
+              </div>
+            </div>
+
+            <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap' }}>
+              {!isRegistered ? (
+                <Link href="/register" className="btn btn-gold btn-lg">
+                  <Sparkles size={18} />
+                  <span>Step 1: Register Profile Now</span>
+                </Link>
+              ) : (
+                <Link href="/payment" className="btn btn-gold btn-lg">
+                  <ShieldCheck size={18} />
+                  <span>Step 2: Pay ₹1,000 Registration Fee</span>
+                </Link>
+              )}
+              <Link href="/login" className="btn btn-outline btn-lg">
+                <span>Already Paid? Login</span>
+              </Link>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div style={{ padding: '3rem 0', minHeight: '85vh', background: 'var(--bg-silk)' }}>
@@ -160,6 +243,19 @@ export default function AllianceDetailPage({ params }) {
                   <Star size={18} fill={isSaved ? '#D4AF37' : 'none'} />
                   <span>{isSaved ? 'Shortlisted' : '♡ SHORTLIST'}</span>
                 </button>
+
+                <button 
+                  onClick={async () => {
+                    if (window.confirm(`Admin Action: Delete profile "${profile.name}" (${profile.id}) permanently from live site? It will NOT show again on any list.`)) {
+                      await deleteProfile(profile.id);
+                      router.push('/alliances');
+                    }
+                  }}
+                  className="btn btn-lg"
+                  style={{ background: '#FEE2E2', color: '#991B1B', border: '1px solid #FCA5A5' }}>
+                  <Trash2 size={18} />
+                  <span>Delete Profile</span>
+                </button>
               </div>
             </div>
 
@@ -238,7 +334,13 @@ export default function AllianceDetailPage({ params }) {
                 <div><strong>Chevvai Dosham:</strong> {profile.chevvaiDosham}</div>
               </div>
 
-              <RasiChart chartData={profile.rasiChart} rasiName={profile.rasi} nakshatra={profile.nakshatra} />
+              <RasiChart 
+                chartData={profile.rasiChart} 
+                navamsamData={profile.navamsamChart} 
+                rasiName={profile.rasi} 
+                nakshatra={profile.nakshatra} 
+                lagnam={profile.lagnam} 
+              />
             </div>
 
             {/* PARTNER EXPECTATIONS */}

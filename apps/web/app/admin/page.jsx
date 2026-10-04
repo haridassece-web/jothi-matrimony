@@ -12,21 +12,22 @@ import {
 
 export default function NextAdminPage() {
   const router = useRouter();
-  const { allProfiles, user, language } = useAuth();
+  const { allProfiles, user, language, deleteProfile } = useAuth();
   
   const [profilesList, setProfilesList] = useState(allProfiles || []);
   const [searchTerm, setSearchTerm] = useState('');
+  const [adminGenderFilter, setAdminGenderFilter] = useState('All');
   const [selectedRegFormProfile, setSelectedRegFormProfile] = useState(null);
   const [activeTab, setActiveTab] = useState('profiles');
 
   React.useEffect(() => {
-    if (allProfiles && allProfiles.length) {
-      setProfilesList(allProfiles);
-    }
+    setProfilesList(allProfiles || []);
   }, [allProfiles]);
 
   const totalProfiles = (profilesList || []).length;
   const verifiedCount = (profilesList || []).filter(p => p && p.verified).length;
+  const bridesCount = (profilesList || []).filter(p => p && p.gender === 'Female').length;
+  const groomsCount = (profilesList || []).filter(p => p && p.gender === 'Male').length;
   const totalRevenue = totalProfiles * 1000;
 
   const filtered = (profilesList || []).filter(p => {
@@ -37,10 +38,14 @@ export default function NextAdminPage() {
     const regNoStr = p.regNo ? String(p.regNo).toLowerCase() : '';
     const idStr = p.id ? String(p.id).toLowerCase() : '';
     
-    return nameStr.includes(searchLower) ||
+    const matchesSearch = nameStr.includes(searchLower) ||
       casteStr.includes(searchLower) ||
       regNoStr.includes(searchLower) ||
       idStr.includes(searchLower);
+
+    const matchesGender = adminGenderFilter === 'All' || p.gender === adminGenderFilter;
+
+    return matchesSearch && matchesGender;
   });
 
   const toggleVerify = (id) => {
@@ -52,8 +57,9 @@ export default function NextAdminPage() {
     }));
   };
 
-  const handleDeleteProfile = (id) => {
-    if (window.confirm('Are you sure you want to delete this profile from Admin Panel?')) {
+  const handleDeleteProfile = async (id) => {
+    if (window.confirm('Are you sure you want to permanently delete this profile? It will NOT show again on the live site.')) {
+      await deleteProfile(id);
       setProfilesList(prev => prev.filter(p => p.id !== id));
     }
   };
@@ -149,20 +155,72 @@ export default function NextAdminPage() {
         {activeTab === 'profiles' && (
           <div className="card" style={{ padding: '1.75rem' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem', flexWrap: 'wrap', gap: '1rem' }}>
-              <h3 style={{ fontSize: '1.3rem', color: 'var(--primary-maroon-dark)', margin: 0 }}>
-                Registered Profiles Database
-              </h3>
+              <div>
+                <h3 style={{ fontSize: '1.3rem', color: 'var(--primary-maroon-dark)', margin: 0 }}>
+                  Registered Profiles Database (Admin Access)
+                </h3>
+                <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginTop: '2px' }}>
+                  Manage both Grooms & Brides in Local & Live System
+                </div>
+              </div>
 
-              <div style={{ position: 'relative', width: '280px' }}>
-                <Search size={16} style={{ position: 'absolute', left: '10px', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-muted)' }} />
-                <input 
-                  type="text" 
-                  className="form-input" 
-                  placeholder="Search Name, Reg No, Caste..."
-                  style={{ paddingLeft: '2.2rem', fontSize: '0.88rem' }}
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                />
+              <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'center', flexWrap: 'wrap' }}>
+                <div style={{ display: 'flex', gap: '0.35rem' }}>
+                  <button
+                    onClick={() => setAdminGenderFilter('All')}
+                    style={{
+                      padding: '4px 10px',
+                      borderRadius: '12px',
+                      border: adminGenderFilter === 'All' ? '1.5px solid var(--primary-maroon)' : '1px solid #CBD5E1',
+                      background: adminGenderFilter === 'All' ? 'var(--primary-maroon)' : '#FFF',
+                      color: adminGenderFilter === 'All' ? '#FFF' : 'var(--text-main)',
+                      fontWeight: 700,
+                      fontSize: '0.78rem',
+                      cursor: 'pointer'
+                    }}>
+                    All Both ({totalProfiles})
+                  </button>
+                  <button
+                    onClick={() => setAdminGenderFilter('Female')}
+                    style={{
+                      padding: '4px 10px',
+                      borderRadius: '12px',
+                      border: adminGenderFilter === 'Female' ? '1.5px solid var(--primary-maroon)' : '1px solid #CBD5E1',
+                      background: adminGenderFilter === 'Female' ? 'var(--primary-maroon)' : '#FFF',
+                      color: adminGenderFilter === 'Female' ? '#FFF' : 'var(--text-main)',
+                      fontWeight: 700,
+                      fontSize: '0.78rem',
+                      cursor: 'pointer'
+                    }}>
+                    Brides 👰 ({bridesCount})
+                  </button>
+                  <button
+                    onClick={() => setAdminGenderFilter('Male')}
+                    style={{
+                      padding: '4px 10px',
+                      borderRadius: '12px',
+                      border: adminGenderFilter === 'Male' ? '1.5px solid var(--primary-maroon)' : '1px solid #CBD5E1',
+                      background: adminGenderFilter === 'Male' ? 'var(--primary-maroon)' : '#FFF',
+                      color: adminGenderFilter === 'Male' ? '#FFF' : 'var(--text-main)',
+                      fontWeight: 700,
+                      fontSize: '0.78rem',
+                      cursor: 'pointer'
+                    }}>
+                    Grooms 🤵 ({groomsCount})
+                  </button>
+                </div>
+
+                <div style={{ position: 'relative', width: '240px' }}>
+                  <Search size={16} style={{ position: 'absolute', left: '10px', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-muted)' }} />
+                  <input 
+                    type="text" 
+                    className="form-input" 
+                    placeholder="Search Name, Reg No..."
+                    style={{ paddingLeft: '2.2rem', fontSize: '0.85rem' }}
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                  />
+                </div>
               </div>
             </div>
 

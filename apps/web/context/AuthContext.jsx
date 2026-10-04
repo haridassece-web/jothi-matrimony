@@ -5,65 +5,27 @@ import { MOCK_PROFILES } from '@jothi-matrimony/shared';
 
 const AuthContext = createContext();
 
-const STORAGE_KEY = 'jothi_matrimony_state_v1';
+const STORAGE_KEY = 'jothi_matrimony_state_v2';
 
 export function AuthProvider({ children }) {
   const [isClient, setIsClient] = useState(false);
 
   const defaultState = {
-    user: {
-      id: 'JM2026001234',
-      name: 'Haridass Ram',
-      gender: 'Male',
-      age: 28,
-      dob: '1998-07-12',
-      birthTime: '07:30 AM',
-      birthPlace: 'Chennai',
-      mobile: '+91 98400 11223',
-      email: 'haridass.jothi@gmail.com',
-      city: 'Chennai',
-      height: "5' 10\"",
-      maritalStatus: 'Never Married',
-      motherTongue: 'Tamil',
-      religion: 'Hindu',
-      caste: 'Iyer',
-      subcaste: 'Vadama',
-      education: 'B.Tech IT',
-      profession: 'Senior Product Engineer',
-      annualIncome: '₹22,000,000 / annum',
-      rasi: 'Simmam (Leo)',
-      nakshatra: 'Magam',
-      lagnam: 'Kanni',
-      registrationStatus: 'PAID_ACTIVE',
-      paymentStatus: 'PAID',
-      membershipStatus: 'Active Paid Member',
-      registrationFee: 1000,
-      registrationPaidAt: '2026-01-15T10:00:00.000Z',
-      isProfileComplete: true
-    },
-    registrationStatus: 'PAID_ACTIVE',
-    paymentStatus: 'SUCCESS',
-    paymentDetails: {
-      id: 'PAY_DEMO998877',
-      amount: 1000,
-      status: 'SUCCESS',
-      gateway: 'Razorpay UPI'
-    },
-    registrationId: 'JM2026001234',
+    user: null,
+    registrationStatus: 'UNREGISTERED',
+    paymentStatus: 'UNPAID',
+    paymentDetails: null,
+    registrationId: null,
     language: 'en',
-    shortlist: ['JM202600709', 'JM202600711'],
+    shortlist: [],
     interests: {
-      sent: ['JM202600709'],
-      received: ['JM202600710'],
-      accepted: ['JM202600710']
+      sent: [],
+      received: [],
+      accepted: []
     },
-    unlockedContacts: ['JM202600710'],
-    messages: {
-      'JM202600710': [
-        { sender: 'them', text: 'Vanakkam! Thank you for accepting my interest.', timestamp: '10:30 AM' },
-        { sender: 'me', text: 'Vanakkam Manikandan sir! Glad to connect.', timestamp: '10:32 AM' }
-      ]
-    }
+    unlockedContacts: [],
+    deletedProfileIds: [],
+    messages: {}
   };
 
   const [state, setState] = useState(defaultState);
@@ -102,11 +64,11 @@ export function AuthProvider({ children }) {
     const newUser = {
       id: regId,
       profileFor: basicData.profileFor || 'Myself',
-      name: basicData.name || 'Haridass',
+      name: basicData.name || 'Valued Member',
       gender: basicData.gender || 'Male',
       dob: basicData.dob || '1996-05-20',
       mobile: basicData.mobile || '+91 98765 43210',
-      email: basicData.email || 'haridass@jothimatrimony.com',
+      email: basicData.email || 'member@jothimatrimony.com',
       city: basicData.city || 'Chennai',
       registrationFee: 1000,
       createdAt: new Date().toISOString()
@@ -237,15 +199,15 @@ export function AuthProvider({ children }) {
 
   const loginDemoUser = () => {
     const demoUser = {
-      id: 'JM2026001234',
-      name: 'Haridass Ram',
+      id: 'JM2026008899',
+      name: 'Santhosh Kumar',
       gender: 'Male',
       age: 28,
       dob: '1998-07-12',
       birthTime: '07:30 AM',
       birthPlace: 'Chennai',
       mobile: '+91 98400 11223',
-      email: 'haridass.jothi@gmail.com',
+      email: 'santhosh.jothi@gmail.com',
       city: 'Chennai',
       height: "5' 10\"",
       maritalStatus: 'Never Married',
@@ -382,14 +344,42 @@ export function AuthProvider({ children }) {
     return { success: true, user: fallbackUser };
   };
 
+  const deleteProfile = async (profileId) => {
+    setState(prev => {
+      const deleted = prev.deletedProfileIds || [];
+      if (deleted.includes(profileId)) return prev;
+      const updatedDeleted = [...deleted, profileId];
+      const updatedCustom = (prev.customProfiles || []).filter(p => p.id !== profileId);
+      const updatedShortlist = (prev.shortlist || []).filter(id => id !== profileId);
+      return {
+        ...prev,
+        deletedProfileIds: updatedDeleted,
+        customProfiles: updatedCustom,
+        shortlist: updatedShortlist
+      };
+    });
+
+    setLiveProfiles(prev => (prev || []).filter(p => p.id !== profileId));
+
+    try {
+      const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://jothi-matrimony.onrender.com';
+      await fetch(`${API_URL}/profiles/${profileId}`, { method: 'DELETE' });
+    } catch (e) {
+      // ignore offline/network errors
+    }
+  };
+
+  const deletedSet = new Set(state.deletedProfileIds || []);
   const combinedMockAndLive = Array.isArray(liveProfiles) && liveProfiles.length > 0
     ? [...MOCK_PROFILES, ...liveProfiles.filter(lp => !MOCK_PROFILES.some(mp => mp.id === lp.id))]
     : MOCK_PROFILES;
 
-  const customProfiles = state.customProfiles || [];
-  const allProfiles = state.user 
-    ? [state.user, ...customProfiles, ...combinedMockAndLive.filter(p => p.id !== state.user.id)]
-    : [...customProfiles, ...combinedMockAndLive];
+  const filteredCombined = combinedMockAndLive.filter(p => !deletedSet.has(p.id));
+  const customProfiles = (state.customProfiles || []).filter(p => !deletedSet.has(p.id));
+
+  const allProfiles = (state.user && !deletedSet.has(state.user.id))
+    ? [state.user, ...customProfiles, ...filteredCombined.filter(p => p.id !== state.user.id)]
+    : [...customProfiles, ...filteredCombined];
 
   return (
     <AuthContext.Provider
@@ -407,7 +397,8 @@ export function AuthProvider({ children }) {
         sendMessage,
         logout,
         loginDemoUser,
-        login
+        login,
+        deleteProfile
       }}
     >
       {children}

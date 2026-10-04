@@ -1,13 +1,22 @@
 import React, { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { CASTE_LIST, CITIES_LIST, HEIGHT_LIST, SUBCASTE_MAP, RELIGION_LIST, EDUCATION_LIST } from '../data/mockProfiles';
-import { Search, Filter, Star, Heart, Eye, Sparkles, CheckCircle2 } from 'lucide-react';
+import { Search, Filter, Star, Heart, Eye, Sparkles, CheckCircle2, Trash2 } from 'lucide-react';
 
 export default function AlliancesPage({ setActivePage, onSelectProfile }) {
   const { 
-    allProfiles, shortlist, interests, 
-    toggleShortlist, sendInterest, language 
+    allProfiles, shortlist, interests, user,
+    toggleShortlist, sendInterest, language, deleteProfile
   } = useAuth();
+
+  const isAdmin = user?.role === 'ADMIN' || user?.isAdmin || user?.id === 'ADMIN_001';
+  const isGroom = user?.gender === 'Male';
+  const isBride = user?.gender === 'Female';
+
+  // For Grooms: show only Bride (Female) details.
+  // For Brides: show only Groom (Male) details.
+  // For Admin: manage both profiles.
+  const defaultGender = isAdmin ? 'All' : isGroom ? 'Female' : isBride ? 'Male' : 'All';
 
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedReligion, setSelectedReligion] = useState('All Religions');
@@ -16,9 +25,16 @@ export default function AlliancesPage({ setActivePage, onSelectProfile }) {
   const [selectedEducation, setSelectedEducation] = useState('All Qualifications');
   const [selectedCity, setSelectedCity] = useState('All Cities');
   const [selectedHeight, setSelectedHeight] = useState('All Heights');
-  const [genderFilter, setGenderFilter] = useState('All');
+  const [genderFilter, setGenderFilter] = useState(defaultGender);
   const [minAge, setMinAge] = useState(20);
   const [maxAge, setMaxAge] = useState(40);
+
+  React.useEffect(() => {
+    if (!isAdmin) {
+      if (user?.gender === 'Male') setGenderFilter('Female');
+      else if (user?.gender === 'Female') setGenderFilter('Male');
+    }
+  }, [user?.gender, isAdmin]);
 
   // Available subcastes based on selected community
   const availableSubcastes = selectedCaste !== 'All Communities' && SUBCASTE_MAP[selectedCaste] 
@@ -59,8 +75,18 @@ export default function AlliancesPage({ setActivePage, onSelectProfile }) {
     // Height filter
     const matchHeight = selectedHeight === 'All Heights' || (p.height && p.height.includes(selectedHeight.split(' ')[0]));
 
-    // Gender filter
-    const matchGender = genderFilter === 'All' || p.gender === genderFilter;
+    // Gender filter rule:
+    // Groom (Male) sees ONLY Female (Bride) profiles.
+    // Bride (Female) sees ONLY Male (Groom) profiles.
+    // Admin manages both profiles.
+    let matchGender = true;
+    if (!isAdmin && isGroom) {
+      matchGender = p.gender === 'Female';
+    } else if (!isAdmin && isBride) {
+      matchGender = p.gender === 'Male';
+    } else {
+      matchGender = genderFilter === 'All' || p.gender === genderFilter;
+    }
 
     // Age filter
     const matchAge = p.age >= minAge && p.age <= maxAge;
@@ -68,39 +94,101 @@ export default function AlliancesPage({ setActivePage, onSelectProfile }) {
     return matchSearch && matchReligion && matchCaste && matchSubcaste && matchEducation && matchCity && matchHeight && matchGender && matchAge;
   });
 
+  const isRegistered = !!user && (user.registrationStatus === 'BASIC_REGISTERED' || user.registrationStatus === 'PAID_ACTIVE' || !!user.name);
+  const isPaid = (user?.paymentStatus === 'PAID' || user?.membershipStatus === 'Active Paid Member' || user?.registrationStatus === 'PAID_ACTIVE');
+  const canViewProfiles = isAdmin || isPaid;
+
+  const pageTitle = isGroom && !isAdmin
+    ? (language === 'ta' ? 'கிடைக்கக்கூடிய பெண் வரன்கள் (Brides)' : 'Available Bride Profiles (பெண் வரன்கள்)')
+    : isBride && !isAdmin
+    ? (language === 'ta' ? 'கிடைக்கக்கூடிய ஆண் வரன்கள் (Grooms)' : 'Available Groom Profiles (ஆண் வரன்கள்)')
+    : (language === 'ta' ? 'அனைத்து வரன்கள் (Grooms & Brides)' : 'Available Alliances (Grooms & Brides)');
+
   return (
     <div style={{ padding: '2.5rem 0', minHeight: '85vh', background: 'var(--bg-silk)' }}>
       <div className="container">
         
+        {/* Registration & Fee Gate Banner for Unregistered/Unpaid Visitors */}
+        {!canViewProfiles && (
+          <div className="card" style={{
+            background: 'linear-gradient(135deg, #7A0C2E 0%, #4A061B 100%)',
+            color: '#FFF',
+            padding: '1.5rem 2rem',
+            borderRadius: '16px',
+            marginBottom: '2rem',
+            border: '2px solid var(--border-gold)',
+            boxShadow: 'var(--shadow-lg)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            flexWrap: 'wrap',
+            gap: '1.25rem'
+          }}>
+            <div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.4rem' }}>
+                <span className="badge badge-gold" style={{ background: '#FFD700', color: '#1A0D03', fontWeight: 800 }}>
+                  🔒 MANDATORY REGISTRATION & FEE POLICY
+                </span>
+              </div>
+              <h2 style={{ fontSize: '1.5rem', color: '#FFF', margin: '0 0 0.3rem 0', fontWeight: 800 }}>
+                Step 1: Register Profile ➔ Step 2: Pay ₹1,000 Fee ➔ Step 3: View Full Profiles
+              </h2>
+              <p style={{ color: '#F8E0E6', fontSize: '0.95rem', margin: 0, maxWidth: '720px' }}>
+                Per Chennai Jothi Matrimony regulations, members must register their profile and complete the official ₹1,000 registration fee to view full profiles, photos, and horoscope details.
+              </p>
+            </div>
+
+            <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
+              {!isRegistered ? (
+                <button onClick={() => setActivePage('register')} className="btn btn-gold btn-lg">
+                  <Sparkles size={18} />
+                  <span>Step 1: Register Profile Free</span>
+                </button>
+              ) : (
+                <button onClick={() => setActivePage('payment')} className="btn btn-gold btn-lg">
+                  <ShieldCheck size={18} />
+                  <span>Step 2: Pay ₹1,000 Fee</span>
+                </button>
+              )}
+            </div>
+          </div>
+        )}
+
         {/* Page Header */}
         <div style={{ marginBottom: '2rem', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '1rem' }}>
           <div>
             <h1 style={{ fontSize: '2rem', color: 'var(--primary-maroon-dark)', marginBottom: '0.3rem' }}>
-              {language === 'ta' ? 'கிடைக்கக்கூடிய வரன்கள்' : 'Available Alliances'}
+              {pageTitle}
             </h1>
             <p style={{ color: 'var(--text-muted)', fontSize: '0.95rem' }}>
-              Showing <strong>{filteredProfiles.length}</strong> active verified profiles
+              Showing <strong>{filteredProfiles.length}</strong> {isGroom && !isAdmin ? 'Bride (Female)' : isBride && !isAdmin ? 'Groom (Male)' : 'active verified'} profiles
             </p>
           </div>
 
           <div style={{ display: 'flex', gap: '0.5rem' }}>
-            {['All', 'Female', 'Male'].map(g => (
-              <button 
-                key={g}
-                onClick={() => setGenderFilter(g)}
-                style={{
-                  padding: '0.45rem 0.9rem',
-                  borderRadius: 'var(--radius-full)',
-                  border: genderFilter === g ? '1.5px solid var(--primary-maroon)' : '1px solid var(--border-light)',
-                  background: genderFilter === g ? 'var(--maroon-gradient)' : '#FFF',
-                  color: genderFilter === g ? '#FFF' : 'var(--text-main)',
-                  fontWeight: 600,
-                  fontSize: '0.85rem',
-                  cursor: 'pointer'
-                }}>
-                {g === 'All' ? 'All Genders' : g === 'Female' ? 'Brides (பெண்)' : 'Grooms (ஆண்)'}
-              </button>
-            ))}
+            {isAdmin ? (
+              ['All', 'Female', 'Male'].map(g => (
+                <button 
+                  key={g}
+                  onClick={() => setGenderFilter(g)}
+                  style={{
+                    padding: '0.45rem 0.9rem',
+                    borderRadius: 'var(--radius-full)',
+                    border: genderFilter === g ? '1.5px solid var(--primary-maroon)' : '1px solid var(--border-light)',
+                    background: genderFilter === g ? 'var(--maroon-gradient)' : '#FFF',
+                    color: genderFilter === g ? '#FFF' : 'var(--text-main)',
+                    fontWeight: 600,
+                    fontSize: '0.85rem',
+                    cursor: 'pointer'
+                  }}>
+                  {g === 'All' ? '👑 All Profiles (Admin)' : g === 'Female' ? 'Brides (பெண்)' : 'Grooms (ஆண்)'}
+                </button>
+              ))
+            ) : (
+              <span className="badge badge-gold" style={{ padding: '0.5rem 1rem', fontSize: '0.85rem' }}>
+                {isGroom ? '👰 Showing Bride Profiles Only' : isBride ? '🤵 Showing Groom Profiles Only' : '✨ Verified Alliances'}
+              </span>
+            )}
           </div>
         </div>
 
@@ -291,6 +379,34 @@ export default function AlliancesPage({ setActivePage, onSelectProfile }) {
                             border: '1px solid var(--border-light)'
                           }}
                         />
+                        <button 
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            if (window.confirm(`Admin Action: Delete profile "${profile.name}" (${profile.id})? Once deleted, it will never show again on the live site.`)) {
+                              deleteProfile(profile.id);
+                            }
+                          }}
+                          title="Admin Delete Profile (Permanently removes from live site)"
+                          style={{
+                            position: 'absolute',
+                            top: '10px',
+                            left: '10px',
+                            background: '#FEE2E2',
+                            color: '#991B1B',
+                            border: '1px solid #FCA5A5',
+                            borderRadius: '50%',
+                            width: '34px',
+                            height: '34px',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            cursor: 'pointer',
+                            boxShadow: '0 2px 6px rgba(0,0,0,0.15)',
+                            zIndex: 2
+                          }}>
+                          <Trash2 size={16} />
+                        </button>
+
                         <button 
                           onClick={() => toggleShortlist(profile.id)}
                           style={{

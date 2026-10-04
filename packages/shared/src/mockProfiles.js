@@ -1,3 +1,5 @@
+// Authentic Mock Tamil Matrimony Profiles Data for Jothi Matrimony
+
 // Authentic Profiles Data from Attached Chennai Jothi Matrimony Registration Forms
 
 export const MOCK_PROFILES = [
@@ -525,6 +527,1326 @@ export const MOCK_PROFILES = [
     email: "kavimani.m.jm@gmail.com",
     verified: true,
     joinedDate: "2026-03-18"
+  },
+  {
+    id: "JM202600714",
+    regNo: "714",
+    name: "H. Karthik",
+    gender: "Male",
+    age: 38,
+    dob: "1987-04-17",
+    birthTime: "12:05 AM",
+    birthPlace: "Impachakanam, Thanjavur District",
+    siblingPosition: "Only Son",
+    height: "6' 2\" (188 cm)",
+    complexion: "Wheatish (Maaniram)",
+    maritalStatus: "Never Married",
+    motherTongue: "Tamil",
+    religion: "Hindu",
+    caste: "Vanniyar",
+    subcaste: "Vanniyakula Kshatriyar",
+    gothram: "Shiva",
+    education: "B.E.",
+    institution: "Engineering College, Thanjavur",
+    profession: "Private Company Employee",
+    company: "Private Company",
+    annualIncome: "₹480,000 / annum",
+    monthlyIncome: "₹40,000 / month",
+    city: "Trichy",
+    nativeTown: "Lalgudi, Trichy",
+    state: "Tamil Nadu",
+    country: "India",
+    address: "No. 81, Ganapathy Nagar, Keezha Valadi, Lalgudi (Tk), Trichy District",
+    
+    // Horoscope details
+    rasi: "Vrichigam (Scorpio)",
+    nakshatra: "Anusham",
+    padam: "1",
+    lagnam: "Vrichigam",
+    chevvaiDosham: "No",
+    horoscopeAvailable: true,
+    rasiChart: {
+      1: ["Mesham", "Rahu", "Budhan", "Guru"],
+      2: ["Rishabam", "Suriyan"],
+      3: ["Mithunam", "Sukran"],
+      4: ["Katakam"],
+      5: ["Simmam"],
+      6: ["Kanni"],
+      7: ["Thulaam"],
+      8: ["Vrichigam", "Chandran"],
+      9: ["Dhanusu"],
+      10: ["Makaram", "Sani"],
+      11: ["Kumbam"],
+      12: ["Meenam", "Kethu"]
+    },
+    
+    // Family Details
+    family: {
+      fatherName: "SIR. Elambooranan (Late) [(Retd) Teacher]",
+      fatherOccupation: "Retired Teacher (Late)",
+      motherName: "Thirumathi H. Lalitha",
+      motherOccupation: "Homemaker",
+      siblings: "Nil",
+      familyType: "Nuclear Family",
+      familyValues: "Traditional",
+      familyStatus: "Middle Class",
+      houseProperty: "Own House (No. 81, Ganapathy Nagar, Lalgudi, Trichy)"
+    },
+    
+    // Partner Expectations
+    partnerPreferences: {
+      ageMin: 26,
+      ageMax: 35,
+      heightMin: "5' 2\"",
+      maritalStatus: "Never Married",
+      education: "Degree / Diploma / Any",
+      profession: "Working or Homemaker",
+      location: "Trichy / Thanjavur / Chennai / Tamil Nadu",
+      castePreference: "Vanniyar / Open",
+      horoscopeMatchReq: "Mandatory"
+    },
+    
+    photo: "/profiles/karthik.jpg",
+    gallery: [
+      "/profiles/karthik.jpg"
+    ],
+    about: "B.E. graduate working in a Private Company earning ₹40,000/month. Native of Lalgudi, Trichy with own house. Son of retired teacher late Sir Elambooranan and mother Lalitha. Tall (6'2\") and cultured groom seeking a suitable bride from Tamil Nadu.",
+    phone: "+91 96299 73561",
+    email: "karthik.h.jm@gmail.com",
+    verified: true,
+    joinedDate: "2026-03-25"
+  },
+  {
+    id: "JM202600706",
+    regNo: "706",
+    name: "Dr. R. Kalaivani",
+    gender: "Female",
+    age: 25,
+    dob: "2000-06-03",
+    birthTime: "04:22 PM",
+    birthPlace: "Singaperumal Kovil",
+    siblingPosition: "2nd Child",
+    height: "5' 4\" (163 cm)",
+    complexion: "Fair (Sivappu)",
+    maritalStatus: "Never Married",
+    motherTongue: "Tamil",
+    religion: "Hindu",
+    caste: "Vanniyar",
+    subcaste: "Vanniyakula Kshatriyar (VIP)",
+    gothram: "Kashyapa",
+    education: "M.Sc / P.G. / B.Ed / Ph.D (Doctorate)",
+    institution: "Medical University / College",
+    profession: "Doctor / Consultant (Mental Health Specialist)",
+    company: "S.P. Kovil Pvt. Hospital",
+    annualIncome: "₹1,200,000 + Rental ₹24 Lakhs / annum",
+    monthlyIncome: "₹1,00,000 / month (+ Rental ₹2 Lakhs)",
+    city: "Chengalpattu",
+    nativeTown: "Singaperumal Kovil, Chengalpattu",
+    state: "Tamil Nadu",
+    country: "India",
+    address: "Singaperumal Kovil, Chengalpattu District - 603204",
+    
+    // Horoscope details
+    rasi: "Mithunam (Gemini)",
+    nakshatra: "Mirugaseerisham",
+    padam: "4",
+    lagnam: "Thulaam (Libra)",
+    chevvaiDosham: "No",
+    horoscopeAvailable: true,
+    rasiChart: {
+      1: ["Mesham"],
+      2: ["Rishabam", "Guru", "Sani"],
+      3: ["Mithunam", "Chandran", "Suriyan", "Budhan", "Sukran"],
+      4: ["Katakam", "Rahu"],
+      5: ["Simmam"],
+      6: ["Kanni"],
+      7: ["Thulaam", "Lagnam"],
+      8: ["Vrichigam"],
+      9: ["Dhanusu"],
+      10: ["Makaram", "Kethu"],
+      11: ["Kumbam"],
+      12: ["Meenam"]
+    },
+    
+    // Family Details
+    family: {
+      fatherName: "Thiru Ravi R.",
+      fatherOccupation: "Agriculture / Own Business & Real Estate",
+      motherName: "Thirumathi Sarumathi R.",
+      motherOccupation: "Homemaker",
+      siblings: "1 Elder Brother (Married)",
+      familyType: "Nuclear VIP Family",
+      familyValues: "Traditional & Affluent",
+      familyStatus: "VIP / Affluent Family",
+      houseProperty: "Own House & 3.5 Acres Land (Rental Income ₹2 Lakhs/month)"
+    },
+    
+    // Partner Expectations
+    partnerPreferences: {
+      ageMin: 26,
+      ageMax: 32,
+      heightMin: "5' 7\"",
+      maritalStatus: "Never Married",
+      education: "MBBS / BDS / Medical Line / Ph.D / M.E / M.Tech",
+      profession: "Doctor / Medical Specialist / High-Level Professional",
+      location: "Chengalpattu / Chennai Surrounding / Kanchipuram",
+      castePreference: "Vanniyar / VIP Family",
+      horoscopeMatchReq: "Mandatory"
+    },
+    
+    photo: "/profiles/kalaivani.jpg",
+    gallery: [
+      "/profiles/kalaivani.jpg"
+    ],
+    about: "Doctor & M.Sc / Ph.D holder working as Consultant Doctor at S.P. Kovil Pvt Hospital earning ₹1 Lakh/month. Belongs to a highly respected Vanniyar VIP family in Singaperumal Kovil with 3.5 acres land and rental income of ₹2 Lakhs/month. Father runs Agriculture & Real Estate business. Seeking an MBBS / BDS / Medical / Tech groom in Chennai/Chengalpattu surrounding.",
+    phone: "+91 94449 34527",
+    email: "dr.kalaivani.r.jm@gmail.com",
+    verified: true,
+    joinedDate: "2026-03-26"
+  },
+  {
+    id: "JM202600VIP88",
+    regNo: "VIP-Remarriage",
+    name: "Dr. Vaanathi Sundar",
+    gender: "Female",
+    age: 34,
+    dob: "1991-01-26",
+    birthTime: "04:30 PM",
+    birthPlace: "Dharmapuri",
+    siblingPosition: "Doctor Family",
+    height: "5' 6\" (168 cm)",
+    complexion: "Fair (Sivappu)",
+    maritalStatus: "Divorced",
+    motherTongue: "Tamil",
+    religion: "Hindu",
+    caste: "Vanniyar",
+    subcaste: "Vanniyakula Kshatriyar (VIP)",
+    gothram: "Agni",
+    education: "M.B.B.S., D.G.O.",
+    institution: "Govt Medical College",
+    profession: "Senior Medical Officer / Gynecologist Specialist",
+    company: "Govt Medical College Hospital / Private Practice",
+    annualIncome: "₹6,000,000 / annum",
+    monthlyIncome: "₹5,00,000 / month",
+    city: "Dharmapuri",
+    nativeTown: "Dharmapuri District",
+    state: "Tamil Nadu",
+    country: "India",
+    address: "Dharmapuri District - 636701",
+    
+    // Horoscope details
+    rasi: "Rishabam (Taurus)",
+    nakshatra: "Rohini",
+    padam: "3",
+    lagnam: "Katakam (Cancer)",
+    chevvaiDosham: "No",
+    horoscopeAvailable: true,
+    rasiChart: {
+      1: ["Mesham"],
+      2: ["Rishabam", "Chandran"],
+      3: ["Mithunam"],
+      4: ["Katakam", "Lagnam"],
+      5: ["Simmam"],
+      6: ["Kanni"],
+      7: ["Thulaam"],
+      8: ["Vrichigam"],
+      9: ["Dhanusu", "Suriyan", "Sevvai", "Budhan"],
+      10: ["Makaram", "Sani", "Sukran", "Rahu"],
+      11: ["Kumbam"],
+      12: ["Meenam", "Guru", "Kethu"]
+    },
+    
+    // Family Details
+    family: {
+      fatherName: "Dr. Senthil M.P. Ex",
+      fatherOccupation: "Ex-MP / Senior Doctor / Wealthy VIP (மருத்துவப் பணி / செல்வந்தர்)",
+      motherName: "Dr. V. Navagam",
+      motherOccupation: "Doctor (மருத்துவப் பணி)",
+      siblings: "2 Brothers / Sisters",
+      familyType: "Affluent VIP Doctor Family",
+      familyValues: "High Status & Traditional",
+      familyStatus: "VIP / Ultra Wealthy",
+      houseProperty: "Multiple Own Properties & Medical Facilities"
+    },
+    
+    // Partner Expectations
+    partnerPreferences: {
+      ageMin: 34,
+      ageMax: 42,
+      heightMin: "5' 7\"",
+      maritalStatus: "Remarriage / Divorced / Widower",
+      education: "MBBS / M.D. / M.S. / Medical Specialist / IAS / IPS",
+      profession: "Doctor / Medical Line / High Govt Officer",
+      location: "Dharmapuri / Salem / Chennai / Tamil Nadu",
+      castePreference: "Open to All VIP Doctor Families (SC/AD/Vanniyar/Open)",
+      horoscopeMatchReq: "Mandatory"
+    },
+    
+    photo: "/profiles/vaanathi.jpg",
+    gallery: [
+      "/profiles/vaanathi.jpg"
+    ],
+    about: "M.B.B.S., D.G.O. Gynecologist specialist earning ₹5 Lakhs/month from a prestigious VIP Doctor family in Dharmapuri. Father Dr. Senthil is a Senior Doctor & Ex-MP, and mother Dr. Navagam is also a Senior Doctor. Seeking a qualified Doctor / Medical Professional groom for a dignified remarriage.",
+    phone: "+91 94449 34527",
+    email: "dr.vaanathi.ms@gmail.com",
+    verified: true,
+    joinedDate: "2026-03-27"
+  },
+  {
+    id: "JM202600715",
+    regNo: "715",
+    name: "A. Sandhiya",
+    gender: "Female",
+    age: 29,
+    dob: "1995-06-01",
+    birthTime: "06:00 PM",
+    birthPlace: "Chennai",
+    siblingPosition: "1st Child",
+    height: "5' 3\" (160 cm)",
+    complexion: "Fair (Sivappu)",
+    maritalStatus: "Never Married",
+    motherTongue: "Tamil",
+    religion: "Hindu",
+    caste: "Vanniyar",
+    subcaste: "Vanniyakula Kshatriyar",
+    gothram: "Shiva",
+    education: "M.A., M.Ed., M.L.I.S / B.Ed",
+    institution: "Madras University / Teacher Education College",
+    profession: "Private School Teacher",
+    company: "Private Matriculation School, Chennai",
+    annualIncome: "₹360,000 / annum",
+    monthlyIncome: "₹30,000 / month",
+    city: "Chennai",
+    nativeTown: "Chennai",
+    state: "Tamil Nadu",
+    country: "India",
+    address: "Triplicane / Thiruvallur / Chennai",
+    
+    // Horoscope details
+    rasi: "Mithunam (Gemini)",
+    nakshatra: "Thiruvathirai",
+    padam: "2",
+    lagnam: "Kanni (Virgo)",
+    chevvaiDosham: "No",
+    horoscopeAvailable: true,
+    rasiChart: {
+      1: ["Mesham"],
+      2: ["Rishabam", "Suriyan", "Budhan", "Kethu"],
+      3: ["Mithunam", "Chandran"],
+      4: ["Katakam"],
+      5: ["Simmam"],
+      6: ["Kanni", "Lagnam", "Sevvai"],
+      7: ["Thulaam"],
+      8: ["Vrichigam"],
+      9: ["Dhanusu", "Guru", "Rahu"],
+      10: ["Makaram"],
+      11: ["Kumbam", "Sani"],
+      12: ["Meenam"]
+    },
+    
+    // Family Details
+    family: {
+      fatherName: "Thiru Asokan",
+      fatherOccupation: "Private Employee / Businessman",
+      motherName: "Thirumathi Kalavathi",
+      motherOccupation: "Homemaker",
+      siblings: "1 Brother (Unmarried)",
+      familyType: "Nuclear Family",
+      familyValues: "Traditional & Cultured",
+      familyStatus: "Middle Class",
+      houseProperty: "Own Place in Chennai / Rental House"
+    },
+    
+    // Partner Expectations
+    partnerPreferences: {
+      ageMin: 29,
+      ageMax: 35,
+      heightMin: "5' 5\"",
+      maritalStatus: "Never Married",
+      education: "Graduate / Post Graduate / B.E. / Govt / Private Employee",
+      profession: "Govt Employee / Teacher / Private Company Staff",
+      location: "Chennai / Thiruvallur / Surrounding",
+      castePreference: "Vanniyar / Open",
+      horoscopeMatchReq: "Mandatory"
+    },
+    
+    photo: "/profiles/sandhiya.jpg",
+    gallery: [
+      "/profiles/sandhiya.jpg"
+    ],
+    about: "M.A., M.Ed., M.L.I.S qualified Private School Teacher residing in Chennai. Native of Chennai. Daughter of Asokan and Kalavathi. Seeking a well-cultured groom from a good middle class family in Chennai or surrounding areas.",
+    phone: "+91 90437 73977",
+    email: "sandhiya.a.jm@gmail.com",
+    verified: true,
+    joinedDate: "2026-03-28"
+  },
+  {
+    id: "JM202600716",
+    regNo: "716",
+    name: "Dr. A. Sanjay",
+    gender: "Male",
+    age: 36,
+    dob: "1990-01-02",
+    birthTime: "09:15 AM",
+    birthPlace: "Kilpauk, Chennai",
+    siblingPosition: "Elder Son",
+    height: "5' 11\" (180 cm)",
+    complexion: "Fair (Sivappu)",
+    maritalStatus: "Never Married",
+    motherTongue: "Tamil",
+    religion: "Hindu",
+    caste: "Mudaliar",
+    subcaste: "Agamudayar Mudaliar",
+    gothram: "Shiva",
+    education: "M.B.B.S., FELLOWSHIP IN REGENERATIVE MEDICINE",
+    institution: "Medical College, Chennai / Central Govt DAE",
+    profession: "CEO of MedicalAndroid.com / Medical Practitioner",
+    company: "MedicalAndroid.com",
+    annualIncome: "₹1,200,000 + Rental Income / annum",
+    monthlyIncome: "₹1,00,000 / month (+ Rental Income)",
+    city: "Chennai",
+    nativeTown: "Kilpauk, Chennai",
+    state: "Tamil Nadu",
+    country: "India",
+    address: "Kilpauk, Chennai - 600010",
+    
+    // Horoscope details
+    rasi: "Kumbam (Aquarius)",
+    nakshatra: "Sadayam",
+    padam: "4",
+    lagnam: "Makaram (Capricorn)",
+    chevvaiDosham: "No",
+    horoscopeAvailable: true,
+    rasiChart: {
+      1: ["Mesham"],
+      2: ["Rishabam"],
+      3: ["Mithunam"],
+      4: ["Katakam", "Guru", "Kethu"],
+      5: ["Simmam"],
+      6: ["Kanni", "Sevvai"],
+      7: ["Thulaam"],
+      8: ["Vrichigam"],
+      9: ["Dhanusu", "Suriyan", "Budhan", "Sani"],
+      10: ["Makaram", "Lagnam", "Sukran", "Rahu"],
+      11: ["Kumbam", "Chandran"],
+      12: ["Meenam"]
+    },
+    
+    // Family Details
+    family: {
+      fatherName: "Poovai G. Avadi",
+      fatherOccupation: "President, 15th Circle Congress Committee, DAE, Renewable Energy, Central Govt. of India",
+      motherName: "Thirumathi A. Susheela",
+      motherOccupation: "Homemaker",
+      siblings: "1 Younger Brother (தம்பி - 1)",
+      familyType: "Affluent VIP Family",
+      familyValues: "High Status & Cultured",
+      familyStatus: "Upper Class / Wealthy",
+      houseProperty: "Own 3-Storey Building with substantial rental income in Kilpauk, Chennai"
+    },
+    
+    // Partner Expectations
+    partnerPreferences: {
+      ageMin: 24,
+      ageMax: 30,
+      heightMin: "5' 3\"",
+      maritalStatus: "Never Married",
+      education: "M.B.B.S. / B.D.S. (Doctor Bride)",
+      profession: "Doctor / Medical Line",
+      location: "Chennai / Nearby Cities",
+      castePreference: "Mudaliar / Open to All Communities",
+      horoscopeMatchReq: "Mandatory"
+    },
+    
+    photo: "/profiles/sanjay.jpg",
+    gallery: [
+      "/profiles/sanjay.jpg"
+    ],
+    about: "M.B.B.S. Doctor & CEO of MedicalAndroid.com with Fellowship in Regenerative Medicine. Earning ₹1 Lakh/month + rental income. Tall (5'11\"). Son of Poovai G. Avadi (President, 15th Circle Congress Committee, DAE Central Govt of India) & Susheela. Own 3-storey building in Kilpauk, Chennai. Seeking M.B.B.S / B.D.S doctor bride.",
+    phone: "+91 94449 34527",
+    email: "dr.sanjay.a.jm@gmail.com",
+    verified: true,
+    joinedDate: "2026-03-29"
+  },
+  {
+    id: "JM202600717",
+    regNo: "717",
+    name: "K. Prakash",
+    gender: "Male",
+    age: 27,
+    dob: "1998-12-12",
+    birthTime: "06:30 AM",
+    birthPlace: "Chennai",
+    siblingPosition: "Younger Son",
+    height: "5' 8\" (173 cm)",
+    complexion: "Fair (Sivappu)",
+    maritalStatus: "Never Married",
+    motherTongue: "Tamil",
+    religion: "Hindu",
+    caste: "Adi Dravidar",
+    subcaste: "Adi Dravidar (Andhra Origin)",
+    gothram: "Shiva",
+    education: "I.T. - Mechanical Engineering",
+    institution: "Polytechnic / ITI College, Chennai",
+    profession: "Park Petrol Bunk Staff / Manager",
+    company: "Park Petrol Bunk, Chennai",
+    annualIncome: "₹300,000 / annum",
+    monthlyIncome: "₹25,000 / month",
+    city: "Chennai",
+    nativeTown: "Chennai / Andhra",
+    state: "Tamil Nadu",
+    country: "India",
+    address: "Triplicane / Royapettah, Chennai - 600014",
+    
+    // Horoscope details
+    rasi: "Kanni (Virgo)",
+    nakshatra: "Hastham",
+    padam: "2",
+    lagnam: "Vrichigam",
+    chevvaiDosham: "No",
+    horoscopeAvailable: true,
+    rasiChart: {
+      1: ["Mesham"],
+      2: ["Rishabam"],
+      3: ["Mithunam"],
+      4: ["Katakam"],
+      5: ["Simmam"],
+      6: ["Kanni", "Chandran"],
+      7: ["Thulaam"],
+      8: ["Vrichigam", "Suriyan", "Budhan"],
+      9: ["Dhanusu", "Sevvai", "Rahu"],
+      10: ["Makaram", "Sani"],
+      11: ["Kumbam"],
+      12: ["Meenam", "Guru", "Kethu"]
+    },
+    
+    // Family Details
+    family: {
+      fatherName: "Kantha Rao (K. Kantha Rao)",
+      fatherOccupation: "Private Employee / Merchant",
+      motherName: "Thirumathi Lakshmi",
+      motherOccupation: "Homemaker",
+      siblings: "2 Sisters (Married), 1 Brother",
+      familyType: "Close-knit Family",
+      familyValues: "Traditional",
+      familyStatus: "Middle Class",
+      houseProperty: "Rental House in Chennai"
+    },
+    
+    // Partner Expectations
+    partnerPreferences: {
+      ageMin: 20,
+      ageMax: 26,
+      heightMin: "5' 1\"",
+      maritalStatus: "Never Married",
+      education: "+2 / Diploma / Degree",
+      profession: "Homemaker / Working",
+      location: "Chennai / Andhra / Tamil Nadu",
+      castePreference: "SC / Adi Dravidar / Open",
+      horoscopeMatchReq: "Mandatory"
+    },
+    
+    photo: "/profiles/prakash.jpg",
+    gallery: [
+      "/profiles/prakash.jpg"
+    ],
+    about: "Diploma / I.T. Mechanical Engineering graduate working at Park Petrol Bunk in Chennai. Native of Chennai/Andhra origin. Son of Kantha Rao and Lakshmi. Looking for a cultured bride from SC / Adi Dravidar or open community.",
+    phone: "+91 82206 64824",
+    email: "prakash.k.jm@gmail.com",
+    verified: true,
+    joinedDate: "2026-03-30"
+  },
+  {
+    id: "JM202600718",
+    regNo: "718",
+    name: "R. Rajmohan",
+    gender: "Male",
+    age: 49,
+    dob: "1976-04-05",
+    birthTime: "10:00 AM",
+    birthPlace: "Chennai",
+    siblingPosition: "Elder Son",
+    height: "5' 9\" (175 cm)",
+    complexion: "Wheatish (Maaniram)",
+    maritalStatus: "Divorced",
+    motherTongue: "Tamil",
+    religion: "Hindu",
+    caste: "Vanniyar",
+    subcaste: "Vanniyakula Kshatriyar",
+    gothram: "Shiva",
+    education: "10th Standard",
+    institution: "Govt School, Chennai",
+    profession: "Own Business Owner",
+    company: "Self-Employed Business, Chennai",
+    annualIncome: "₹600,000 / annum",
+    monthlyIncome: "₹50,000 / month",
+    city: "Chennai",
+    nativeTown: "Chennai",
+    state: "Tamil Nadu",
+    country: "India",
+    address: "Choppakkam Nawal Nagar, Chennai",
+    
+    // Horoscope details
+    rasi: "Kanni (Virgo)",
+    nakshatra: "Hastham",
+    padam: "1",
+    lagnam: "Simmam",
+    chevvaiDosham: "No",
+    horoscopeAvailable: true,
+    rasiChart: {
+      1: ["Mesham"],
+      2: ["Rishabam"],
+      3: ["Mithunam"],
+      4: ["Katakam"],
+      5: ["Simmam"],
+      6: ["Kanni", "Chandran"],
+      7: ["Thulaam"],
+      8: ["Vrichigam"],
+      9: ["Dhanusu"],
+      10: ["Makaram"],
+      11: ["Kumbam"],
+      12: ["Meenam"]
+    },
+    
+    // Family Details
+    family: {
+      fatherName: "Thiru Raju (Late)",
+      fatherOccupation: "Deceased",
+      motherName: "Mother (Late)",
+      motherOccupation: "Deceased",
+      siblings: "1 Elder Sister, 1 Younger Sister (Both Married)",
+      familyType: "Nuclear Family",
+      familyValues: "Traditional",
+      familyStatus: "Middle Class",
+      houseProperty: "Own Housing Board Plot / Own House in Choppakkam, Chennai"
+    },
+    
+    // Partner Expectations
+    partnerPreferences: {
+      ageMin: 35,
+      ageMax: 46,
+      heightMin: "5' 2\"",
+      maritalStatus: "Remarriage / Divorced / Widowed",
+      education: "10th / +2 / Any Degree",
+      profession: "Homemaker or Working",
+      location: "Chennai / Surrounding",
+      castePreference: "Vanniyar / Open",
+      horoscopeMatchReq: "Preferred"
+    },
+    
+    photo: "/profiles/rajmohan.jpg",
+    gallery: [
+      "/profiles/rajmohan.jpg"
+    ],
+    about: "Business owner running own business in Chennai earning ₹50,000/month. Own house on Housing Board plot in Choppakkam Nawal Nagar, Chennai. Looking for a suitable bride for remarriage.",
+    phone: "+91 90437 73977",
+    email: "rajmohan.r.jm@gmail.com",
+    verified: true,
+    joinedDate: "2026-03-31"
+  },
+  {
+    id: "JM202600719",
+    regNo: "719",
+    name: "M. Srinivasan",
+    gender: "Male",
+    age: 32,
+    dob: "1993-06-26",
+    birthTime: "02:05 AM",
+    birthPlace: "Sholavaram / Chennai",
+    siblingPosition: "Younger Son",
+    height: "5' 5\" (165 cm)",
+    complexion: "Wheatish (Maaniram)",
+    maritalStatus: "Never Married",
+    motherTongue: "Tamil",
+    religion: "Hindu",
+    caste: "Vanniyar",
+    subcaste: "Vanniyakula Kshatriyar",
+    gothram: "Shiva",
+    education: "E.E.E. Engineer, Diploma",
+    institution: "Polytechnic & Engineering College, Chennai",
+    profession: "Sales Manager",
+    company: "SOBHA Ltd (Sobha Developers Ltd, Chennai)",
+    annualIncome: "₹600,000 / annum",
+    monthlyIncome: "₹50,000 / month",
+    city: "Chennai",
+    nativeTown: "Mangadu, Chennai",
+    state: "Tamil Nadu",
+    country: "India",
+    address: "Mangadu / Sholavaram, Chennai",
+    
+    // Horoscope details
+    rasi: "Simmam (Leo)",
+    nakshatra: "Pooram",
+    padam: "2",
+    lagnam: "Mesham",
+    chevvaiDosham: "No",
+    horoscopeAvailable: true,
+    rasiChart: {
+      1: ["Mesham", "Lagnam"],
+      2: ["Rishabam", "Sukran", "Kethu"],
+      3: ["Mithunam", "Suriyan"],
+      4: ["Katakam", "Budhan"],
+      5: ["Simmam", "Chandran", "Sevvai"],
+      6: ["Kanni"],
+      7: ["Thulaam", "Guru"],
+      8: ["Vrichigam", "Rahu"],
+      9: ["Dhanusu"],
+      10: ["Makaram"],
+      11: ["Kumbam", "Sani"],
+      12: ["Meenam"]
+    },
+    
+    // Family Details
+    family: {
+      fatherName: "Thiru K. Murugasamy",
+      fatherOccupation: "Self-Employed / Business",
+      motherName: "Thirumathi Thanalakshmi",
+      motherOccupation: "Homemaker",
+      siblings: "1 Elder Brother (Married)",
+      familyType: "Nuclear Family",
+      familyValues: "Traditional",
+      familyStatus: "Middle Class",
+      houseProperty: "2 Own Houses + 1 Acre Land in Chennai"
+    },
+    
+    // Partner Expectations
+    partnerPreferences: {
+      ageMin: 22,
+      ageMax: 28,
+      heightMin: "5' 1\"",
+      maritalStatus: "Never Married",
+      education: "Degree / Diploma / Working / Educated Bride",
+      profession: "Working or Homemaker",
+      location: "Chennai / Kanchipuram / Thiruvallur",
+      castePreference: "Vanniyar",
+      horoscopeMatchReq: "Mandatory"
+    },
+    
+    photo: "/profiles/srinivasan.jpg",
+    gallery: [
+      "/profiles/srinivasan.jpg"
+    ],
+    about: "Diploma & E.E.E. Engineering graduate working as Sales Manager at SOBHA Ltd earning ₹50,000/month. Native of Mangadu, Chennai with 2 own houses and 1 acre land. Son of K. Murugasamy and Thanalakshmi. Seeking an educated bride from a good middle class Vanniyar family.",
+    phone: "+91 94449 34527",
+    email: "srinivasan.m.jm@gmail.com",
+    verified: true,
+    joinedDate: "2026-04-01"
+  },
+  {
+    id: "JM202600720",
+    regNo: "720",
+    name: "D. Sivanandam",
+    gender: "Male",
+    age: 32,
+    dob: "1993-12-13",
+    birthTime: "01:45 AM",
+    birthPlace: "Kelambakkam, Chennai",
+    siblingPosition: "Only Son",
+    height: "5' 5\" (165 cm)",
+    complexion: "Wheatish (Maaniram)",
+    maritalStatus: "Never Married",
+    motherTongue: "Tamil",
+    religion: "Hindu",
+    caste: "Vanniyar",
+    subcaste: "Vanniyakula Kshatriyar",
+    gothram: "Shiva",
+    education: "B.Com (Bachelor of Commerce)",
+    institution: "University of Madras / Arts & Science College",
+    profession: "Staff Bus Driver / Transport Staff",
+    company: "Chettinad Hospital & Research Institute, Kelambakkam",
+    annualIncome: "₹660,000 / annum",
+    monthlyIncome: "₹55,000 / month (Salary ₹45k + ₹10k)",
+    city: "Chennai",
+    nativeTown: "Kelambakkam, Chengalpattu / Chennai",
+    state: "Tamil Nadu",
+    country: "India",
+    address: "Kelambakkam, Chengalpattu District - 603103",
+    
+    // Horoscope details
+    rasi: "Vrichigam (Scorpio)",
+    nakshatra: "Kettai",
+    padam: "4",
+    lagnam: "Mesham",
+    chevvaiDosham: "No",
+    horoscopeAvailable: true,
+    rasiChart: {
+      1: ["Mesham", "Lagnam"],
+      2: ["Rishabam", "Kethu"],
+      3: ["Mithunam"],
+      4: ["Katakam"],
+      5: ["Simmam"],
+      6: ["Kanni"],
+      7: ["Thulaam"],
+      8: ["Vrichigam", "Chandran", "Suriyan", "Budhan", "Rahu"],
+      9: ["Dhanusu", "Sevvai", "Guru", "Sukran"],
+      10: ["Makaram"],
+      11: ["Kumbam", "Sani"],
+      12: ["Meenam"]
+    },
+    
+    // Family Details
+    family: {
+      fatherName: "Thiru N. Thanasekar",
+      fatherOccupation: "Self-Employed Business, Chennai",
+      motherName: "Thirumathi D. Thanalakshmi",
+      motherOccupation: "Homemaker",
+      siblings: "1 Elder Sister (Married)",
+      familyType: "Nuclear Family",
+      familyValues: "Traditional",
+      familyStatus: "Middle Class",
+      houseProperty: "Own House in Kelambakkam, Chennai"
+    },
+    
+    // Partner Expectations
+    partnerPreferences: {
+      ageMin: 22,
+      ageMax: 29,
+      heightMin: "5' 1\"",
+      maritalStatus: "Never Married",
+      education: "10th / 12th / Any Degree",
+      profession: "Homemaker or Working",
+      location: "Kelambakkam / Chengalpattu / Chennai",
+      castePreference: "Vanniyar",
+      horoscopeMatchReq: "Mandatory"
+    },
+    
+    photo: "/profiles/sivanandam.jpg",
+    gallery: [
+      "/profiles/sivanandam.jpg"
+    ],
+    about: "B.Com graduate working as Staff Bus Driver at Chettinad Hospital, Kelambakkam earning ₹55,000/month. Native of Kelambakkam with own house. Son of N. Thanasekar (Business) and D. Thanalakshmi. Seeking a cultured bride (10th/12th/Degree) from Vanniyar community.",
+    phone: "+91 99411 59566",
+    email: "sivanandam.d.jm@gmail.com",
+    verified: true,
+    joinedDate: "2026-04-02"
+  },
+  {
+    id: "JM202600589",
+    regNo: "589",
+    name: "R. Pavithra",
+    gender: "Female",
+    age: 25,
+    dob: "2001-03-10",
+    birthTime: "10:45 AM",
+    birthPlace: "Sholinghur / Chennai",
+    siblingPosition: "Elder Daughter",
+    height: "5' 4\" (163 cm)",
+    complexion: "Fair (Sivappu)",
+    maritalStatus: "Never Married",
+    motherTongue: "Tamil",
+    religion: "Hindu",
+    caste: "Vanniyar",
+    subcaste: "Vanniyakula Kshatriyar (VIP Family)",
+    gothram: "Shiva",
+    education: "B.Com., M.B.A.",
+    institution: "Madras University / Business School",
+    profession: "Financial Analyst / Management Executive",
+    company: "Private Corporate / IT Firm, Chennai",
+    annualIncome: "₹600,000 / annum",
+    monthlyIncome: "₹50,000 / month",
+    city: "Chennai",
+    nativeTown: "Sholinghur, Ranipet / Vellore",
+    state: "Tamil Nadu",
+    country: "India",
+    address: "Chennai - 600033",
+    
+    // Horoscope details
+    rasi: "Kanni (Virgo)",
+    nakshatra: "Uthiram",
+    padam: "2",
+    lagnam: "Rishabam (Taurus)",
+    chevvaiDosham: "No",
+    horoscopeAvailable: true,
+    rasiChart: {
+      1: ["Mesham"],
+      2: ["Rishabam", "Lagnam", "Sani", "Guru"],
+      3: ["Mithunam", "Rahu"],
+      4: ["Katakam"],
+      5: ["Simmam"],
+      6: ["Kanni", "Chandran"],
+      7: ["Thulaam", "Sevvai"],
+      8: ["Vrichigam"],
+      9: ["Dhanusu", "Kethu"],
+      10: ["Makaram", "Budhan"],
+      11: ["Kumbam", "Suriyan"],
+      12: ["Meenam", "Sukran"]
+    },
+    
+    // Family Details
+    family: {
+      fatherName: "Thiru M. Rajendran",
+      fatherOccupation: "Businessman / VIP Family",
+      motherName: "Thirumathi R. Karpagam",
+      motherOccupation: "Homemaker",
+      siblings: "1 Younger Sister (Unmarried)",
+      familyType: "Nuclear VIP Family",
+      familyValues: "Traditional & Affluent",
+      familyStatus: "VIP / Upper Middle Class",
+      houseProperty: "Own House & Ample Assets in Chennai (V.I.P)"
+    },
+    
+    // Partner Expectations
+    partnerPreferences: {
+      ageMin: 25,
+      ageMax: 31,
+      heightMin: "5' 7\"",
+      maritalStatus: "Never Married",
+      education: "Any Degree / B.E. / M.B.A / Corporate / Govt Employee",
+      profession: "Good Job / Business / Corporate Officer",
+      location: "Chennai / Sholinghur / Vellore",
+      castePreference: "Vanniyar Kula Kshatriyar / Open",
+      horoscopeMatchReq: "Mandatory"
+    },
+    
+    photo: "/profiles/pavithra.jpg",
+    gallery: [
+      "/profiles/pavithra.jpg"
+    ],
+    about: "B.Com., M.B.A. qualified corporate professional residing in Chennai. Native of Sholinghur. Belongs to an affluent Vanniyar VIP family with own house in Chennai. Daughter of M. Rajendran and R. Karpagam. Seeking a well-settled groom with a good degree, job, and own house.",
+    phone: "+91 80989 27497",
+    email: "pavithra.r.jm@gmail.com",
+    verified: true,
+    joinedDate: "2026-04-03"
+  },
+  {
+    id: "JM202600721",
+    regNo: "721",
+    name: "Dr. A. Ajitha",
+    gender: "Female",
+    age: 42,
+    dob: "1983-06-09",
+    birthTime: "10:00 AM",
+    birthPlace: "Mayiladuthurai",
+    siblingPosition: "Second Child",
+    height: "5' 4\" (163 cm)",
+    complexion: "Fair (Sivappu)",
+    maritalStatus: "Divorced",
+    motherTongue: "Tamil",
+    religion: "Hindu",
+    caste: "Adi Dravidar",
+    subcaste: "Adi Dravidar",
+    gothram: "Shiva",
+    education: "DCTE, M.B.A., Ph.D.",
+    institution: "Government University / MBA College",
+    profession: "Assistant Professor",
+    company: "MBA Department, Arts & Science College, Mayiladuthurai",
+    annualIncome: "₹624,000 / annum",
+    monthlyIncome: "₹52,000 / month",
+    city: "Mayiladuthurai",
+    nativeTown: "Mayiladuthurai",
+    state: "Tamil Nadu",
+    country: "India",
+    address: "Senthangudi, Mayiladuthurai Town - 609001",
+    
+    // Horoscope details
+    rasi: "Mesham (Aries)",
+    nakshatra: "Bharani",
+    padam: "1",
+    lagnam: "Mesham",
+    chevvaiDosham: "No",
+    horoscopeAvailable: true,
+    rasiChart: {
+      1: ["Mesham", "Chandran", "Sevvai"],
+      2: ["Rishabam"],
+      3: ["Mithunam", "Suriyan", "Budhan"],
+      4: ["Katakam", "Sukran"],
+      5: ["Simmam"],
+      6: ["Kanni"],
+      7: ["Thulaam"],
+      8: ["Vrichigam", "Guru", "Kethu"],
+      9: ["Dhanusu"],
+      10: ["Makaram"],
+      11: ["Kumbam"],
+      12: ["Meenam", "Sani", "Rahu"]
+    },
+    
+    // Family Details
+    family: {
+      fatherName: "Thiru M. Anbalagan (Retd)",
+      fatherOccupation: "Retired Officer, District Registrar Office, Mayiladuthurai",
+      motherName: "Thirumathi A. Malarkodi",
+      motherOccupation: "Homemaker",
+      siblings: "1 Elder Sister (Married), 2 Younger Brothers (Married)",
+      familyType: "Nuclear Family",
+      familyValues: "Traditional & Cultured",
+      familyStatus: "Middle Class",
+      houseProperty: "Own House in Senthangudi, Mayiladuthurai"
+    },
+    
+    // Partner Expectations
+    partnerPreferences: {
+      ageMin: 42,
+      ageMax: 50,
+      heightMin: "5' 5\"",
+      maritalStatus: "Remarriage / Divorced / Widowed",
+      education: "Master's / Ph.D / MBA / Professor / Govt Employee",
+      profession: "Professor / Govt Officer / Corporate Executive",
+      location: "Mayiladuthurai / Tanjore / Trichy / Chennai",
+      castePreference: "Adi Dravidar SC / Open",
+      horoscopeMatchReq: "Preferred"
+    },
+    
+    photo: "/profiles/ajitha.jpg",
+    gallery: [
+      "/profiles/ajitha.jpg"
+    ],
+    about: "Ph.D. & MBA qualified Assistant Professor in MBA Department earning ₹52,000/month. Native of Mayiladuthurai. Daughter of M. Anbalagan (Retd District Registrar Office) & Malarkodi. Seeking a suitable groom for a dignified remarriage (No child).",
+    phone: "+91 90437 73977",
+    email: "dr.ajitha.a.jm@gmail.com",
+    verified: true,
+    joinedDate: "2026-04-04"
+  },
+  {
+    id: "JM202600803",
+    regNo: "803",
+    name: "Nithya Anbalagan",
+    gender: "Female",
+    age: 34,
+    dob: "1991-08-21",
+    birthTime: "08:51 AM",
+    birthPlace: "Chidambaram",
+    siblingPosition: "Second Child",
+    height: "5' 4\" (163 cm)",
+    complexion: "Fair (Sivappu)",
+    maritalStatus: "Never Married",
+    motherTongue: "Tamil",
+    religion: "Hindu",
+    caste: "Vanniyar",
+    subcaste: "Vanniyakula Kshatriyar",
+    gothram: "Shiva",
+    education: "B.E. (ECE), LL.B. (Advocate)",
+    institution: "Engineering College & Law College, Chidambaram / Chennai",
+    profession: "Advocate / Legal Consultant",
+    company: "Legal Practice / Law Chambers, Chidambaram",
+    annualIncome: "₹600,000 / annum",
+    monthlyIncome: "₹50,000 / month",
+    city: "Chidambaram",
+    nativeTown: "Chidambaram",
+    state: "Tamil Nadu",
+    country: "India",
+    address: "Chidambaram Town - 608001",
+    
+    // Horoscope details
+    rasi: "Dhanusu (Sagittarius)",
+    nakshatra: "Pooradam",
+    padam: "2",
+    lagnam: "Kanni (Virgo)",
+    chevvaiDosham: "No",
+    horoscopeAvailable: true,
+    rasiChart: {
+      1: ["Mesham"],
+      2: ["Rishabam"],
+      3: ["Mithunam", "Kethu"],
+      4: ["Katakam"],
+      5: ["Simmam", "Sevvai", "Budhan", "Guru", "Sukran", "Suriyan"],
+      6: ["Kanni", "Lagnam"],
+      7: ["Thulaam"],
+      8: ["Vrichigam"],
+      9: ["Dhanusu", "Chandran"],
+      10: ["Makaram"],
+      11: ["Kumbam", "Sani"],
+      12: ["Meenam", "Rahu"]
+    },
+    
+    // Family Details
+    family: {
+      fatherName: "Thiru Anbalagan B.A., B.L. (Advocate)",
+      fatherOccupation: "Advocate (வழக்கறிஞர்)",
+      motherName: "Thirumathi Malarvizhi",
+      motherOccupation: "Homemaker",
+      siblings: "1 Elder Sister (Married)",
+      familyType: "Nuclear Family",
+      familyValues: "Traditional & Cultured",
+      familyStatus: "Upper Middle Class",
+      houseProperty: "1 Own House + 3 Plots + 10 Acres Agricultural Land"
+    },
+    
+    // Partner Expectations
+    partnerPreferences: {
+      ageMin: 34,
+      ageMax: 40,
+      heightMin: "5' 6\"",
+      maritalStatus: "Never Married",
+      education: "B.E. / B.Tech / Advocate / Law / Govt Officer",
+      profession: "Engineer / Advocate / Corporate Executive / Business",
+      location: "Chidambaram / Cuddalore / Chennai / Tamil Nadu",
+      castePreference: "Vanniyar",
+      horoscopeMatchReq: "Mandatory"
+    },
+    
+    photo: "/profiles/nithya.jpg",
+    gallery: [
+      "/profiles/nithya.jpg"
+    ],
+    about: "B.E. (ECE) & LL.B. Advocate practicing in Chidambaram. Daughter of Advocate Anbalagan (B.A., B.L.) and Malarvizhi. Family owns 1 house, 3 plots, and 10 acres land in Chidambaram. Seeking an educated, cultured groom from Vanniyar community.",
+    phone: "+91 94449 34527",
+    email: "nithya.a.jm@gmail.com",
+    verified: true,
+    joinedDate: "2026-04-05"
+  },
+  {
+    id: "JM202600722",
+    regNo: "722",
+    name: "R. Rajasekar",
+    gender: "Male",
+    age: 32,
+    dob: "1993-05-31",
+    birthTime: "06:10 AM",
+    birthPlace: "Thiruverkadu, Chennai",
+    siblingPosition: "Second Child",
+    height: "5' 3\" (160 cm)",
+    complexion: "Wheatish (Maaniram)",
+    maritalStatus: "Never Married",
+    motherTongue: "Tamil",
+    religion: "Hindu",
+    caste: "Adi Dravidar",
+    subcaste: "Adi Dravidar (VIP Family)",
+    gothram: "Shiva",
+    education: "B.E. (Electronic & Instrumentation)",
+    institution: "Engineering College, Chennai",
+    profession: "Business Executive & Finance Director",
+    company: "T.S.R Marketing, Transport and Finance",
+    annualIncome: "₹1,200,000 / annum",
+    monthlyIncome: "₹1,00,000 / month",
+    city: "Chennai",
+    nativeTown: "Thiruverkadu, Chennai",
+    state: "Tamil Nadu",
+    country: "India",
+    address: "Thiruverkadu, Chennai - 600077",
+    
+    // Horoscope details
+    rasi: "Kanni (Virgo)",
+    nakshatra: "Hastham",
+    padam: "4",
+    lagnam: "Vrichigam",
+    chevvaiDosham: "No",
+    horoscopeAvailable: true,
+    rasiChart: {
+      1: ["Mesham"],
+      2: ["Rishabam", "Sukran", "Suriyan", "Kethu"],
+      3: ["Mithunam", "Budhan"],
+      4: ["Katakam", "Sevvai"],
+      5: ["Simmam"],
+      6: ["Kanni", "Chandran"],
+      7: ["Thulaam"],
+      8: ["Vrichigam", "Lagnam", "Rahu"],
+      9: ["Dhanusu"],
+      10: ["Makaram", "Sani"],
+      11: ["Kumbam"],
+      12: ["Meenam", "Guru"]
+    },
+    
+    // Family Details
+    family: {
+      fatherName: "Thiru T.S. Raja",
+      fatherOccupation: "Co-operative Society Chairman / Own Business Owner (V.I.P)",
+      motherName: "Thirumathi R. Chandrika",
+      motherOccupation: "Homemaker",
+      siblings: "1 Elder Brother (Married), 1 Elder Sister (Married), 2 Younger Brothers",
+      familyType: "Affluent VIP Family",
+      familyValues: "Traditional & Influential",
+      familyStatus: "VIP / Upper Class",
+      houseProperty: "Own Independent House in Thiruverkadu, Chennai"
+    },
+    
+    // Partner Expectations
+    partnerPreferences: {
+      ageMin: 22,
+      ageMax: 29,
+      heightMin: "5' 0\"",
+      maritalStatus: "Never Married",
+      education: "Any Degree / Graduate / Engineer",
+      profession: "Homemaker or Working",
+      location: "Chennai / Nearby Cities",
+      castePreference: "Adi Dravidar SC / Open",
+      horoscopeMatchReq: "Mandatory"
+    },
+    
+    photo: "/profiles/rajasekar.jpg",
+    gallery: [
+      "/profiles/rajasekar.jpg"
+    ],
+    about: "B.E. (Electronic & Instrumentation) graduate running T.S.R Marketing, Transport and Finance earning ₹1 Lakh/month. Son of Thiru T.S. Raja (Co-operative Society Chairman & Business Owner). Own house in Thiruverkadu, Chennai. Seeking any degree bride.",
+    phone: "+91 94449 34527",
+    email: "rajasekar.r.jm@gmail.com",
+    verified: true,
+    joinedDate: "2026-04-06"
+  },
+  {
+    id: "JM202600723",
+    regNo: "723",
+    name: "Poongothai Narayanan",
+    gender: "Female",
+    age: 31,
+    dob: "1994-11-26",
+    birthTime: "11:38 PM",
+    birthPlace: "Puducherry",
+    siblingPosition: "Elder Daughter",
+    height: "5' 5\" (165 cm)",
+    complexion: "Fair (Sivappu)",
+    maritalStatus: "Never Married",
+    motherTongue: "Tamil",
+    religion: "Hindu",
+    caste: "Vanniyar",
+    subcaste: "Vanniyakula Kshatriyar",
+    gothram: "Vishnu Gothram",
+    education: "M.Tech (EDC)",
+    institution: "Pondicherry Engineering College",
+    profession: "Lecturer / Academic Specialist",
+    company: "Educational Institution, Puducherry",
+    annualIncome: "₹480,000 / annum",
+    monthlyIncome: "₹40,000 / month",
+    city: "Puducherry",
+    nativeTown: "Puducherry",
+    state: "Puducherry",
+    country: "India",
+    address: "102, Vellalar Street, Puducherry - 605001",
+    
+    // Horoscope details
+    rasi: "Simmam (Leo)",
+    nakshatra: "Pooram",
+    padam: "1",
+    lagnam: "Simmam",
+    chevvaiDosham: "No",
+    horoscopeAvailable: true,
+    rasiChart: {
+      1: ["Mesham", "Kethu"],
+      2: ["Rishabam"],
+      3: ["Mithunam"],
+      4: ["Katakam"],
+      5: ["Simmam", "Chandran", "Sevvai"],
+      6: ["Kanni"],
+      7: ["Thulaam", "Rahu"],
+      8: ["Vrichigam", "Suriyan", "Budhan", "Sukran", "Guru"],
+      9: ["Dhanusu"],
+      10: ["Makaram", "Sani"],
+      11: ["Kumbam"],
+      12: ["Meenam"]
+    },
+    
+    // Family Details
+    family: {
+      fatherName: "Thiru V. Narayanan",
+      fatherOccupation: "Merchant / Private Employee",
+      motherName: "Thirumathi N. Sumathi",
+      motherOccupation: "Homemaker",
+      siblings: "1 Elder Brother, 1 Younger Sister",
+      familyType: "Nuclear Family",
+      familyValues: "Traditional & Cultured",
+      familyStatus: "Middle Class",
+      houseProperty: "Own House in Vellalar Street, Puducherry"
+    },
+    
+    // Partner Expectations
+    partnerPreferences: {
+      ageMin: 31,
+      ageMax: 37,
+      heightMin: "5' 7\"",
+      maritalStatus: "Never Married",
+      education: "M.E / M.Tech / B.E / Corporate / Govt Employee",
+      profession: "Well-settled Corporate / Govt Officer / Engineer",
+      location: "Puducherry / Chennai / Cuddalore",
+      castePreference: "Vanniyar / Open",
+      horoscopeMatchReq: "Mandatory"
+    },
+    
+    photo: "/profiles/poongothai.jpg",
+    gallery: [
+      "/profiles/poongothai.jpg"
+    ],
+    about: "M.Tech (EDC) graduate residing in Puducherry. Daughter of V. Narayanan and N. Sumathi. Own house in Vellalar Street, Puducherry. Seeking an educated, responsible groom with good values and stable career.",
+    phone: "+91 81244 66222",
+    email: "poongothai.n.jm@gmail.com",
+    verified: true,
+    joinedDate: "2026-04-07"
+  },
+  {
+    id: "JM202600724",
+    regNo: "724",
+    name: "M. Senthamarai",
+    gender: "Female",
+    age: 30,
+    dob: "1995-04-03",
+    birthTime: "07:15 AM",
+    birthPlace: "Kanchipuram",
+    siblingPosition: "Younger Daughter",
+    height: "5' 0\" (152 cm)",
+    complexion: "Wheatish (Maaniram)",
+    maritalStatus: "Never Married",
+    motherTongue: "Tamil",
+    religion: "Hindu",
+    caste: "Vanniyar",
+    subcaste: "Vanniyakula Kshatriyar",
+    gothram: "Shiva",
+    education: "B.Sc. (Agri.)",
+    institution: "Agricultural University, Tamil Nadu",
+    profession: "Agricultural Officer / Agri Specialist",
+    company: "Agriculture Department / Agri Firm",
+    annualIncome: "₹420,000 / annum",
+    monthlyIncome: "₹35,000 / month",
+    city: "Kanchipuram",
+    nativeTown: "Mathur, Cheyyar / Vembakkam, Tiruvannamalai",
+    state: "Tamil Nadu",
+    country: "India",
+    address: "No. 351, Ilangovadigal Street, Mangalapuram, Mathur Post, Vembakkam Tk, Tiruvannamalai DT - 631701",
+    
+    // Horoscope details
+    rasi: "Mesham (Aries)",
+    nakshatra: "Bharani",
+    padam: "3",
+    lagnam: "Mesham",
+    chevvaiDosham: "No",
+    horoscopeAvailable: true,
+    rasiChart: {
+      1: ["Mesham", "Lagnam", "Suriyan", "Budhan"],
+      2: ["Rishabam", "Sani", "Sukran"],
+      3: ["Mithunam"],
+      4: ["Katakam"],
+      5: ["Simmam"],
+      6: ["Kanni", "Sevvai"],
+      7: ["Thulaam"],
+      8: ["Vrichigam"],
+      9: ["Dhanusu", "Guru"],
+      10: ["Makaram", "Rahu"],
+      11: ["Kumbam"],
+      12: ["Meenam", "Chandran", "Kethu"]
+    },
+    
+    // Family Details
+    family: {
+      fatherName: "Thiru Th. Mannar (a) Tamilmannan",
+      fatherOccupation: "Agriculturist / Land Owner",
+      motherName: "Thirumathi Th. Arulmozhi",
+      motherOccupation: "Retired School Teacher",
+      siblings: "1 Elder Sister (Married)",
+      familyType: "Nuclear Family",
+      familyValues: "Traditional",
+      familyStatus: "Middle Class",
+      houseProperty: "Own House in Mathur, Tiruvannamalai District"
+    },
+    
+    // Partner Expectations
+    partnerPreferences: {
+      ageMin: 30,
+      ageMax: 36,
+      heightMin: "5' 4\"",
+      maritalStatus: "Never Married",
+      education: "Any Degree / Graduate / B.E. / Govt / Private Employee",
+      profession: "Good Profession / Govt Job / Agri Business",
+      location: "Kanchipuram / Tiruvannamalai / Chennai",
+      castePreference: "Vanniyakula Kshatriyar",
+      horoscopeMatchReq: "Mandatory"
+    },
+    
+    photo: "/profiles/senthamarai.jpg",
+    gallery: [
+      "/profiles/senthamarai.jpg"
+    ],
+    about: "B.Sc. (Agri.) graduate from Kanchipuram / Tiruvannamalai. Daughter of Th. Mannar (Tamilmannan) & Arulmozhi (Retired School Teacher). Family owns house in Mathur. Seeking an educated groom with Any Degree.",
+    phone: "+91 99526 77181",
+    email: "senthamarai.m.jm@gmail.com",
+    verified: true,
+    joinedDate: "2026-04-08"
   }
 ];
 

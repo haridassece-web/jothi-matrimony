@@ -22,10 +22,10 @@ export default function ProfilePage() {
                 <ShieldCheck size={14} /> Active Paid Member
               </span>
               <h1 style={{ fontSize: '2rem', color: 'var(--primary-maroon-dark)', margin: 0 }}>
-                {user?.name || 'Haridass Ram'}
+                {user?.name || 'Valued Member'}
               </h1>
               <div style={{ fontSize: '0.9rem', color: 'var(--gold-dark)', fontWeight: 600 }}>
-                Registration ID: {registrationId || user?.id || 'JM2026001234'}
+                Registration ID: {registrationId || user?.id || 'JM2026008899'}
               </div>
             </div>
 
@@ -38,7 +38,7 @@ export default function ProfilePage() {
             <div><strong>Gender:</strong> {user?.gender || 'Male'}</div>
             <div><strong>Date of Birth:</strong> {user?.dob || '1998-07-12'}</div>
             <div><strong>Mobile:</strong> {user?.mobile || '+91 98400 11223'}</div>
-            <div><strong>Email:</strong> {user?.email || 'haridass@jothimatrimony.com'}</div>
+            <div><strong>Email:</strong> {user?.email || 'member@jothimatrimony.com'}</div>
             <div><strong>City:</strong> {user?.city || 'Chennai'}</div>
             <div><strong>Community:</strong> {user?.caste || 'Iyer'}</div>
           </div>

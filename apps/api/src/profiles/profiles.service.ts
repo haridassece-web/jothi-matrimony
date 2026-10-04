@@ -24,4 +24,9 @@ export class ProfilesService {
   findOne(id: string) {
     return this.profiles.find(p => p.id === id);
   }
+
+  remove(id: string) {
+    this.profiles = this.profiles.filter(p => p.id !== id);
+    return { success: true, deletedId: id };
+  }
 }

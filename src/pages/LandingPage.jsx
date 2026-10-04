@@ -290,88 +290,7 @@ export default function LandingPage({ setActivePage }) {
 
 
 
-      {/* Featured Alliances Blurred Preview for Visitors */}
-      <section style={{ padding: '4rem 0', background: 'var(--bg-surface)', borderTop: '1px solid var(--border-light)' }}>
-        <div className="container">
-          <div style={{ textAlign: 'center', marginBottom: '2.5rem' }}>
-            <span className="badge badge-maroon" style={{ marginBottom: '0.5rem' }}>
-              VERIFIED MEMBERS
-            </span>
-            <h2 style={{ fontSize: '2rem', marginBottom: '0.5rem' }}>
-              {language === 'ta' ? 'அண்மை வரன்கள்' : 'Recent Verified Alliances'}
-            </h2>
-            <p style={{ color: 'var(--text-muted)' }}>
-              Complete ₹1,000 registration to unlock full names, photos, horoscope & direct contact info.
-            </p>
-          </div>
 
-          <div style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
-            gap: '1.5rem',
-            position: 'relative'
-          }}>
-            {[
-              { name: 'Priya S.', age: 27, city: 'Chennai', prof: 'Software Engineer', degree: 'M.S. IT', rasi: 'Simmam' },
-              { name: 'Karthik R.', age: 29, city: 'Coimbatore', prof: 'Product Manager', degree: 'MBA', rasi: 'Rishabam' },
-              { name: 'Dr. Anitha R.', age: 28, city: 'Madurai', prof: 'Pediatrician', degree: 'M.D.', rasi: 'Thulaam' },
-              { name: 'Vignesh M.', age: 31, city: 'Chennai / Trichy', prof: 'VP Finance', degree: 'CA', rasi: 'Kanni' }
-            ].map((candidate, idx) => (
-              <div className="card" key={idx} style={{ padding: '1.25rem', textAlign: 'center' }}>
-                <div style={{
-                  width: '100px',
-                  height: '100px',
-                  borderRadius: '50%',
-                  margin: '0 auto 1rem',
-                  background: 'linear-gradient(135deg, #E2D5C8 0%, #C4B2A2 100%)',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  fontSize: '2.5rem',
-                  boxShadow: 'var(--shadow-sm)',
-                  border: '2px solid var(--border-gold)'
-                }}>
-                  👤
-                </div>
-
-                <h3 style={{ fontSize: '1.1rem', marginBottom: '0.2rem' }}>{candidate.name}</h3>
-                <div style={{ fontSize: '0.85rem', color: 'var(--gold-dark)', fontWeight: 600, marginBottom: '0.5rem' }}>
-                  {candidate.age} Yrs • {candidate.city}
-                </div>
-                <div style={{ fontSize: '0.82rem', color: 'var(--text-muted)', marginBottom: '0.75rem' }}>
-                  {candidate.prof} ({candidate.degree}) • Rasi: {candidate.rasi}
-                </div>
-
-                <div style={{
-                  background: '#FFF8E7',
-                  padding: '0.4rem',
-                  borderRadius: '6px',
-                  fontSize: '0.78rem',
-                  color: '#8C6A0A',
-                  fontWeight: 600,
-                  marginBottom: '1rem'
-                }}>
-                  ⭐ Horoscope Available
-                </div>
-
-                <button 
-                  onClick={() => setActivePage('register')}
-                  className="btn btn-outline btn-sm btn-full">
-                  <Lock size={14} /> View Full Profile
-                </button>
-              </div>
-            ))}
-          </div>
-
-          <div style={{ textAlign: 'center', marginTop: '2.5rem' }}>
-            <button 
-              onClick={() => setActivePage('register')}
-              className="btn btn-primary btn-lg">
-              Unlock All 1,000+ Alliances (₹1,000 Registration) →
-            </button>
-          </div>
-        </div>
-      </section>
 
       {/* Testimonials */}
       <section style={{ padding: '5rem 0', background: 'var(--bg-silk)' }}>
@@ -380,7 +299,7 @@ export default function LandingPage({ setActivePage }) {
             <h2 style={{ fontSize: '2.2rem', color: 'var(--primary-maroon-dark)' }}>
               {language === 'ta' ? 'மகிழ்ச்சியான திருமணங்கள்' : 'Happy Matrimony Stories'}
             </h2>
-            <p style={{ color: 'var(--text-muted)' }}>Real Tamil families who found their alliance through Jothi Matrimony.</p>
+            <p style={{ color: 'var(--text-muted)' }}>Real Tamil families who found their alliance through Chennai Jothi Matrimony.</p>
           </div>
 
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '2rem' }}>
@@ -403,7 +322,7 @@ export default function LandingPage({ setActivePage }) {
             <div className="card" style={{ padding: '1.75rem' }}>
               <div style={{ color: 'var(--gold-dark)', fontSize: '1.2rem', marginBottom: '0.75rem' }}>⭐⭐⭐⭐⭐</div>
               <p style={{ fontStyle: 'italic', color: 'var(--text-main)', fontSize: '0.92rem', marginBottom: '1rem' }}>
-                "As a software engineer in Chennai, privacy was very important to me. Jothi Matrimony does not broadcast phone numbers to unverified strangers. Only after mutual interest, contacts are shared."
+                "As a software engineer in Chennai, privacy was very important to me. Chennai Jothi Matrimony does not broadcast phone numbers to unverified strangers. Only after mutual interest, contacts are shared."
               </p>
               <div style={{ fontWeight: 700, color: 'var(--primary-maroon)' }}>— Vignesh & Kirthika (Chennai)</div>
             </div>

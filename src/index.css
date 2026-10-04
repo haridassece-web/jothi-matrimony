@@ -421,14 +421,28 @@ button {
 }
 
 /* Mobile Header & Navbar Responsiveness */
-.nav-desktop {
-  display: flex;
-  align-items: center;
-  gap: 1.1rem;
+@media (min-width: 851px) {
+  .nav-desktop {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    flex-wrap: nowrap !important;
+    position: static !important;
+    width: auto !important;
+    gap: 0.5rem !important;
+    box-shadow: none !important;
+    background: transparent !important;
+    padding: 0 !important;
+    white-space: nowrap !important;
+  }
+  
+  .mobile-menu-btn {
+    display: none !important;
+  }
 }
 
 .mobile-menu-btn {
-  display: none !important;
+  display: none;
   background: transparent;
   border: 1px solid var(--border-gold);
   color: var(--primary-maroon-dark);
@@ -437,7 +451,7 @@ button {
   cursor: pointer;
 }
 
-@media (max-width: 992px) {
+@media (max-width: 850px) {
   .hero-grid {
     grid-template-columns: 1fr !important;
     gap: 1.8rem !important;
