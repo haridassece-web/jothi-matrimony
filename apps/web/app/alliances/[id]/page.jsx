@@ -263,14 +263,14 @@ export default function AllianceDetailPage({ params }) {
         </div>
 
         {/* Grid Sections */}
-        <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '2rem' }}>
+        <div className="detail-grid">
           
           <div style={{ display: 'flex', flexDirection: 'column', gap: '1.75rem' }}>
             
             {/* ABOUT */}
             <div className="card" style={{ padding: '1.75rem' }}>
-              <h3 style={{ fontSize: '1.15rem', color: 'var(--primary-maroon)', marginBottom: '0.75rem', borderBottom: '2px solid var(--border-gold)', paddingBottom: '0.4rem' }}>
-                ABOUT ME
+              <h3 style={{ fontSize: '1.15rem', color: 'var(--primary-maroon)', marginBottom: '0.75rem', borderBottom: '2px solid var(--border-gold)', paddingBottom: '0.4rem', fontWeight: 800 }}>
+                சுய விவரம் (About Me)
               </h3>
               <p style={{ fontSize: '0.95rem', color: 'var(--text-main)', lineHeight: 1.7 }}>
                 {profile.about}
@@ -279,26 +279,26 @@ export default function AllianceDetailPage({ params }) {
 
             {/* EDUCATION & CAREER */}
             <div className="card" style={{ padding: '1.75rem' }}>
-              <h3 style={{ fontSize: '1.15rem', color: 'var(--primary-maroon)', marginBottom: '1rem', borderBottom: '2px solid var(--border-gold)', paddingBottom: '0.4rem' }}>
-                EDUCATION & PROFESSION
+              <h3 style={{ fontSize: '1.15rem', color: 'var(--primary-maroon)', marginBottom: '1rem', borderBottom: '2px solid var(--border-gold)', paddingBottom: '0.4rem', fontWeight: 800 }}>
+                கல்வி மற்றும் தொழில் (Education & Profession)
               </h3>
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.25rem' }}>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1.25rem' }}>
                 <div>
-                  <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)', fontWeight: 600 }}>Education</div>
+                  <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)', fontWeight: 600 }}>கல்வி (Education)</div>
                   <div style={{ fontSize: '1rem', fontWeight: 700, color: 'var(--text-main)' }}>{profile.education}</div>
                   <div style={{ fontSize: '0.85rem', color: 'var(--text-muted)' }}>{profile.institution}</div>
                 </div>
                 <div>
-                  <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)', fontWeight: 600 }}>Profession</div>
+                  <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)', fontWeight: 600 }}>தொழில் (Profession)</div>
                   <div style={{ fontSize: '1rem', fontWeight: 700, color: 'var(--text-main)' }}>{profile.profession}</div>
                   <div style={{ fontSize: '0.85rem', color: 'var(--text-muted)' }}>{profile.company}</div>
                 </div>
                 <div>
-                  <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)', fontWeight: 600 }}>Annual Income</div>
+                  <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)', fontWeight: 600 }}>ஆண்டு வருமானம் (Annual Income)</div>
                   <div style={{ fontSize: '0.95rem', fontWeight: 700, color: '#166534' }}>{profile.annualIncome}</div>
                 </div>
                 <div>
-                  <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)', fontWeight: 600 }}>Work Location</div>
+                  <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)', fontWeight: 600 }}>பணிபுரியும் இடம் (Work Location)</div>
                   <div style={{ fontSize: '0.95rem', fontWeight: 700, color: 'var(--text-main)' }}>{profile.city}, {profile.state}</div>
                 </div>
               </div>
@@ -306,32 +306,32 @@ export default function AllianceDetailPage({ params }) {
 
             {/* FAMILY DETAILS */}
             <div className="card" style={{ padding: '1.75rem' }}>
-              <h3 style={{ fontSize: '1.15rem', color: 'var(--primary-maroon)', marginBottom: '1rem', borderBottom: '2px solid var(--border-gold)', paddingBottom: '0.4rem' }}>
-                FAMILY BACKGROUND
+              <h3 style={{ fontSize: '1.15rem', color: 'var(--primary-maroon)', marginBottom: '1rem', borderBottom: '2px solid var(--border-gold)', paddingBottom: '0.4rem', fontWeight: 800 }}>
+                குடும்ப பின்னணி (Family Background)
               </h3>
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', fontSize: '0.92rem' }}>
-                <div><strong>Father:</strong> {profile.family?.fatherOccupation}</div>
-                <div><strong>Mother:</strong> {profile.family?.motherOccupation}</div>
-                <div><strong>Siblings:</strong> {profile.family?.siblings}</div>
-                <div><strong>Native Town:</strong> {profile.nativeTown}</div>
-                <div><strong>Family Status:</strong> {profile.family?.familyStatus}</div>
-                <div><strong>Family Type:</strong> {profile.family?.familyType}</div>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1rem', fontSize: '0.92rem' }}>
+                <div><strong>தந்தை (Father):</strong> {profile.family?.fatherOccupation}</div>
+                <div><strong>தாய் (Mother):</strong> {profile.family?.motherOccupation}</div>
+                <div><strong>உடன்பிறப்புகள் (Siblings):</strong> {profile.family?.siblings}</div>
+                <div><strong>சொந்த ஊர் (Native Town):</strong> {profile.nativeTown}</div>
+                <div><strong>குடும்ப நிலை (Family Status):</strong> {profile.family?.familyStatus}</div>
+                <div><strong>குடும்ப வகை (Family Type):</strong> {profile.family?.familyType}</div>
               </div>
             </div>
 
             {/* HOROSCOPE DETAILS */}
             <div className="card" style={{ padding: '1.75rem' }}>
-              <h3 style={{ fontSize: '1.15rem', color: 'var(--primary-maroon)', marginBottom: '1rem', borderBottom: '2px solid var(--border-gold)', paddingBottom: '0.4rem' }}>
-                HOROSCOPE DETAILS (ஜாதகம்)
+              <h3 style={{ fontSize: '1.15rem', color: 'var(--primary-maroon)', marginBottom: '1rem', borderBottom: '2px solid var(--border-gold)', paddingBottom: '0.4rem', fontWeight: 800 }}>
+                ஜாதக விவரங்கள் (Horoscope Details)
               </h3>
               
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '1rem', marginBottom: '1.5rem', fontSize: '0.9rem' }}>
-                <div><strong>Rasi:</strong> {profile.rasi}</div>
-                <div><strong>Nakshatra:</strong> {profile.nakshatra} (Padam {profile.padam})</div>
-                <div><strong>Lagnam:</strong> {profile.lagnam}</div>
-                <div><strong>DOB / Time:</strong> {profile.dob} ({profile.birthTime})</div>
-                <div><strong>Birth Place:</strong> {profile.birthPlace}</div>
-                <div><strong>Chevvai Dosham:</strong> {profile.chevvaiDosham}</div>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: '1rem', marginBottom: '1.5rem', fontSize: '0.9rem' }}>
+                <div><strong>ராசி (Rasi):</strong> {profile.rasi}</div>
+                <div><strong>நட்சத்திரம் (Nakshatra):</strong> {profile.nakshatra} (Padam {profile.padam})</div>
+                <div><strong>லக்னம் (Lagnam):</strong> {profile.lagnam}</div>
+                <div><strong>பிறந்த தேதி/நேரம் (DOB / Time):</strong> {profile.dob} ({profile.birthTime})</div>
+                <div><strong>பிறந்த இடம் (Birth Place):</strong> {profile.birthPlace}</div>
+                <div><strong>செவ்வாய் தோஷம் (Chevvai Dosham):</strong> {profile.chevvaiDosham}</div>
               </div>
 
               <RasiChart 
@@ -345,20 +345,20 @@ export default function AllianceDetailPage({ params }) {
 
             {/* PARTNER EXPECTATIONS */}
             <div className="card" style={{ padding: '1.75rem' }}>
-              <h3 style={{ fontSize: '1.15rem', color: 'var(--primary-maroon)', marginBottom: '1rem', borderBottom: '2px solid var(--border-gold)', paddingBottom: '0.4rem' }}>
-                PARTNER EXPECTATIONS (எதிர்பார்ப்புகள்)
+              <h3 style={{ fontSize: '1.15rem', color: 'var(--primary-maroon)', marginBottom: '1rem', borderBottom: '2px solid var(--border-gold)', paddingBottom: '0.4rem', fontWeight: 800 }}>
+                எதிர்பார்ப்புகள் (Partner Expectations)
               </h3>
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', fontSize: '0.9rem' }}>
-                <div><strong>Age Preference:</strong> {profile.partnerPreferences?.ageMin || 21} - {profile.partnerPreferences?.ageMax || 32} Yrs</div>
-                <div><strong>Height Preference:</strong> {profile.partnerPreferences?.heightMin || "4' 6\""} - {profile.partnerPreferences?.heightMax || "6' 2\""}</div>
-                <div><strong>Qualification:</strong> {profile.partnerPreferences?.education || 'Any Qualification / Open'}</div>
-                <div><strong>Working Profession:</strong> {profile.partnerPreferences?.profession || 'Any Working / Business'}</div>
-                <div><strong>Community / Caste:</strong> {profile.partnerPreferences?.castePreference || 'Open to All Communities'}</div>
-                <div><strong>Marital Status:</strong> {profile.partnerPreferences?.maritalStatus || 'Never Married'}</div>
-                <div><strong>Location:</strong> {profile.partnerPreferences?.location || 'Chennai / Tamil Nadu / Open'}</div>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1rem', fontSize: '0.9rem' }}>
+                <div><strong>வயது விருப்பம் (Age):</strong> {profile.partnerPreferences?.ageMin || 21} - {profile.partnerPreferences?.ageMax || 32} Yrs</div>
+                <div><strong>உயர விருப்பம் (Height):</strong> {profile.partnerPreferences?.heightMin || "4' 6\""} - {profile.partnerPreferences?.heightMax || "6' 2\""}</div>
+                <div><strong>கல்வி (Qualification):</strong> {profile.partnerPreferences?.education || 'Any Qualification / Open'}</div>
+                <div><strong>தொழில் (Profession):</strong> {profile.partnerPreferences?.profession || 'Any Working / Business'}</div>
+                <div><strong>சாதி விருப்பம் (Community):</strong> {profile.partnerPreferences?.castePreference || 'Open to All Communities'}</div>
+                <div><strong>திருமண நிலை (Status):</strong> {profile.partnerPreferences?.maritalStatus || 'Never Married'}</div>
+                <div><strong>வசிப்பிடம் (Location):</strong> {profile.partnerPreferences?.location || 'Chennai / Tamil Nadu / Open'}</div>
                 {profile.partnerPreferences?.notes && (
                   <div style={{ gridColumn: 'span 2', marginTop: '0.5rem', background: '#FFFDF9', padding: '0.75rem', borderRadius: '4px', borderLeft: '3px solid var(--gold-dark)' }}>
-                    <strong>Specific Expectations:</strong> {profile.partnerPreferences.notes}
+                    <strong>சிறப்பு எதிர்பார்ப்புகள் (Specific Notes):</strong> {profile.partnerPreferences.notes}
                   </div>
                 )}
               </div>

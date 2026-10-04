@@ -170,9 +170,7 @@ export default function AlliancesPage() {
               </span>
             )}
           </div>
-        </div>
-
-        <div style={{ display: 'grid', gridTemplateColumns: '280px 1fr', gap: '2rem' }}>
+        <div className="alliances-grid">
           
           {/* Left Filters Sidebar */}
           <aside className="card" style={{ padding: '1.5rem', height: 'fit-content' }}>
