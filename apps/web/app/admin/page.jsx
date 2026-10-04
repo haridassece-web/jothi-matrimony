@@ -14,6 +14,15 @@ export default function NextAdminPage() {
   const router = useRouter();
   const { allProfiles, user, language, deleteProfile } = useAuth();
   
+  const [isAdminAuthenticated, setIsAdminAuthenticated] = useState(() => {
+    if (typeof window !== 'undefined') {
+      return sessionStorage.getItem('jothi_admin_authenticated') === 'true';
+    }
+    return false;
+  });
+  const [adminPasswordInput, setAdminPasswordInput] = useState('');
+  const [adminError, setAdminError] = useState('');
+
   const [profilesList, setProfilesList] = useState(allProfiles || []);
   const [searchTerm, setSearchTerm] = useState('');
   const [adminGenderFilter, setAdminGenderFilter] = useState('All');
@@ -23,6 +32,65 @@ export default function NextAdminPage() {
   React.useEffect(() => {
     setProfilesList(allProfiles || []);
   }, [allProfiles]);
+
+  const handleAdminLogin = (e) => {
+    e.preventDefault();
+    if (adminPasswordInput === 'jothi2026' || adminPasswordInput === 'admin123' || adminPasswordInput === 'admin') {
+      setIsAdminAuthenticated(true);
+      sessionStorage.setItem('jothi_admin_authenticated', 'true');
+      setAdminError('');
+    } else {
+      setAdminError('Invalid Admin Password. Please enter valid security PIN (e.g. jothi2026).');
+    }
+  };
+
+  const handleAdminLock = () => {
+    setIsAdminAuthenticated(false);
+    sessionStorage.removeItem('jothi_admin_authenticated');
+  };
+
+  if (!isAdminAuthenticated) {
+    return (
+      <div style={{ padding: '4rem 1rem', minHeight: '85vh', background: 'var(--bg-surface)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <div className="card" style={{ maxWidth: '440px', width: '100%', padding: '2.5rem', textAlign: 'center', border: '2px solid var(--gold-dark)', boxShadow: 'var(--shadow-lg)' }}>
+          <div style={{ width: '70px', height: '70px', borderRadius: '50%', background: 'linear-gradient(135deg, #7A0C2E 0%, #4A061B 100%)', color: '#FFD700', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 1.25rem', boxShadow: '0 4px 15px rgba(122, 12, 46, 0.3)' }}>
+            <Lock size={32} />
+          </div>
+          <h2 style={{ fontSize: '1.6rem', color: 'var(--primary-maroon-dark)', marginBottom: '0.4rem', fontWeight: 800 }}>
+            Admin Security Passcode
+          </h2>
+          <p style={{ fontSize: '0.88rem', color: 'var(--text-muted)', marginBottom: '1.5rem' }}>
+            Chennai Jothi Matrimony • Restricted Access
+          </p>
+
+          {adminError && (
+            <div style={{ background: '#FDF2F5', border: '1px solid #F5C2D0', color: '#9B1B43', padding: '0.65rem', borderRadius: '8px', fontSize: '0.82rem', fontWeight: 600, marginBottom: '1.2rem' }}>
+              ⚠️ {adminError}
+            </div>
+          )}
+
+          <form onSubmit={handleAdminLogin}>
+            <div className="form-group" style={{ textAlign: 'left', marginBottom: '1.25rem' }}>
+              <label className="form-label">Enter Admin Password / Security PIN:</label>
+              <input 
+                type="password" 
+                className="form-input" 
+                placeholder="Enter password (e.g. jothi2026)"
+                value={adminPasswordInput}
+                onChange={(e) => setAdminPasswordInput(e.target.value)}
+                autoFocus
+                required
+                style={{ fontSize: '1rem', letterSpacing: '0.1em' }}
+              />
+            </div>
+            <button type="submit" className="btn btn-primary btn-full" style={{ padding: '0.75rem', fontSize: '1rem', fontWeight: 700 }}>
+              🔓 Unlock Admin Portal
+            </button>
+          </form>
+        </div>
+      </div>
+    );
+  }
 
   const totalProfiles = (profilesList || []).length;
   const verifiedCount = (profilesList || []).filter(p => p && p.verified).length;
@@ -94,9 +162,9 @@ export default function NextAdminPage() {
               <Link href="/profile-setup" className="btn btn-gold btn-sm">
                 <Plus size={16} /> Add New Profile
               </Link>
-              <Link href="/dashboard" className="btn btn-outline btn-sm" style={{ borderColor: '#FFF', color: '#FFF' }}>
-                User Portal View
-              </Link>
+              <button onClick={handleAdminLock} className="btn btn-sm" style={{ background: '#FDF2F5', color: '#9B1B43', border: '1px solid #F5C2D0', fontWeight: 700 }}>
+                🔒 Lock Admin
+              </button>
             </div>
           </div>
         </div>

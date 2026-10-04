@@ -2,12 +2,19 @@
 
 import React from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { useAuth } from '../../context/AuthContext';
 import RasiChart from '../../components/RasiChart';
-import { ShieldCheck, Download, Edit } from 'lucide-react';
+import { ShieldCheck, Download, Edit, LogOut } from 'lucide-react';
 
 export default function ProfilePage() {
-  const { user, registrationId, paymentDetails, language } = useAuth();
+  const router = useRouter();
+  const { user, registrationId, paymentDetails, language, logout } = useAuth();
+
+  const handleLogout = () => {
+    logout();
+    router.push('/login');
+  };
 
   return (
     <div style={{ padding: '3rem 0', minHeight: '85vh', background: 'var(--bg-silk)' }}>
@@ -29,9 +36,25 @@ export default function ProfilePage() {
               </div>
             </div>
 
-            <Link href="/profile-setup" className="btn btn-outline btn-sm">
-              <Edit size={16} /> Edit My Profile
-            </Link>
+            <div style={{ display: 'flex', gap: '0.6rem', alignItems: 'center' }}>
+              <Link href="/profile-setup" className="btn btn-outline btn-sm">
+                <Edit size={16} /> Edit My Profile
+              </Link>
+              <button 
+                onClick={handleLogout}
+                className="btn btn-sm"
+                style={{
+                  background: '#FDF2F5',
+                  color: '#9B1B43',
+                  border: '1px solid #F5C2D0',
+                  fontWeight: 700,
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '0.4rem'
+                }}>
+                <LogOut size={16} /> {language === 'ta' ? 'வெளியேறு' : 'Logout'}
+              </button>
+            </div>
           </div>
 
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem', marginBottom: '2rem', fontSize: '0.92rem' }}>

@@ -47,25 +47,32 @@ export default function RasiChart({
 
   const renderSingleGrid = (data, chartTitle, centerSubtitle) => {
     const renderBox = (boxNum, defaultLabel) => {
-      const items = data[boxNum] || [defaultLabel];
+      const items = data[boxNum] || [];
+      const signNames = [
+        defaultLabel, "Mesham", "Rishabam", "Mithunam", "Katakam", 
+        "Simmam", "Kanni", "Thulaam", "Vrichigam", "Dhanusu", 
+        "Makaram", "Kumbam", "Meenam", "மேஷம்", "ரிஷபம்", 
+        "மிதுனம்", "கடகம்", "சிம்மம்", "கன்னி", "துலாம்", 
+        "விருச்சிகம்", "தனுசு", "மகரம்", "கும்பம்", "மீனம்"
+      ];
+      const planetItems = items.filter(item => item && !signNames.includes(item));
+
       return (
         <div className="rasi-box" key={boxNum}>
-          <div style={{ fontSize: '0.62rem', color: 'var(--text-muted)', fontWeight: 700, marginBottom: '2px' }}>
-            {defaultLabel}
-          </div>
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '2px', justifyContent: 'center' }}>
-            {items.map((item, i) => {
-              if (item === defaultLabel) return null;
-              const isLagna = item === 'Lagnam';
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '3px', alignItems: 'center', justifyContent: 'center', width: '100%', height: '100%', padding: '2px' }}>
+            {planetItems.map((item, i) => {
+              const isLagna = item === 'Lagnam' || item === 'லக்னம்';
               return (
                 <span key={i} style={{
-                  background: isLagna ? 'var(--maroon-gradient)' : '#FFF3D6',
-                  color: isLagna ? '#FFF' : '#7A5200',
-                  padding: '1px 4px',
-                  borderRadius: '3px',
-                  fontSize: '0.66rem',
+                  background: isLagna ? 'linear-gradient(135deg, #7A0C2E 0%, #58061F 100%)' : '#FFF3D6',
+                  color: isLagna ? '#FFFFFF' : '#7A5200',
+                  padding: '2px 6px',
+                  borderRadius: '4px',
+                  fontSize: '0.74rem',
                   fontWeight: 700,
-                  border: isLagna ? 'none' : '1px solid #E5C578'
+                  boxShadow: isLagna ? '0 2px 6px rgba(122, 12, 46, 0.3)' : 'none',
+                  border: isLagna ? '1px solid #D4AF37' : '1px solid #E5C578',
+                  lineHeight: 1.2
                 }}>
                   {item}
                 </span>

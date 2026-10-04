@@ -1,10 +1,15 @@
 import React from 'react';
 import { useAuth } from '../context/AuthContext';
 import RasiChart from '../components/RasiChart';
-import { ShieldCheck, Download, Edit, User, Phone, Mail } from 'lucide-react';
+import { ShieldCheck, Download, Edit, User, Phone, Mail, LogOut } from 'lucide-react';
 
 export default function ProfilePage({ setActivePage }) {
-  const { user, registrationId, paymentDetails, language } = useAuth();
+  const { user, registrationId, paymentDetails, language, logout } = useAuth();
+
+  const handleLogout = () => {
+    logout();
+    if (setActivePage) setActivePage('login');
+  };
 
   return (
     <div style={{ padding: '3rem 0', minHeight: '85vh', background: 'var(--bg-silk)' }}>
@@ -26,9 +31,25 @@ export default function ProfilePage({ setActivePage }) {
               </div>
             </div>
 
-            <button onClick={() => setActivePage('profile-setup')} className="btn btn-outline btn-sm">
-              <Edit size={16} /> Edit My Profile
-            </button>
+            <div style={{ display: 'flex', gap: '0.6rem', alignItems: 'center' }}>
+              <button onClick={() => setActivePage('profile-setup')} className="btn btn-outline btn-sm">
+                <Edit size={16} /> Edit My Profile
+              </button>
+              <button 
+                onClick={handleLogout}
+                className="btn btn-sm"
+                style={{
+                  background: '#FDF2F5',
+                  color: '#9B1B43',
+                  border: '1px solid #F5C2D0',
+                  fontWeight: 700,
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '0.4rem'
+                }}>
+                <LogOut size={16} /> {language === 'ta' ? 'வெளியேறு' : 'Logout'}
+              </button>
+            </div>
           </div>
 
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem', marginBottom: '2rem', fontSize: '0.92rem' }}>
