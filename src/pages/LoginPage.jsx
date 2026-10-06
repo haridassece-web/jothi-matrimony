@@ -1,59 +1,49 @@
 import React, { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
-import { User, Lock, Eye, EyeOff, LogIn, Sparkles, ShieldCheck, ArrowRight } from 'lucide-react';
+import { User, LogIn, ShieldCheck, ArrowRight, CreditCard, UserPlus } from 'lucide-react';
 
 export default function LoginPage({ setActivePage }) {
-  const { login, loginDemoUser, language } = useAuth();
+  const { login, language } = useAuth();
 
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  const [showPassword, setShowPassword] = useState(false);
+  const [identifier, setIdentifier] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
   const [successMsg, setSuccessMsg] = useState('');
+  const [requiresPayment, setRequiresPayment] = useState(false);
+  const [requiresRegistration, setRequiresRegistration] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!username.trim()) {
-      setErrorMsg(language === 'ta' ? 'பயனர் பெயர் அல்லது மொபைல் எண்ணை உள்ளிடவும்' : 'Please enter your User Name, Mobile number, or Email');
-      return;
-    }
-    if (!password.trim()) {
-      setErrorMsg(language === 'ta' ? 'கடவுச்சொல்லை உள்ளிடவும்' : 'Please enter your password');
+    if (!identifier.trim()) {
+      setErrorMsg(language === 'ta' ? 'பதிவு எண் அல்லது மொபைல் எண்ணை உள்ளிடவும்' : 'Please enter your Registration ID or Registered Mobile number');
       return;
     }
 
     setIsLoading(true);
     setErrorMsg('');
     setSuccessMsg('');
+    setRequiresPayment(false);
+    setRequiresRegistration(false);
 
     try {
-      const res = await login(username, password);
+      const res = await login(identifier);
       if (res && res.success) {
-        setSuccessMsg(language === 'ta' ? 'வெற்றிகரமாக உள்நுழைந்துவிட்டீர்கள்!' : 'Login successful! Redirecting to Dashboard...');
+        setSuccessMsg(language === 'ta' ? 'வெற்றிகரமாக உள்நுழைந்துவிட்டீர்கள்!' : 'Paid Registration Verified! Logging in...');
         setTimeout(() => {
           if (setActivePage) {
             setActivePage('dashboard');
           }
-        }, 1000);
+        }, 800);
       } else {
-        setErrorMsg(res?.message || (language === 'ta' ? 'தவறான பயனர் பெயர் அல்லது கடவுச்சொல்' : 'Invalid username or password. Please try again.'));
+        setErrorMsg(res?.message || (language === 'ta' ? 'பதிவு எண் அல்லது மொபைல் எண் காணப்படவில்லை' : 'No active paid registration found for this ID/Mobile.'));
+        if (res?.requiresPayment) setRequiresPayment(true);
+        if (res?.requiresRegistration) setRequiresRegistration(true);
       }
     } catch (err) {
       setErrorMsg(language === 'ta' ? 'உள்நுழைவதில் பிழை ஏற்பட்டது. மீண்டும் முயலவும்.' : 'An error occurred during login. Please try again.');
     } finally {
       setIsLoading(false);
     }
-  };
-
-  const handleDemoLogin = () => {
-    loginDemoUser();
-    setSuccessMsg(language === 'ta' ? 'டெமோ பயனர் உள்நுழைவு வெற்றிகரம்!' : 'Demo Member logged in successfully!');
-    setTimeout(() => {
-      if (setActivePage) {
-        setActivePage('dashboard');
-      }
-    }, 800);
   };
 
   return (
@@ -82,10 +72,10 @@ export default function LoginPage({ setActivePage }) {
             </div>
 
             <h2 style={{ fontSize: '1.8rem', color: 'var(--primary-maroon-dark)', marginBottom: '0.4rem', fontWeight: 800 }}>
-              {language === 'ta' ? 'உறுப்பினர் உள்நுழைவு' : 'Member Login'}
+              {language === 'ta' ? 'பதிவு செய்த உறுப்பினர் உள்நுழைவு' : 'Paid Member Login'}
             </h2>
             <p style={{ color: 'var(--text-muted)', fontSize: '0.92rem', margin: 0 }}>
-              {language === 'ta' ? 'உங்கள் பயனர் பெயர் மற்றும் கடவுச்சொல்லைப் பயன்படுத்தி உள்நுழையவும்' : 'Enter your User Name / Mobile & Password to access your profile'}
+              {language === 'ta' ? 'உங்கள் பதிவு எண் (Registration ID) அல்லது மொபைல் எண்ணை உள்ளிடவும்' : 'Enter your Registration ID (e.g. JM202600709) or Registered Mobile Number'}
             </p>
           </div>
 
@@ -117,82 +107,54 @@ export default function LoginPage({ setActivePage }) {
               background: '#FEF2F2',
               border: '1px solid #FCA5A5',
               borderRadius: '8px',
-              padding: '0.75rem 1rem',
+              padding: '0.88rem 1rem',
               color: '#991B1B',
               fontWeight: 600,
               fontSize: '0.88rem',
               marginBottom: '1.5rem',
-              textAlign: 'center'
+              textAlign: 'center',
+              lineHeight: 1.4
             }}>
               ⚠️ {errorMsg}
+
+              {requiresPayment && (
+                <div style={{ marginTop: '0.75rem' }}>
+                  <button onClick={() => setActivePage && setActivePage('payment')} className="btn btn-gold btn-full btn-sm" style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: '0.4rem', fontWeight: 700 }}>
+                    <CreditCard size={16} />
+                    <span>Pay ₹1,000 Registration Fee Now</span>
+                  </button>
+                </div>
+              )}
+
+              {requiresRegistration && (
+                <div style={{ marginTop: '0.75rem' }}>
+                  <button onClick={() => setActivePage && setActivePage('register')} className="btn btn-primary btn-full btn-sm" style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: '0.4rem', fontWeight: 700 }}>
+                    <UserPlus size={16} />
+                    <span>Register New Account (₹1,000)</span>
+                  </button>
+                </div>
+              )}
             </div>
           )}
 
           <form onSubmit={handleSubmit}>
-            {/* User Name / Mobile / Email Field */}
-            <div className="form-group" style={{ marginBottom: '1.25rem' }}>
-              <label className="form-label" style={{ fontWeight: 600, color: 'var(--text-main)', fontSize: '0.9rem', marginBottom: '0.4rem', display: 'block' }}>
-                {language === 'ta' ? 'பயனர் பெயர் / மொபைல் எண் / மின்னஞ்சல்' : 'User Name / Mobile / Email'}
+            {/* Registration ID / Mobile Field */}
+            <div className="form-group" style={{ marginBottom: '1.5rem' }}>
+              <label className="form-label" style={{ fontWeight: 700, color: 'var(--primary-maroon-dark)', fontSize: '0.92rem', marginBottom: '0.5rem', display: 'block' }}>
+                {language === 'ta' ? 'பதிவு எண் (Reg ID) அல்லது மொபைல் எண்' : 'Registration ID (e.g. JM202600709) or Mobile Number'}
               </label>
               <div style={{ position: 'relative' }}>
-                <User size={18} style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-muted)' }} />
+                <User size={18} style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: 'var(--primary-maroon)' }} />
                 <input 
                   type="text"
                   className="form-input"
-                  placeholder={language === 'ta' ? 'எ.கா. Santhosh அல்லது 9840012345' : 'e.g. Santhosh / 9840012345 / user@gmail.com'}
-                  style={{ paddingLeft: '2.5rem', width: '100%', borderRadius: '8px', height: '46px' }}
-                  value={username}
-                  onChange={(e) => setUsername(e.target.value)}
+                  placeholder=""
+                  style={{ paddingLeft: '2.5rem', width: '100%', borderRadius: '8px', height: '46px', fontSize: '1rem', fontWeight: 600 }}
+                  value={identifier}
+                  onChange={(e) => setIdentifier(e.target.value)}
+                  autoFocus
                   required
                 />
-              </div>
-            </div>
-
-            {/* Password Field */}
-            <div className="form-group" style={{ marginBottom: '1.5rem' }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.4rem' }}>
-                <label className="form-label" style={{ fontWeight: 600, color: 'var(--text-main)', fontSize: '0.9rem', margin: 0 }}>
-                  {language === 'ta' ? 'கடவுச்சொல் (Password)' : 'Password'}
-                </label>
-                <a 
-                  href="#forgot"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    alert(language === 'ta' ? 'கடவுச்சொல்லை மாற்ற +91 90437 73977 என்ற எண்ணிற்கு தொடர்பு கொள்ளவும்.' : 'For password assistance, please call/WhatsApp +91 90437 73977');
-                  }}
-                  style={{ fontSize: '0.8rem', color: 'var(--primary-maroon)', fontWeight: 600, textDecoration: 'none' }}>
-                  {language === 'ta' ? 'கடவுச்சொல் மறந்துவிட்டதா?' : 'Forgot password?'}
-                </a>
-              </div>
-              
-              <div style={{ position: 'relative' }}>
-                <Lock size={18} style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-muted)' }} />
-                <input 
-                  type={showPassword ? 'text' : 'password'}
-                  className="form-input"
-                  placeholder="••••••••"
-                  style={{ paddingLeft: '2.5rem', paddingRight: '2.5rem', width: '100%', borderRadius: '8px', height: '46px' }}
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  required
-                />
-                <button
-                  type="button"
-                  onClick={() => setShowPassword(!showPassword)}
-                  style={{
-                    position: 'absolute',
-                    right: '12px',
-                    top: '50%',
-                    transform: 'translateY(-50%)',
-                    background: 'none',
-                    border: 'none',
-                    color: 'var(--text-muted)',
-                    cursor: 'pointer',
-                    padding: 0
-                  }}
-                >
-                  {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
-                </button>
               </div>
             </div>
 
@@ -202,40 +164,14 @@ export default function LoginPage({ setActivePage }) {
               disabled={isLoading}
               className="btn btn-primary btn-full btn-lg" 
               style={{ height: '48px', fontSize: '1.05rem', fontWeight: 700, borderRadius: '8px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem' }}>
-              <span>{isLoading ? (language === 'ta' ? 'உள்நுழைகிறது...' : 'Signing In...') : (language === 'ta' ? 'உள்நுழைக' : 'Login Now')}</span>
+              <span>{isLoading ? (language === 'ta' ? 'சரிபார்க்கிறது...' : 'Verifying Account...') : (language === 'ta' ? 'உள்நுழைக' : 'Verify & Login')}</span>
               {!isLoading && <ArrowRight size={18} />}
             </button>
           </form>
 
-          {/* Quick Demo Login Option */}
-          <div style={{ margin: '1.5rem 0', textAlign: 'center', position: 'relative' }}>
-            <div style={{ position: 'absolute', top: '50%', left: 0, right: 0, height: '1px', background: 'var(--border-light)' }}></div>
-            <span style={{ position: 'relative', background: '#FFF', padding: '0 0.8rem', fontSize: '0.8rem', color: 'var(--text-muted)', fontWeight: 600 }}>
-              {language === 'ta' ? 'அல்லது உடனடி டெமோ அணுகல்' : 'OR INSTANT ACCESS'}
-            </span>
-          </div>
-
-          <button 
-            type="button"
-            onClick={handleDemoLogin}
-            className="btn btn-gold btn-full"
-            style={{ 
-              borderRadius: '8px',
-              padding: '0.75rem',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              gap: '0.5rem',
-              fontWeight: 700,
-              fontSize: '0.92rem'
-            }}>
-            <Sparkles size={18} />
-            <span>{language === 'ta' ? 'உடனடி டெமோ உள்நுழைவு (Demo Login)' : 'Quick Demo Login'}</span>
-          </button>
-
           {/* Register Link */}
           <div style={{ textAlign: 'center', marginTop: '1.75rem', fontSize: '0.9rem', color: 'var(--text-muted)' }}>
-            {language === 'ta' ? 'புதிய உறுப்பினரா?' : "Don't have an account yet?"}{' '}
+            {language === 'ta' ? 'புதிய உறுப்பினரா?' : "New Member?"}{' '}
             <button 
               onClick={() => setActivePage && setActivePage('register')}
               style={{

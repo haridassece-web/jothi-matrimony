@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
-import { Heart, CheckCircle2, Phone, MessageSquare, UserCheck, Clock } from 'lucide-react';
+import { Heart, CheckCircle2, MessageSquare, Clock } from 'lucide-react';
 
 export default function InterestsPage({ setActivePage, onSelectProfile }) {
   const { 

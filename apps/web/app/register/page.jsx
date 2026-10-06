@@ -401,7 +401,7 @@ export default function RegisterPage() {
                 <input
                   type="text"
                   className="form-input"
-                  placeholder="e.g. Santhosh Kumar / Priya Sundaram"
+                  placeholder=""
                   style={{ paddingLeft: '2.5rem' }}
                   value={formData.name}
                   onChange={(e) =>
@@ -507,7 +507,7 @@ export default function RegisterPage() {
                   <input
                     type="text"
                     className="form-input"
-                    placeholder="e.g. Chennai, Coimbatore, Madurai"
+                    placeholder=""
                     style={{ paddingLeft: '2.5rem' }}
                     value={formData.city}
                     onChange={(e) =>
@@ -537,7 +537,7 @@ export default function RegisterPage() {
                 <input
                   type="email"
                   className="form-input"
-                  placeholder="e.g. user@gmail.com"
+                  placeholder=""
                   style={{ paddingLeft: '2.5rem' }}
                   value={formData.email}
                   onChange={(e) =>

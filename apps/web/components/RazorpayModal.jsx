@@ -206,23 +206,18 @@ export default function RazorpayModal({ isOpen, onClose, onSuccess }) {
                   Pay using <strong>Google Pay (GPay)</strong>, PhonePe, Paytm, or NetBanking
                 </div>
 
-                {/* Confirm Payment Action Button */}
-                <button 
-                  onClick={() => handleExecutePayment('GPay / UPI Instant Payment')}
-                  className="btn btn-full"
-                  style={{
-                    background: 'linear-gradient(135deg, #059669 0%, #10B981 100%)',
-                    color: '#FFF',
-                    fontWeight: 700,
-                    fontSize: '1rem',
-                    padding: '0.85rem 1rem',
-                    borderRadius: '8px',
-                    boxShadow: '0 4px 14px rgba(16, 185, 129, 0.4)',
-                    cursor: 'pointer'
-                  }}>
-                  <span>✓ I Have Paid ₹1,000 via GPay / UPI</span>
-                  <ArrowRight size={18} />
-                </button>
+                <div style={{
+                  padding: '0.85rem 1rem',
+                  background: '#EFF6FF',
+                  border: '1px solid #BFDBFE',
+                  borderRadius: '8px',
+                  fontSize: '0.85rem',
+                  color: '#1E40AF',
+                  lineHeight: 1.5,
+                  textAlign: 'left'
+                }}>
+                  🔒 <strong>Automated Payment Verification:</strong> Please complete your UPI payment via the official Razorpay GPay/UPI gateway. Your profile details and active membership will automatically update immediately upon server confirmation of the transaction.
+                </div>
               </div>
             )}
 

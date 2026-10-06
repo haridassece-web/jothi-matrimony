@@ -129,7 +129,7 @@ export default function ProfileSetupPage({ setActivePage }) {
       alert('⚠️ Maximum 10 photos limit reached!');
       return;
     }
-    const url = prompt('Enter image URL (e.g. https://...):');
+    const url = prompt('Enter image URL:');
     if (url && url.trim()) {
       const updatedPhotos = [...currentPhotos, url.trim()].slice(0, 10);
       setForm(prev => ({
@@ -364,7 +364,7 @@ export default function ProfileSetupPage({ setActivePage }) {
                   <input 
                     type="text" 
                     className="form-input" 
-                    placeholder="e.g. Anna University, Madras University..."
+                    placeholder=""
                     value={form.institution}
                     onChange={(e) => setForm({...form, institution: e.target.value})}
                   />
@@ -390,7 +390,7 @@ export default function ProfileSetupPage({ setActivePage }) {
                   <input 
                     type="text" 
                     className="form-input" 
-                    placeholder="e.g. TCS, Govt Sector, Self..."
+                    placeholder=""
                     value={form.company}
                     onChange={(e) => setForm({...form, company: e.target.value})}
                   />
@@ -457,7 +457,7 @@ export default function ProfileSetupPage({ setActivePage }) {
                   <input 
                     type="text" 
                     className="form-input" 
-                    placeholder="e.g. Kanchipuram / Thanjavur / Village..."
+                    placeholder=""
                     value={form.nativeTown}
                     onChange={(e) => setForm({...form, nativeTown: e.target.value})}
                   />
@@ -513,7 +513,7 @@ export default function ProfileSetupPage({ setActivePage }) {
                   <input 
                     type="text" 
                     className="form-input" 
-                    placeholder="e.g. 08:30 AM / 14:45"
+                    placeholder=""
                     value={form.birthTime || ''} 
                     onChange={(e) => setForm({...form, birthTime: e.target.value})}
                   />
@@ -524,7 +524,7 @@ export default function ProfileSetupPage({ setActivePage }) {
                   <input 
                     type="text" 
                     className="form-input" 
-                    placeholder="e.g. Chennai / Madurai"
+                    placeholder=""
                     value={form.birthPlace || ''} 
                     onChange={(e) => setForm({...form, birthPlace: e.target.value})}
                   />
@@ -862,7 +862,7 @@ export default function ProfileSetupPage({ setActivePage }) {
                 <input 
                   type="text" 
                   className="form-input" 
-                  placeholder="e.g. Chennai / Tamil Nadu / Bangalore / Abroad"
+                  placeholder=""
                   value={form.prefLocation}
                   onChange={(e) => setForm({...form, prefLocation: e.target.value})}
                 />

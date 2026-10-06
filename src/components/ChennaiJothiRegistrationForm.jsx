@@ -1,5 +1,5 @@
 import React from 'react';
-import { Printer, Download, Sparkles, CheckCircle2 } from 'lucide-react';
+import { Printer } from 'lucide-react';
 
 export default function ChennaiJothiRegistrationForm({ profile, onPrint }) {
   if (!profile) return null;
@@ -29,12 +29,12 @@ export default function ChennaiJothiRegistrationForm({ profile, onPrint }) {
       
       {/* Action Toolbar */}
       <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '0.75rem', marginBottom: '1rem' }} className="no-print">
-        <button onClick={handlePrint} className="btn btn-maroon btn-sm">
-          <Printer size={16} /> Print Registration Form (அச்சு)
+        <button onClick={handlePrint} className="btn btn-maroon btn-sm" style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+          <Printer size={16} /> அச்சு அச்சிடு (Print Sheet)
         </button>
       </div>
 
-      {/* Printable Sheet Container */}
+      {/* Digital Printable Sheet Container */}
       <div id="registration-sheet" style={{
         background: '#FFFFFF',
         border: '3px solid #0056B3',
@@ -45,167 +45,130 @@ export default function ChennaiJothiRegistrationForm({ profile, onPrint }) {
         position: 'relative'
       }}>
         
-        {/* Header Title Banner */}
-        <div style={{
-          border: '2px solid #0056B3',
-          borderRadius: '6px',
-          padding: '0.75rem 1rem',
-          textAlign: 'center',
-          background: 'linear-gradient(180deg, #FFFFFF 0%, #F0F7FF 100%)',
-          marginBottom: '1rem',
-          position: 'relative'
-        }}>
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '1rem' }}>
-            {/* Lord Venkateswara / Temple Emblem */}
-            <div style={{ width: '70px', height: '80px', borderRadius: '4px', overflow: 'hidden', border: '1px solid #CBD5E1' }}>
-              <img 
-                src="https://images.unsplash.com/photo-1609766857041-ed402ea8069a?auto=format&fit=crop&q=80&w=200" 
-                alt="Temple Icon" 
-                style={{ width: '100%', height: '100%', objectFit: 'cover' }} 
-              />
-            </div>
-
-            {/* Main Header Text */}
-            <div style={{ flex: 1, textAlign: 'center' }}>
-              <h2 style={{ fontSize: '1.45rem', fontWeight: 800, color: '#800000', margin: '0 0 2px 0', letterSpacing: '0.5px' }}>
-                சென்னை ஜோதி திருமண தகவல் மையம்
-              </h2>
-              <h3 style={{ fontSize: '1.25rem', fontWeight: 900, color: '#0056B3', margin: '0 0 4px 0', letterSpacing: '1px' }}>
-                CHENNAI JOTHI MATRIMONY
-              </h3>
-              <div style={{ fontSize: '0.78rem', color: '#334155', fontWeight: 600 }}>
-                THE GROUP OF THE ARUTPER RELIGION TRUST,
-              </div>
-              <div style={{ fontSize: '0.75rem', color: '#475569' }}>
-                No. 13/7, MUTHUKALATHI STREET, TRIPLICANE, CHENNAI - 600 005.
-              </div>
-              <div style={{ fontSize: '0.75rem', fontWeight: 700, color: '#1E293B', marginTop: '2px' }}>
-                ORGANIZER DR. CHANDRA BABU, REGD-332/2008.
-              </div>
-              <div style={{ fontSize: '0.8rem', fontWeight: 700, color: '#800000', marginTop: '2px' }}>
-                CELL : 90437 73977 / 94449 34527 / 044 - 47898399
-              </div>
-            </div>
-
-            {/* Saint Arutper / Vallalar Emblem */}
-            <div style={{ width: '70px', height: '80px', borderRadius: '4px', overflow: 'hidden', border: '1px solid #CBD5E1' }}>
-              <img 
-                src="https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&q=80&w=200" 
-                alt="Arutper Icon" 
-                style={{ width: '100%', height: '100%', objectFit: 'cover' }} 
-              />
-            </div>
-          </div>
+        {/* Top Attached Official Registration Header Banner Snap */}
+        <div style={{ marginBottom: '1rem', width: '100%', overflow: 'hidden', borderRadius: '6px', border: '1.5px solid #0056B3' }}>
+          <img 
+            src="/registration_header.png" 
+            alt="Chennai Jothi Matrimony Top Registration Form Header Snap" 
+            style={{ width: '100%', height: 'auto', display: 'block' }} 
+          />
         </div>
 
-        {/* Sub Header Ribbon */}
-        <div style={{
-          display: 'flex',
-          justify: 'space-between',
-          alignItems: 'center',
-          borderBottom: '2px dashed #0056B3',
-          paddingBottom: '0.5rem',
-          marginBottom: '1rem',
-          fontSize: '0.85rem',
-          fontWeight: 700
-        }}>
-          <div>
-            அமைப்பாளர். <span style={{ color: '#800000' }}>Dr. சந்திரபாபு சித்தா</span> | 📞 94449 34527 / 90437 73977
-          </div>
-          <div style={{ background: '#FFFBEB', border: '1px solid #FCD34D', padding: '2px 8px', borderRadius: '4px', color: '#92400E' }}>
-            VIP - Family Pay : <strong>90437 73977</strong>
-          </div>
-        </div>
-
-        {/* Form Body Layout: Left Details Table & Right Photo */}
+        {/* Form Body Layout: Left Dotted Details & Right Photo */}
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 240px', gap: '1.25rem', marginBottom: '1.25rem' }}>
           
-          {/* Details Table */}
-          <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.86rem', lineHeight: '1.6' }}>
-            <tbody>
-              <tr>
-                <td style={{ width: '140px', fontWeight: 700, color: '#800000' }}>பதிவு எண் (Reg No.) :</td>
-                <td><strong style={{ fontSize: '1rem', color: '#0056B3' }}>{profile.regNo || profile.id}</strong></td>
-                <td style={{ width: '80px', fontWeight: 700, color: '#800000' }}>இனம் :</td>
-                <td><strong>{profile.caste || profile.subcaste || 'VIP'}</strong></td>
-              </tr>
-              <tr>
-                <td style={{ fontWeight: 700, color: '#800000' }}>பெயர் (Name) :</td>
-                <td colSpan={3}><strong style={{ fontSize: '0.98rem' }}>{profile.name}</strong></td>
-              </tr>
-              <tr>
-                <td style={{ fontWeight: 700, color: '#800000' }}>கல்வி (Education) :</td>
-                <td colSpan={3}>{profile.education}</td>
-              </tr>
-              <tr>
-                <td style={{ fontWeight: 700, color: '#800000' }}>பிறந்த தேதி, நேரம் (DOB/TOB) :</td>
-                <td colSpan={3}><strong>{profile.dob}</strong> {profile.birthTime ? `(${profile.birthTime})` : ''}</td>
-              </tr>
-              <tr>
-                <td style={{ fontWeight: 700, color: '#800000' }}>பிறந்த இடம் (Place of Birth) :</td>
-                <td colSpan={3}><strong>{profile.birthPlace || profile.nativeTown || profile.city}</strong></td>
-              </tr>
-              <tr>
-                <td style={{ fontWeight: 700, color: '#800000' }}>சொந்த ஊர் / கிராமம் (Native) :</td>
-                <td colSpan={3}><strong>{profile.nativeTown || profile.city}</strong> {profile.siblingPosition ? `[${profile.siblingPosition}]` : ''}</td>
-              </tr>
-              <tr>
-                <td style={{ fontWeight: 700, color: '#800000' }}>நிறம், உயரம் :</td>
-                <td colSpan={3}>{profile.complexion || 'Fair'} / {profile.height}</td>
-              </tr>
-              <tr>
-                <td style={{ fontWeight: 700, color: '#800000' }}>நட்சத்திரம், ராசி, லக்னம் :</td>
-                <td colSpan={3}><strong>{profile.nakshatra}</strong> ({profile.padam || '1'} ஆம் பாதம்), <strong>{profile.rasi}</strong> ராசி, <strong>{profile.lagnam || 'Kanni (Virgo)'}</strong> லக்னம்</td>
-              </tr>
-              <tr>
-                <td style={{ fontWeight: 700, color: '#800000' }}>பணி (Occupation) :</td>
-                <td colSpan={3}>{profile.profession} {profile.company ? `(${profile.company})` : ''}</td>
-              </tr>
-              <tr>
-                <td style={{ fontWeight: 700, color: '#800000' }}>மாத வருமானம் ரூ. :</td>
-                <td colSpan={3}><strong>{profile.monthlyIncome || profile.annualIncome}</strong></td>
-              </tr>
-              <tr>
-                <td style={{ fontWeight: 700, color: '#800000' }}>தந்தை பெயர் :</td>
-                <td colSpan={3}>திரு. {profile.family?.fatherName} {profile.family?.fatherOccupation ? `(${profile.family.fatherOccupation})` : ''}</td>
-              </tr>
-              <tr>
-                <td style={{ fontWeight: 700, color: '#800000' }}>தாயார் பெயர் :</td>
-                <td colSpan={3}>திருமதி. {profile.family?.motherName} {profile.family?.motherOccupation ? `(${profile.family.motherOccupation})` : ''}</td>
-              </tr>
-              <tr>
-                <td style={{ fontWeight: 700, color: '#800000' }}>உடன் பிறப்பு :</td>
-                <td colSpan={3}>{profile.family?.siblings || profile.siblings || 'Nil'}</td>
-              </tr>
-              <tr>
-                <td style={{ fontWeight: 700, color: '#800000' }}>சொந்த / வாடகை வீடு :</td>
-                <td colSpan={3}>{profile.houseProperty || profile.family?.houseProperty || 'சொந்த வீடு'}</td>
-              </tr>
-              <tr>
-                <td style={{ fontWeight: 700, color: '#800000' }}>தற்போதைய முகவரி (Address) :</td>
-                <td colSpan={3}><strong>{profile.address || `${profile.city}, ${profile.state || 'Tamil Nadu'}`}</strong></td>
-              </tr>
-              <tr>
-                <td style={{ fontWeight: 700, color: '#800000' }}>எதிர்பார்ப்பு (Expectation) :</td>
-                <td colSpan={3}>
-                  <strong>வயது:</strong> {profile.partnerPreferences?.ageMin || 21}-{profile.partnerPreferences?.ageMax || 32} Yrs | 
-                  <strong> உயரம்:</strong> {profile.partnerPreferences?.heightMin || "4' 6\""}-{profile.partnerPreferences?.heightMax || "6' 2\""} | 
-                  <strong> கல்வி:</strong> {profile.partnerPreferences?.education || 'Any'} | 
-                  <strong> பணி:</strong> {profile.partnerPreferences?.profession || 'Any'} | 
-                  <strong> சாதி:</strong> {profile.partnerPreferences?.castePreference || 'Open'}
-                </td>
-              </tr>
-            </tbody>
-          </table>
+          {/* Left Dotted Details Table */}
+          <div style={{ fontSize: '0.86rem', lineHeight: '1.8' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '4px' }}>
+              <div>
+                <span style={{ fontWeight: 700, color: '#800000' }}>பதிவு எண். : </span>
+                <strong style={{ color: '#0056B3', fontSize: '1rem' }}>{profile.regNo || profile.id}</strong>
+              </div>
+              <div style={{ border: '1px solid #B91C1C', padding: '1px 12px', borderRadius: '3px' }}>
+                <span style={{ fontWeight: 700, color: '#800000' }}>இனம் : </span>
+                <strong>{profile.caste || profile.subcaste || ''}</strong>
+              </div>
+            </div>
 
-          {/* Photo Frame Column */}
+            <div style={{ borderBottom: '1px dotted #94A3B8', paddingBottom: '2px', marginBottom: '4px' }}>
+              <span style={{ fontWeight: 700, color: '#800000' }}>பெயர் : </span>
+              <strong>{profile.name}</strong>
+            </div>
+
+            <div style={{ borderBottom: '1px dotted #94A3B8', paddingBottom: '2px', marginBottom: '4px' }}>
+              <span style={{ fontWeight: 700, color: '#800000' }}>கல்வி : </span>
+              <span>{profile.education}</span>
+            </div>
+
+            <div style={{ borderBottom: '1px dotted #94A3B8', paddingBottom: '2px', marginBottom: '4px' }}>
+              <span style={{ fontWeight: 700, color: '#800000' }}>பிறந்த தேதி, நேரம் : </span>
+              <strong>{profile.dob}</strong> {profile.birthTime ? `(${profile.birthTime})` : ''}
+            </div>
+
+            <div style={{ borderBottom: '1px dotted #94A3B8', paddingBottom: '2px', marginBottom: '4px' }}>
+              <span style={{ fontWeight: 700, color: '#800000' }}>பிறந்த ஊர், வரிசை : </span>
+              <span>{profile.birthPlace || profile.nativeTown || profile.city} {profile.siblingPosition ? `[${profile.siblingPosition}]` : ''}</span>
+            </div>
+
+            <div style={{ borderBottom: '1px dotted #94A3B8', paddingBottom: '2px', marginBottom: '4px' }}>
+              <span style={{ fontWeight: 700, color: '#800000' }}>நிறம், உயரம் : </span>
+              <span>{profile.complexion || 'Fair'} / {profile.height}</span>
+            </div>
+
+            <div style={{ borderBottom: '1px dotted #94A3B8', paddingBottom: '2px', marginBottom: '4px' }}>
+              <span style={{ fontWeight: 700, color: '#800000' }}>நட்சத்திரம், ராசி : </span>
+              <strong>{profile.nakshatra}</strong> ({profile.padam || '1'} ஆம் பாதம்), <strong>{profile.rasi}</strong> ராசி
+            </div>
+
+            <div style={{ borderBottom: '1px dotted #94A3B8', paddingBottom: '2px', marginBottom: '4px' }}>
+              <span style={{ fontWeight: 700, color: '#800000' }}>பணி : </span>
+              <span>{profile.profession} {profile.company ? `(${profile.company})` : ''}</span>
+            </div>
+
+            <div style={{ borderBottom: '1px dotted #94A3B8', paddingBottom: '2px', marginBottom: '4px' }}>
+              <span style={{ fontWeight: 700, color: '#800000' }}>மாத வருமானம் ரூ. : </span>
+              <strong>{profile.monthlyIncome || profile.annualIncome}</strong>
+            </div>
+
+            <div style={{ borderBottom: '1px dotted #94A3B8', paddingBottom: '2px', marginBottom: '4px' }}>
+              <span style={{ fontWeight: 700, color: '#800000' }}>தந்தை பெயர் : திரு. </span>
+              <span>{profile.family?.fatherName || profile.fatherName || ''}</span>
+            </div>
+
+            <div style={{ borderBottom: '1px dotted #94A3B8', paddingBottom: '2px', marginBottom: '4px' }}>
+              <span style={{ fontWeight: 700, color: '#800000' }}>பணி : </span>
+              <span>{profile.family?.fatherOccupation || ''}</span>
+            </div>
+
+            <div style={{ borderBottom: '1px dotted #94A3B8', paddingBottom: '2px', marginBottom: '4px' }}>
+              <span style={{ fontWeight: 700, color: '#800000' }}>தாயார் பெயர் : திருமதி. </span>
+              <span>{profile.family?.motherName || profile.motherName || ''}</span>
+            </div>
+
+            <div style={{ borderBottom: '1px dotted #94A3B8', paddingBottom: '2px', marginBottom: '4px' }}>
+              <span style={{ fontWeight: 700, color: '#800000' }}>பணி : </span>
+              <span>{profile.family?.motherOccupation || ''}</span>
+            </div>
+
+            <div style={{ borderBottom: '1px dotted #94A3B8', paddingBottom: '2px', marginBottom: '4px' }}>
+              <span style={{ fontWeight: 700, color: '#800000' }}>உடன் பிறப்பு : </span>
+              <span>{profile.family?.siblings || profile.siblings || 'Nil'}</span>
+            </div>
+
+            <div style={{ borderBottom: '1px dotted #94A3B8', paddingBottom: '2px', marginBottom: '4px' }}>
+              <span style={{ fontWeight: 700, color: '#800000' }}>திருமணமானவர்கள் : </span>
+              <span>{profile.marriedSiblings || profile.family?.marriedSiblings || 'Nil'}</span>
+            </div>
+
+            <div style={{ borderBottom: '1px dotted #94A3B8', paddingBottom: '2px', marginBottom: '4px' }}>
+              <span style={{ fontWeight: 700, color: '#800000' }}>வாடகை வீடு / சொந்த வீடு : </span>
+              <span>{profile.houseProperty || profile.family?.houseProperty || 'சொந்த வீடு'}</span>
+            </div>
+
+            <div style={{ borderBottom: '1px dotted #94A3B8', paddingBottom: '2px', marginBottom: '4px' }}>
+              <span style={{ fontWeight: 700, color: '#800000' }}>இருப்பிடம் : </span>
+              <strong>{profile.address || `${profile.city}, ${profile.state || 'Tamil Nadu'}`}</strong>
+            </div>
+
+            <div style={{ borderBottom: '1px dotted #94A3B8', paddingBottom: '2px', marginBottom: '4px' }}>
+              <span style={{ fontWeight: 700, color: '#800000' }}>எதிர்பார்ப்பு / செய்வது : </span>
+              <span>{profile.expectation || `${profile.partnerPreferences?.education || 'Degree'}, ${profile.partnerPreferences?.profession || 'Job'}, ${profile.partnerPreferences?.castePreference || 'Open'}`}</span>
+            </div>
+
+            <div style={{ borderBottom: '1px dotted #94A3B8', paddingBottom: '2px', marginBottom: '4px' }}>
+              <span style={{ fontWeight: 700, color: '#800000' }}>குறிப்பு : </span>
+              <span>{profile.notes || profile.about || ''}</span>
+            </div>
+          </div>
+
+          {/* Right Photo Column Frame */}
           <div style={{ textAlign: 'center' }}>
             <div style={{
-              border: '2px solid #0056B3',
+              border: '2px solid #B91C1C',
               borderRadius: '6px',
               padding: '6px',
-              background: '#F8FAFC',
-              height: '280px',
+              background: '#FFFFFF',
+              height: '320px',
               display: 'flex',
               flexDirection: 'column',
               alignItems: 'center',
@@ -221,42 +184,35 @@ export default function ChennaiJothiRegistrationForm({ profile, onPrint }) {
                 <div style={{ color: '#94A3B8', fontSize: '0.85rem' }}>புகைப்படம் (Photo)</div>
               )}
             </div>
-            <div style={{ marginTop: '0.5rem', fontSize: '0.78rem', color: '#0056B3', fontWeight: 700 }}>
-              உறுதி செய்யப்பட்ட வரன் 🔒
-            </div>
           </div>
         </div>
 
-        {/* Bottom Section: Horoscope Grids & Matching Nakshatras */}
-        <div style={{ display: 'grid', gridTemplateColumns: '1.2fr 1fr', gap: '1rem', borderTop: '2px solid #CBD5E1', paddingTop: '1rem' }}>
+        {/* Bottom Section: Horoscope Grids & Matching Nakshatras List */}
+        <div style={{ display: 'grid', gridTemplateColumns: '1.2fr 1fr', gap: '1rem', borderTop: '2px solid #B91C1C', paddingTop: '0.75rem', marginBottom: '1rem' }}>
           
           {/* Horoscope Grids (Rasi & Navamsam) */}
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem' }}>
             
-            {/* Rasi Box */}
-            <div style={{ border: '1.5px solid #0056B3', borderRadius: '4px', padding: '4px', background: '#FFFDF9' }}>
-              <div style={{ textAlign: 'center', fontWeight: 800, fontSize: '0.8rem', color: '#800000', marginBottom: '4px' }}>
-                ராசி
-              </div>
+            {/* Rasi Grid Box */}
+            <div style={{ border: '1.5px solid #B91C1C', borderRadius: '4px', padding: '4px', background: '#FFFDF9' }}>
               <div style={{
                 display: 'grid',
                 gridTemplateColumns: 'repeat(4, 1fr)',
-                gridTemplateRows: 'repeat(4, 32px)',
+                gridTemplateRows: 'repeat(4, 30px)',
                 gap: '1px',
-                background: '#0056B3',
-                border: '1px solid #0056B3',
+                background: '#B91C1C',
+                border: '1px solid #B91C1C',
                 fontSize: '0.65rem',
                 textAlign: 'center'
               }}>
-                {/* 12 South Indian chart cells */}
                 <div style={{ background: '#FFF', padding: '2px' }}>{profile.rasiChart?.[12]?.join(' ') || ''}</div>
                 <div style={{ background: '#FFF', padding: '2px' }}>{profile.rasiChart?.[1]?.join(' ') || ''}</div>
                 <div style={{ background: '#FFF', padding: '2px' }}>{profile.rasiChart?.[2]?.join(' ') || ''}</div>
                 <div style={{ background: '#FFF', padding: '2px' }}>{profile.rasiChart?.[3]?.join(' ') || ''}</div>
 
                 <div style={{ background: '#FFF', padding: '2px' }}>{profile.rasiChart?.[11]?.join(' ') || ''}</div>
-                <div style={{ background: '#F1F5F9', gridColumn: 'span 2', gridRow: 'span 2', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 800, color: '#800000' }}>
-                  ராசி
+                <div style={{ background: '#FFFDF9', gridColumn: 'span 2', gridRow: 'span 2', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 800, color: '#B91C1C', fontSize: '0.85rem' }}>
+                  இராசி
                 </div>
                 <div style={{ background: '#FFF', padding: '2px' }}>{profile.rasiChart?.[4]?.join(' ') || ''}</div>
 
@@ -270,18 +226,15 @@ export default function ChennaiJothiRegistrationForm({ profile, onPrint }) {
               </div>
             </div>
 
-            {/* Navamsam Box */}
-            <div style={{ border: '1.5px solid #0056B3', borderRadius: '4px', padding: '4px', background: '#FFFDF9' }}>
-              <div style={{ textAlign: 'center', fontWeight: 800, fontSize: '0.8rem', color: '#800000', marginBottom: '4px' }}>
-                நவாம்சம்
-              </div>
+            {/* Navamsam Grid Box */}
+            <div style={{ border: '1.5px solid #B91C1C', borderRadius: '4px', padding: '4px', background: '#FFFDF9' }}>
               <div style={{
                 display: 'grid',
                 gridTemplateColumns: 'repeat(4, 1fr)',
-                gridTemplateRows: 'repeat(4, 32px)',
+                gridTemplateRows: 'repeat(4, 30px)',
                 gap: '1px',
-                background: '#0056B3',
-                border: '1px solid #0056B3',
+                background: '#B91C1C',
+                border: '1px solid #B91C1C',
                 fontSize: '0.65rem',
                 textAlign: 'center'
               }}>
@@ -291,7 +244,7 @@ export default function ChennaiJothiRegistrationForm({ profile, onPrint }) {
                 <div style={{ background: '#FFF', padding: '2px' }}></div>
 
                 <div style={{ background: '#FFF', padding: '2px' }}></div>
-                <div style={{ background: '#F1F5F9', gridColumn: 'span 2', gridRow: 'span 2', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 800, color: '#800000' }}>
+                <div style={{ background: '#FFFDF9', gridColumn: 'span 2', gridRow: 'span 2', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 800, color: '#B91C1C', fontSize: '0.85rem' }}>
                   நவாம்சம்
                 </div>
                 <div style={{ background: '#FFF', padding: '2px' }}></div>
@@ -308,28 +261,37 @@ export default function ChennaiJothiRegistrationForm({ profile, onPrint }) {
 
           </div>
 
-          {/* Suitable Nakshatras 27 Checklist */}
-          <div style={{ border: '1.5px solid #0056B3', borderRadius: '4px', padding: '6px', background: '#F8FAFC' }}>
-            <div style={{ textAlign: 'center', fontWeight: 800, fontSize: '0.78rem', color: '#0056B3', marginBottom: '4px' }}>
+          {/* Suitable Nakshatras List */}
+          <div style={{ border: '1.5px solid #B91C1C', borderRadius: '4px', padding: '6px', background: '#FFFFFF' }}>
+            <div style={{ textAlign: 'center', fontWeight: 800, fontSize: '0.8rem', color: '#B91C1C', marginBottom: '4px', borderBottom: '1px solid #FCA5A5', paddingBottom: '2px' }}>
               பொருந்தும் நட்சத்திரங்கள்
             </div>
             <div style={{
               display: 'grid',
               gridTemplateColumns: 'repeat(2, 1fr)',
-              gap: '2px 8px',
+              gap: '2px 6px',
               fontSize: '0.68rem',
-              height: '140px',
-              overflowY: 'auto'
+              color: '#B91C1C'
             }}>
               {nakshatraList.map(n => (
                 <div key={n.id} style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-                  <input type="checkbox" readOnly checked={n.id % 2 === 0} style={{ margin: 0, width: '10px', height: '10px' }} />
                   <span>{n.id}. {n.name}</span>
                 </div>
               ))}
             </div>
           </div>
 
+        </div>
+
+        {/* Legal Declaration & Signature Footer */}
+        <div style={{ borderTop: '1px solid #CBD5E1', paddingTop: '0.5rem', fontSize: '0.68rem', color: '#334155', lineHeight: '1.4' }}>
+          <p style={{ margin: '0 0 1rem 0' }}>
+            வரன்களைப் பற்றி விவரங்களைத் தெரிந்துக் கொள்வதும் எங்களின் (பெண் - மாப்பிள்ளை வீட்டாரின்) பொறுப்பாகும். திருமண தகவல் மையம் பொறுப்பல்ல என்றும், மேற்கண்ட விவரங்கள் யாவும் உண்மை என்றும் உறுதியளிக்கிறேன். திருமண தகவல் மையத்தில் விதிமுறைகளை ஏற்று பதிவு செய்கிறேன். எக்காரணத்தைக் கொண்டும் பதிவுக் கட்டணம் திருப்பித் தரப்படமாட்டாது.
+          </p>
+          <div style={{ display: 'flex', justifyContent: 'space-between', fontWeight: 700, color: '#1E293B', padding: '0 1rem' }}>
+            <div>கையொப்பம் : ....................................</div>
+            <div>இடம் : ....................................</div>
+          </div>
         </div>
 
       </div>

@@ -40,7 +40,7 @@ export default function NextAdminPage() {
       sessionStorage.setItem('jothi_admin_authenticated', 'true');
       setAdminError('');
     } else {
-      setAdminError('Invalid Admin Password. Please enter valid security PIN (e.g. jothi2026).');
+      setAdminError('Invalid Admin Password. Please enter valid security PIN.');
     }
   };
 
@@ -75,7 +75,7 @@ export default function NextAdminPage() {
               <input 
                 type="password" 
                 className="form-input" 
-                placeholder="Enter password (e.g. jothi2026)"
+                placeholder=""
                 value={adminPasswordInput}
                 onChange={(e) => setAdminPasswordInput(e.target.value)}
                 autoFocus

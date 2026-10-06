@@ -264,84 +264,91 @@ export function AuthProvider({ children }) {
     loadLiveProfiles();
   }, []);
 
-  const login = async (username, password) => {
-    try {
-      const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://jothi-matrimony.onrender.com';
-      const res = await fetch(`${API_URL}/users/login`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ username, password })
-      });
-
-      if (res.ok) {
-        const data = await res.json();
-        if (data.success && data.user) {
-          const loggedInUser = {
-            id: data.user.id || 'JM202600' + Math.floor(1000 + Math.random() * 9000),
-            name: data.user.name || data.user.full_name || username,
-            mobile: data.user.mobile || '+91 98400 11223',
-            email: data.user.email || `${username}@gmail.com`,
-            gender: data.user.gender || 'Male',
-            dob: data.user.dob || data.user.date_of_birth || '1998-07-12',
-            registrationStatus: 'PAID_ACTIVE',
-            paymentStatus: 'PAID',
-            membershipStatus: 'Active Paid Member',
-            registrationFee: 1000,
-            isProfileComplete: true
-          };
-
-          setState(prev => ({
-            ...prev,
-            user: loggedInUser,
-            registrationId: loggedInUser.id,
-            registrationStatus: 'PAID_ACTIVE',
-            paymentStatus: 'SUCCESS',
-            paymentDetails: {
-              id: 'PAY_LOGIN_' + Math.random().toString(36).substring(2, 8).toUpperCase(),
-              amount: 1000,
-              status: 'SUCCESS',
-              gateway: 'Razorpay UPI'
-            }
-          }));
-
-          return { success: true, user: loggedInUser };
-        }
-      }
-    } catch (err) {
-      console.warn('API login call error, falling back to instant local login:', err);
+  const login = async (identifier) => {
+    const input = (identifier || '').trim().toLowerCase();
+    if (!input) {
+      return { success: false, message: 'Please enter your Registration ID or Registered Mobile number.' };
     }
 
-    // Local fallback authorization
-    const fallbackUser = {
-      id: 'JM202600' + Math.floor(1000 + Math.random() * 9000),
-      name: username || 'Valued Member',
-      mobile: username.match(/^\+?\d+$/) ? username : '+91 98400 11223',
-      email: username.includes('@') ? username : `${(username || 'user').toLowerCase().replace(/\s+/g, '')}@gmail.com`,
-      gender: 'Male',
-      dob: '1998-07-12',
-      registrationStatus: 'PAID_ACTIVE',
-      paymentStatus: 'PAID',
-      membershipStatus: 'Active Paid Member',
-      registrationFee: 1000,
-      registrationPaidAt: new Date().toISOString(),
-      isProfileComplete: true
-    };
+    // 1. Check if user matches current registered state
+    if (state.user) {
+      const uId = (state.user.id || '').toLowerCase();
+      const uMob = (state.user.mobile || '').replace(/\s+/g, '');
+      const uEmail = (state.user.email || '').toLowerCase();
 
-    setState(prev => ({
-      ...prev,
-      user: fallbackUser,
-      registrationId: fallbackUser.id,
-      registrationStatus: 'PAID_ACTIVE',
-      paymentStatus: 'SUCCESS',
-      paymentDetails: {
-        id: 'PAY_LOGIN_' + Math.random().toString(36).substring(2, 8).toUpperCase(),
-        amount: 1000,
-        status: 'SUCCESS',
-        gateway: 'Razorpay UPI'
+      if (input === uId || input === uMob || input === uEmail || input.includes(uId) || uMob.includes(input)) {
+        if (state.paymentStatus === 'SUCCESS' || state.user.is_paid_member || state.user.membershipStatus === 'Active Paid Member' || state.registrationStatus === 'PAID_ACTIVE') {
+          return { success: true, user: state.user };
+        } else {
+          return { 
+            success: false, 
+            requiresPayment: true, 
+            message: 'Payment Pending. Please complete your ₹1,000 registration fee to activate login access.' 
+          };
+        }
       }
-    }));
+    }
 
-    return { success: true, user: fallbackUser };
+    // 2. Look up in all profiles (mock & live registered profiles)
+    const cleanInput = input.replace(/[\s\-\+]/g, '');
+    const matched = (allProfiles || []).find(p => {
+      const pid = (p.id || '').toLowerCase();
+      const pregNo = (p.regNo || '').toLowerCase();
+      const mob = (p.phone || p.mobile || '').replace(/[\s\-\+]/g, '');
+      const email = (p.email || '').toLowerCase();
+      return cleanInput === pid || cleanInput === pregNo || cleanInput === mob || cleanInput === email || (mob && mob.includes(cleanInput));
+    });
+
+    if (matched) {
+      const loggedInUser = {
+        ...matched,
+        id: matched.id,
+        name: matched.name,
+        gender: matched.gender,
+        registrationStatus: 'PAID_ACTIVE',
+        paymentStatus: 'SUCCESS',
+        is_paid_member: true,
+        membershipStatus: 'Active Paid Member'
+      };
+
+      setState(prev => ({
+        ...prev,
+        user: loggedInUser,
+        registrationId: loggedInUser.id,
+        registrationStatus: 'PAID_ACTIVE',
+        paymentStatus: 'SUCCESS'
+      }));
+
+      return { success: true, user: loggedInUser };
+    }
+
+    // If input is a Registration ID format (e.g. JM2026001234 or 10-digit mobile)
+    if (input.startsWith('jm') || /^\d{10}$/.test(cleanInput)) {
+      const newPaidUser = {
+        id: input.toUpperCase(),
+        name: 'Member (' + input.toUpperCase() + ')',
+        registrationStatus: 'PAID_ACTIVE',
+        paymentStatus: 'SUCCESS',
+        is_paid_member: true,
+        membershipStatus: 'Active Paid Member'
+      };
+
+      setState(prev => ({
+        ...prev,
+        user: newPaidUser,
+        registrationId: newPaidUser.id,
+        registrationStatus: 'PAID_ACTIVE',
+        paymentStatus: 'SUCCESS'
+      }));
+
+      return { success: true, user: newPaidUser };
+    }
+
+    return { 
+      success: false, 
+      requiresRegistration: true, 
+      message: 'No active paid registration found for this Registration ID / Mobile number. Please register for ₹1,000 first.' 
+    };
   };
 
   const deleteProfile = async (profileId) => {

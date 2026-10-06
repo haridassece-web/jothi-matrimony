@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '../../context/AuthContext';
 import { CASTE_LIST, CITIES_LIST, HEIGHT_LIST, SUBCASTE_MAP, RELIGION_LIST, EDUCATION_LIST } from '@jothi-matrimony/shared';
-import { Search, Filter, Star, Heart, Eye, Sparkles, Trash2 } from 'lucide-react';
+import { Search, Filter, Star, Heart, Eye, Sparkles, Trash2, ShieldCheck } from 'lucide-react';
 
 export default function AlliancesPage() {
   const router = useRouter();
@@ -14,7 +14,7 @@ export default function AlliancesPage() {
     toggleShortlist, sendInterest, language, deleteProfile 
   } = useAuth();
 
-  const isAdmin = user?.role === 'ADMIN' || user?.isAdmin || user?.id === 'ADMIN_001';
+  const isAdmin = (typeof window !== 'undefined' && sessionStorage.getItem('jothi_admin_authenticated') === 'true') || user?.role === 'ADMIN' || user?.isAdmin || user?.id === 'ADMIN_001';
   const isGroom = user?.gender === 'Male';
   const isBride = user?.gender === 'Female';
 
@@ -195,6 +195,34 @@ export default function AlliancesPage() {
                 />
               </div>
             </div>
+
+            {isAdmin && (
+              <div className="form-group" style={{ background: '#FFFDF5', padding: '0.85rem', borderRadius: '8px', border: '1.5px solid var(--border-gold)', marginBottom: '1.25rem' }}>
+                <label className="form-label" style={{ color: 'var(--primary-maroon-dark)', fontWeight: 800, fontSize: '0.85rem', marginBottom: '0.5rem', display: 'block' }}>
+                  👑 Master Admin Gender View Control
+                </label>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '4px' }}>
+                  <button 
+                    type="button"
+                    onClick={() => setGenderFilter('All')} 
+                    style={{ padding: '6px 4px', borderRadius: '6px', fontSize: '0.78rem', fontWeight: 800, border: 'none', background: genderFilter === 'All' ? 'var(--primary-maroon)' : '#F1F5F9', color: genderFilter === 'All' ? '#FFF' : 'var(--text-main)', cursor: 'pointer' }}>
+                    All Both
+                  </button>
+                  <button 
+                    type="button"
+                    onClick={() => setGenderFilter('Male')} 
+                    style={{ padding: '6px 4px', borderRadius: '6px', fontSize: '0.78rem', fontWeight: 800, border: 'none', background: genderFilter === 'Male' ? 'var(--primary-maroon)' : '#F1F5F9', color: genderFilter === 'Male' ? '#FFF' : 'var(--text-main)', cursor: 'pointer' }}>
+                    Grooms 🤵
+                  </button>
+                  <button 
+                    type="button"
+                    onClick={() => setGenderFilter('Female')} 
+                    style={{ padding: '6px 4px', borderRadius: '6px', fontSize: '0.78rem', fontWeight: 800, border: 'none', background: genderFilter === 'Female' ? 'var(--primary-maroon)' : '#F1F5F9', color: genderFilter === 'Female' ? '#FFF' : 'var(--text-main)', cursor: 'pointer' }}>
+                    Brides 👰
+                  </button>
+                </div>
+              </div>
+            )}
 
             {/* Religion Filter */}
             <div className="form-group">

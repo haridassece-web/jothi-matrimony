@@ -17,7 +17,7 @@ export default function AllianceDetailPage({ selectedProfileId, setActivePage })
   const [isPoruthamModalOpen, setIsPoruthamModalOpen] = useState(false);
   const [showRegFormSheet, setShowRegFormSheet] = useState(false);
 
-  const isAdmin = user?.role === 'ADMIN' || user?.isAdmin || user?.id === 'ADMIN_001';
+  const isAdmin = (typeof window !== 'undefined' && sessionStorage.getItem('jothi_admin_authenticated') === 'true') || user?.role === 'ADMIN' || user?.isAdmin || user?.id === 'ADMIN_001';
   const isRegistered = !!user && (user.registrationStatus === 'BASIC_REGISTERED' || user.registrationStatus === 'PAID_ACTIVE' || !!user.name);
   const isPaid = (user?.paymentStatus === 'PAID' || user?.membershipStatus === 'Active Paid Member' || user?.registrationStatus === 'PAID_ACTIVE');
   const canViewProfiles = isAdmin || isPaid;
