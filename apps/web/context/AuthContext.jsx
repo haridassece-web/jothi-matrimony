@@ -147,6 +147,8 @@ export function AuthProvider({ children }) {
       paymentStatus: 'UNPAID',
       is_paid_member: false,
       membershipStatus: 'Registered Member',
+      verified: true,
+      isVerified: true,
       createdAt: new Date().toISOString()
     };
 

@@ -7,7 +7,7 @@ import {
 } from 'lucide-react';
 
 export default function AdminPage({ setActivePage, onSelectProfile }) {
-  const { allProfiles, user, language, deleteProfile } = useAuth();
+  const { allProfiles, user, language, deleteProfile, updateFullProfile } = useAuth();
   
   const [isAdminAuthenticated, setIsAdminAuthenticated] = useState(() => {
     if (typeof window !== 'undefined') {
@@ -42,6 +42,14 @@ export default function AdminPage({ setActivePage, onSelectProfile }) {
   const handleAdminLock = () => {
     setIsAdminAuthenticated(false);
     sessionStorage.removeItem('jothi_admin_authenticated');
+  };
+
+  const isProfileVerified = (p) => {
+    if (!p) return false;
+    if (p.verified === false || p.isVerified === false) return false;
+    if (p.verified === true || p.isVerified === true || p.status === 'Verified') return true;
+    if (p.paymentStatus === 'PAID' || p.registrationStatus === 'PAID_ACTIVE' || p.is_paid_member || p.membershipStatus === 'Active Paid Member') return true;
+    return true;
   };
 
   if (!isAdminAuthenticated) {
@@ -89,7 +97,7 @@ export default function AdminPage({ setActivePage, onSelectProfile }) {
 
   // Admin summary statistics
   const totalProfiles = (profilesList || []).length;
-  const verifiedCount = (profilesList || []).filter(p => p && p.verified).length;
+  const verifiedCount = (profilesList || []).filter(p => p && isProfileVerified(p)).length;
   const bridesCount = (profilesList || []).filter(p => p && p.gender === 'Female').length;
   const groomsCount = (profilesList || []).filter(p => p && p.gender === 'Male').length;
   const totalRevenue = totalProfiles * 1000;
@@ -113,12 +121,15 @@ export default function AdminPage({ setActivePage, onSelectProfile }) {
   });
 
   const toggleVerify = (id) => {
-    setProfilesList(prev => prev.map(p => {
-      if (p.id === id) {
-        return { ...p, verified: !p.verified };
-      }
-      return p;
-    }));
+    const target = (profilesList || []).find(p => p.id === id);
+    if (!target) return;
+    const currentVerified = isProfileVerified(target);
+    const updated = { ...target, verified: !currentVerified, isVerified: !currentVerified };
+
+    setProfilesList(prev => prev.map(p => p.id === id ? updated : p));
+    if (updateFullProfile) {
+      updateFullProfile(updated);
+    }
   };
 
   const handleDeleteProfile = async (id) => {
@@ -334,20 +345,25 @@ export default function AdminPage({ setActivePage, onSelectProfile }) {
                         <div style={{ color: 'var(--text-muted)' }}>✉️ {profile.email}</div>
                       </td>
                       <td style={{ padding: '12px 10px' }}>
-                        <button 
-                          onClick={() => toggleVerify(profile.id)}
-                          style={{
-                            border: 'none',
-                            background: profile.verified ? '#DCFCE7' : '#FEF3C7',
-                            color: profile.verified ? '#166534' : '#92400E',
-                            padding: '3px 8px',
-                            borderRadius: '12px',
-                            fontSize: '0.75rem',
-                            fontWeight: 700,
-                            cursor: 'pointer'
-                          }}>
-                          {profile.verified ? '✓ Verified' : '⚠️ Pending'}
-                        </button>
+                        {(() => {
+                          const verified = isProfileVerified(profile);
+                          return (
+                            <button 
+                              onClick={() => toggleVerify(profile.id)}
+                              style={{
+                                border: 'none',
+                                background: verified ? '#DCFCE7' : '#FEF3C7',
+                                color: verified ? '#166534' : '#92400E',
+                                padding: '4px 10px',
+                                borderRadius: '12px',
+                                fontSize: '0.75rem',
+                                fontWeight: 700,
+                                cursor: 'pointer'
+                              }}>
+                              {verified ? '✓ Verified' : '⚠️ Pending'}
+                            </button>
+                          );
+                        })()}
                       </td>
                       <td style={{ padding: '12px 10px', textAlign: 'center' }}>
                         <div style={{ display: 'flex', justifyContent: 'center', gap: '0.4rem' }}>
