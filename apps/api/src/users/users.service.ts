@@ -26,7 +26,7 @@ export class UsersService {
 
     const profileObj = {
       id: cleanMobile || 'JM' + Math.floor(100000 + Math.random() * 900000),
-      regNo: 'JM202600' + Math.floor(1000 + Math.random() * 9000),
+      regNo: 'JM2026' + (cleanMobile.length >= 4 ? cleanMobile.slice(-4) : Math.floor(1000 + Math.random() * 9000)),
       name: cleanName,
       gender: gender || 'Male',
       dob: userDob,

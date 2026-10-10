@@ -49,6 +49,27 @@ export default function NextAdminPage() {
     sessionStorage.removeItem('jothi_admin_authenticated');
   };
 
+  const getDisplayRegNo = (profile) => {
+    if (!profile) return 'JM2026001001';
+    let reg = profile.regNo || '';
+    const cleanReg = reg.replace(/[\s\-\+]/g, '');
+
+    if (!reg || /^\d{10,12}$/.test(cleanReg)) {
+      const mobDigits = (profile.mobile || profile.phone || profile.id || cleanReg).replace(/\D/g, '');
+      if (mobDigits.length >= 4) {
+        reg = 'JM2026' + mobDigits.slice(-4);
+      } else {
+        reg = 'JM2026001001';
+      }
+    }
+
+    if (!reg.toUpperCase().startsWith('JM')) {
+      reg = 'JM' + reg;
+    }
+
+    return reg;
+  };
+
   const isProfileVerified = (p) => {
     if (!p) return false;
     if (p.verified === false || p.isVerified === false) return false;
@@ -321,7 +342,7 @@ export default function NextAdminPage() {
                   {filtered.map(profile => (
                     <tr key={profile.id} style={{ borderBottom: '1px solid #F1F5F9' }}>
                       <td style={{ padding: '12px 10px', fontWeight: 700, color: 'var(--primary-maroon)' }}>
-                        {profile.regNo || profile.id}
+                        {getDisplayRegNo(profile)}
                       </td>
                       <td style={{ padding: '12px 10px' }}>
                         <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
@@ -427,7 +448,7 @@ export default function NextAdminPage() {
                         PAY_RAZORPAY_889{i + 1}01
                       </td>
                       <td style={{ padding: '12px 10px', fontWeight: 700 }}>
-                        {profile.name} ({profile.regNo || profile.id})
+                        {profile.name} ({getDisplayRegNo(profile)})
                       </td>
                       <td style={{ padding: '12px 10px' }}>Razorpay UPI / Button pl_TjVL3MecrAQliL</td>
                       <td style={{ padding: '12px 10px', fontWeight: 800, color: '#166534' }}>₹1,000</td>

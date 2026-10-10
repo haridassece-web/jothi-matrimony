@@ -78,7 +78,7 @@ export function AuthProvider({ children }) {
 
   const registerBasicProfile = (basicData) => {
     const cleanMob = (basicData.mobile || '').replace(/\D/g, '');
-    const regId = 'JM202600' + Math.floor(1000 + Math.random() * 9000);
+    const regId = 'JM2026' + (cleanMob.length >= 4 ? cleanMob.slice(-4) : Math.floor(1000 + Math.random() * 9000));
     const primaryId = cleanMob ? cleanMob : regId;
 
     const birthYear = basicData.dob ? new Date(basicData.dob).getFullYear() : 1996;
