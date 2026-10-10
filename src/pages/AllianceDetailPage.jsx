@@ -23,7 +23,14 @@ export default function AllianceDetailPage({ selectedProfileId, setActivePage })
   const canViewProfiles = isAdmin || isPaid;
 
   // Find target profile
-  const profile = allProfiles.find(p => p.id === selectedProfileId) || allProfiles[0];
+  const cleanId = (selectedProfileId || '').replace(/[\s\-\+]/g, '').toLowerCase();
+  const profile = allProfiles.find(p => {
+    const pid = (p.id || '').replace(/[\s\-\+]/g, '').toLowerCase();
+    const pregNo = (p.regNo || '').replace(/[\s\-\+]/g, '').toLowerCase();
+    const pmob = (p.phone || p.mobile || '').replace(/[\s\-\+]/g, '').toLowerCase();
+    const pemail = (p.email || '').toLowerCase();
+    return cleanId === pid || cleanId === pregNo || cleanId === pmob || (pmob && pmob.includes(cleanId)) || cleanId === pemail;
+  }) || allProfiles[0];
   const photoList = (profile.photos && profile.photos.length) ? profile.photos : (profile.gallery && profile.gallery.length) ? profile.gallery : [profile.photo];
 
   const [selectedPhoto, setSelectedPhoto] = useState(profile.photo);

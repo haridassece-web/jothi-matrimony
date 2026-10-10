@@ -1,4 +1,4 @@
-import { Controller, Get, Param, Query, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Param, Query, Body, Delete } from '@nestjs/common';
 import { ProfilesService } from './profiles.service';
 
 @Controller('profiles')
@@ -17,6 +17,11 @@ export class ProfilesController {
   @Get(':id')
   getProfileById(@Param('id') id: string) {
     return this.profilesService.findOne(id);
+  }
+
+  @Post()
+  createOrUpdateProfile(@Body() profileData: any) {
+    return this.profilesService.saveProfile(profileData);
   }
 
   @Delete(':id')
