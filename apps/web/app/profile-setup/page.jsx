@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import { useAuth } from '../../context/AuthContext';
 import RasiChart from '../../components/RasiChart';
 import { CASTE_LIST, SUBCASTE_MAP, HEIGHT_LIST, RELIGION_LIST, EDUCATION_LIST, PROFESSION_LIST, INCOME_LIST } from '@jothi-matrimony/shared';
-import { NAKSHATRAS, RASIS, LAGNAMS, calculateThirukanithamHoroscope } from '@jothi-matrimony/shared';
+import { NAKSHATRAS, RASIS, LAGNAMS, calculateThirukanithamHoroscope, generateChartData } from '@jothi-matrimony/shared';
 import { CheckCircle2, User, Briefcase, Users, Sparkles, Image as ImageIcon, Heart, ArrowRight, ArrowLeft, Upload, Trash2, Plus, Star } from 'lucide-react';
 
 export default function ProfileSetupPage() {
@@ -15,9 +15,12 @@ export default function ProfileSetupPage() {
   const [activeStep, setActiveStep] = useState(1);
 
   const [form, setForm] = useState({
-    dob: user?.dob || '1998-07-12',
-    birthTime: user?.birthTime || '07:30 AM',
-    birthPlace: user?.birthPlace || 'Chennai',
+    name: user?.name || user?.fullName || 'K. Vignesh',
+    mobile: user?.mobile || user?.phone || '+91 98765 43210',
+    email: user?.email || 'vignesh.k@gmail.com',
+    dob: user?.dob || '1988-04-30',
+    birthTime: user?.birthTime || '10:10 PM',
+    birthPlace: user?.birthPlace || 'Tiruvannamalai',
     height: user?.height || "5' 9\" (175 cm)",
     maritalStatus: user?.maritalStatus || 'Never Married',
     motherTongue: user?.motherTongue || 'Tamil',
@@ -44,9 +47,9 @@ export default function ProfileSetupPage() {
     familyType: user?.family?.familyType || 'Nuclear Family',
     familyStatus: user?.family?.familyStatus || 'Upper Middle Class',
 
-    rasi: user?.rasi || 'Simmam (Leo)',
-    nakshatra: user?.nakshatra || 'Magam',
-    lagnam: user?.lagnam || 'Kanni (Virgo)',
+    rasi: user?.rasi || 'Thulaam (Libra)',
+    nakshatra: user?.nakshatra || 'Chithirai',
+    lagnam: user?.lagnam || 'Dhanusu (Sagittarius)',
     chevvaiDosham: user?.chevvaiDosham || 'No',
     rasiChart: user?.rasiChart,
     navamsamChart: user?.navamsamChart,
@@ -71,8 +74,7 @@ export default function ProfileSetupPage() {
     partnerNotes: user?.partnerPreferences?.notes || 'Looking for an educated, cultured, family-oriented partner with good moral values.'
   });
 
-  // Automatic Thirukanitham Panchangam calculation on birth details change
-  React.useEffect(() => {
+  const handleRecalculateHoroscope = () => {
     if (form.dob) {
       const computed = calculateThirukanithamHoroscope({
         dob: form.dob,
@@ -84,13 +86,87 @@ export default function ProfileSetupPage() {
           ...prev,
           rasi: computed.rasi,
           nakshatra: computed.nakshatra,
+          nakshatraFull: computed.nakshatraFull || `${computed.nakshatra} (${computed.padam}ஆம் பாதம் / Padam ${computed.padam})`,
           lagnam: computed.lagnam,
           rasiChart: computed.rasiChart,
           navamsamChart: computed.navamsamChart
         }));
       }
     }
+  };
+
+  // Automatic Thirukanitham Panchangam calculation on birth details change
+  React.useEffect(() => {
+    handleRecalculateHoroscope();
   }, [form.dob, form.birthTime, form.birthPlace]);
+
+  const updateChartsFromSelection = (updatedField, value) => {
+    const nextForm = { ...form, [updatedField]: value };
+    
+    let rasiChartData, navamsamChartData;
+
+    let computed = null;
+    if (nextForm.dob) {
+      computed = calculateThirukanithamHoroscope({
+        dob: nextForm.dob,
+        birthTime: nextForm.birthTime || "06:00 AM",
+        birthPlace: nextForm.birthPlace || "Chennai"
+      });
+    }
+
+    if (computed) {
+      rasiChartData = JSON.parse(JSON.stringify(computed.rasiChart));
+      navamsamChartData = JSON.parse(JSON.stringify(computed.navamsamChart));
+
+      const rasiIdx = RASIS.findIndex(r => r === nextForm.rasi);
+      const lagnamIdx = LAGNAMS.findIndex(l => l === nextForm.lagnam);
+      const nakshatraIdx = NAKSHATRAS.findIndex(n => nextForm.nakshatra?.includes(n));
+
+      const moveItem = (chartObj, itemName, targetBox) => {
+        for (let b = 1; b <= 12; b++) {
+          if (chartObj[b]) chartObj[b] = chartObj[b].filter(x => x !== itemName);
+        }
+        if (chartObj[targetBox] && !chartObj[targetBox].includes(itemName)) {
+          chartObj[targetBox].push(itemName);
+        }
+      };
+
+      if (lagnamIdx >= 0) {
+        const lagnaBox = ((lagnamIdx % 12) + 12) % 12 + 1;
+        const navLagnaBox = (Math.floor((lagnamIdx * 30 + 15) / 3.3333333333333335) % 12) + 1;
+        moveItem(rasiChartData, "Lagnam", lagnaBox);
+        moveItem(navamsamChartData, "Lagnam", navLagnaBox);
+      }
+
+      if (rasiIdx >= 0) {
+        const rasiBox = ((rasiIdx % 12) + 12) % 12 + 1;
+        moveItem(rasiChartData, "Chandran", rasiBox);
+      }
+
+      if (nakshatraIdx >= 0) {
+        const navMoonBox = ((nakshatraIdx * 4) % 12) + 1;
+        moveItem(navamsamChartData, "Chandran", navMoonBox);
+      }
+    } else {
+      const rasiIdx = RASIS.findIndex(r => r === nextForm.rasi);
+      const lagnamIdx = LAGNAMS.findIndex(l => l === nextForm.lagnam);
+      const nakshatraIdx = NAKSHATRAS.findIndex(n => nextForm.nakshatra?.includes(n));
+      const res = generateChartData({
+        rasiIndex: rasiIdx >= 0 ? rasiIdx : 0,
+        lagnamIndex: lagnamIdx >= 0 ? lagnamIdx : 0,
+        nakshatraIndex: nakshatraIdx >= 0 ? nakshatraIdx : 0
+      });
+      rasiChartData = res.rasiChartData;
+      navamsamChartData = res.navamsamChartData;
+    }
+
+    setForm(prev => ({
+      ...prev,
+      [updatedField]: value,
+      rasiChart: rasiChartData,
+      navamsamChart: navamsamChartData
+    }));
+  };
 
   const handlePhotoFileUpload = (e) => {
     const files = Array.from(e.target.files || []);
@@ -248,7 +324,43 @@ export default function ProfileSetupPage() {
                 Personal & Community Details
               </h3>
               
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+              {/* Full Name, Mobile Number, Email Address */}
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '1rem', marginBottom: '1.25rem' }}>
+                <div className="form-group">
+                  <label className="form-label">Full Name (பெயர்)</label>
+                  <input 
+                    type="text" 
+                    className="form-input" 
+                    placeholder="Enter full name..."
+                    value={form.name || ''} 
+                    onChange={(e) => setForm({...form, name: e.target.value})}
+                  />
+                </div>
+
+                <div className="form-group">
+                  <label className="form-label">Mobile Number (கைபேசி எண்)</label>
+                  <input 
+                    type="tel" 
+                    className="form-input" 
+                    placeholder="+91 98765 43210"
+                    value={form.mobile || ''} 
+                    onChange={(e) => setForm({...form, mobile: e.target.value})}
+                  />
+                </div>
+
+                <div className="form-group">
+                  <label className="form-label">Email Address (மின்னஞ்சல் முகவரி)</label>
+                  <input 
+                    type="email" 
+                    className="form-input" 
+                    placeholder="member@example.com"
+                    value={form.email || ''} 
+                    onChange={(e) => setForm({...form, email: e.target.value})}
+                  />
+                </div>
+              </div>
+
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '1rem' }}>
                 <div className="form-group">
                   <label className="form-label">Height</label>
                   <select 
@@ -491,9 +603,19 @@ export default function ProfileSetupPage() {
 
           {activeStep === 4 && (
             <div>
-              <h3 style={{ fontSize: '1.25rem', color: 'var(--primary-maroon)', marginBottom: '1.25rem' }}>
-                Birth & Horoscope Details (பிறந்த விவரங்கள் & ஜாதகம்)
-              </h3>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '0.75rem', marginBottom: '1.25rem' }}>
+                <h3 style={{ fontSize: '1.25rem', color: 'var(--primary-maroon)', margin: 0 }}>
+                  Birth & Horoscope Details (பிறந்த விவரங்கள் & ஜாதகம்)
+                </h3>
+                <button
+                  type="button"
+                  onClick={handleRecalculateHoroscope}
+                  className="btn btn-outline"
+                  style={{ fontSize: '0.85rem', padding: '0.4rem 0.85rem', color: 'var(--primary-maroon-dark)', borderColor: 'var(--border-gold)', display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+                  <Sparkles size={15} />
+                  <span>Auto-Calculate Panchangam</span>
+                </button>
+              </div>
 
               {/* DOB, TOB, Place of Birth */}
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '1rem', marginBottom: '1.25rem' }}>
@@ -512,7 +634,7 @@ export default function ProfileSetupPage() {
                   <input 
                     type="text" 
                     className="form-input" 
-                    placeholder=""
+                    placeholder="e.g. 10:10 PM"
                     value={form.birthTime || ''} 
                     onChange={(e) => setForm({...form, birthTime: e.target.value})}
                   />
@@ -523,7 +645,7 @@ export default function ProfileSetupPage() {
                   <input 
                     type="text" 
                     className="form-input" 
-                    placeholder=""
+                    placeholder="e.g. Tiruvannamalai"
                     value={form.birthPlace || ''} 
                     onChange={(e) => setForm({...form, birthPlace: e.target.value})}
                   />
@@ -537,7 +659,7 @@ export default function ProfileSetupPage() {
                   <select 
                     className="form-select"
                     value={form.rasi}
-                    onChange={(e) => setForm({...form, rasi: e.target.value})}>
+                    onChange={(e) => updateChartsFromSelection('rasi', e.target.value)}>
                     {RASIS.map((r, i) => (
                       <option key={i} value={r}>{r}</option>
                     ))}
@@ -549,7 +671,7 @@ export default function ProfileSetupPage() {
                   <select 
                     className="form-select"
                     value={form.nakshatra}
-                    onChange={(e) => setForm({...form, nakshatra: e.target.value})}>
+                    onChange={(e) => updateChartsFromSelection('nakshatra', e.target.value)}>
                     {NAKSHATRAS.map((n, i) => (
                       <option key={i} value={n}>{n}</option>
                     ))}
@@ -560,8 +682,8 @@ export default function ProfileSetupPage() {
                   <label className="form-label">Lagnam / Lakanam (லக்னம்)</label>
                   <select 
                     className="form-select"
-                    value={form.lagnam || 'Kanni (Virgo)'}
-                    onChange={(e) => setForm({...form, lagnam: e.target.value})}>
+                    value={form.lagnam || 'Dhanusu (Sagittarius)'}
+                    onChange={(e) => updateChartsFromSelection('lagnam', e.target.value)}>
                     {LAGNAMS.map((l, i) => (
                       <option key={i} value={l}>{l}</option>
                     ))}
@@ -574,7 +696,7 @@ export default function ProfileSetupPage() {
                   chartData={form.rasiChart} 
                   navamsamData={form.navamsamChart} 
                   rasiName={form.rasi} 
-                  nakshatra={form.nakshatra} 
+                  nakshatra={form.nakshatraFull || form.nakshatra} 
                   lagnam={form.lagnam} 
                 />
               </div>
