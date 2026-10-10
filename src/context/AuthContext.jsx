@@ -7,6 +7,17 @@ const AuthContext = createContext();
 
 const STORAGE_KEY = 'jothi_matrimony_state_v2';
 
+const getApiUrl = () => {
+  if (process.env.NEXT_PUBLIC_API_URL) return process.env.NEXT_PUBLIC_API_URL;
+  if (typeof window !== 'undefined') {
+    const host = window.location.hostname;
+    if (host === 'localhost' || host === '127.0.0.1' || host.startsWith('192.168.') || host.startsWith('10.')) {
+      return 'http://localhost:3001';
+    }
+  }
+  return 'https://jothi-matrimony.onrender.com';
+};
+
 export function AuthProvider({ children }) {
   const [isClient, setIsClient] = useState(false);
 
@@ -154,7 +165,7 @@ export function AuthProvider({ children }) {
 
     // Background sync to backend API
     try {
-      const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://jothi-matrimony.onrender.com';
+      const API_URL = getApiUrl();
       fetch(`${API_URL}/profiles`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -208,6 +219,23 @@ export function AuthProvider({ children }) {
       };
     });
 
+    try {
+      const API_URL = getApiUrl();
+      if (state.user) {
+        fetch(`${API_URL}/profiles`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            ...state.user,
+            paymentStatus: 'PAID',
+            membershipStatus: 'Active Paid Member',
+            is_paid_member: true,
+            registrationStatus: 'PAID_ACTIVE'
+          })
+        }).catch(err => console.warn('Payment profile sync warning:', err));
+      }
+    } catch (e) {}
+
     return paymentRecord;
   };
 
@@ -239,7 +267,7 @@ export function AuthProvider({ children }) {
     });
 
     try {
-      const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://jothi-matrimony.onrender.com';
+      const API_URL = getApiUrl();
       fetch(`${API_URL}/profiles`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -368,7 +396,7 @@ export function AuthProvider({ children }) {
   useEffect(() => {
     async function loadLiveProfiles() {
       try {
-        const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'https://jothi-matrimony.onrender.com';
+        const apiUrl = getApiUrl();
         const res = await fetch(`${apiUrl}/profiles`);
         if (res.ok) {
           const liveData = await res.json();
@@ -381,6 +409,10 @@ export function AuthProvider({ children }) {
       }
     }
     loadLiveProfiles();
+
+    // Poll live profiles every 5 seconds to keep all open browsers updated
+    const interval = setInterval(loadLiveProfiles, 5000);
+    return () => clearInterval(interval);
   }, []);
 
   const deletedSet = new Set(state.deletedProfileIds || []);
@@ -480,7 +512,7 @@ export function AuthProvider({ children }) {
     setLiveProfiles(prev => (prev || []).filter(p => p.id !== profileId));
 
     try {
-      const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://jothi-matrimony.onrender.com';
+      const API_URL = getApiUrl();
       await fetch(`${API_URL}/profiles/${profileId}`, { method: 'DELETE' });
     } catch (e) {
       // ignore offline/network errors

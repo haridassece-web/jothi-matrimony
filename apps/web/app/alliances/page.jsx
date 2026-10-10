@@ -43,13 +43,21 @@ export default function AlliancesPage() {
     : [];
 
   const filteredProfiles = allProfiles.filter(p => {
-    const matchSearch = p.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                        p.profession.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                        p.caste.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                        (p.education && p.education.toLowerCase().includes(searchTerm.toLowerCase())) ||
-                        (p.religion && p.religion.toLowerCase().includes(searchTerm.toLowerCase())) ||
-                        (p.subcaste && p.subcaste.toLowerCase().includes(searchTerm.toLowerCase())) ||
-                        p.id.toLowerCase().includes(searchTerm.toLowerCase());
+    const cleanSearch = searchTerm.trim().toLowerCase();
+    const cleanMob = cleanSearch.replace(/\D/g, '');
+
+    const matchSearch = !cleanSearch || 
+                        p.name.toLowerCase().includes(cleanSearch) ||
+                        (p.profession && p.profession.toLowerCase().includes(cleanSearch)) ||
+                        (p.caste && p.caste.toLowerCase().includes(cleanSearch)) ||
+                        (p.education && p.education.toLowerCase().includes(cleanSearch)) ||
+                        (p.religion && p.religion.toLowerCase().includes(cleanSearch)) ||
+                        (p.subcaste && p.subcaste.toLowerCase().includes(cleanSearch)) ||
+                        (cleanMob && p.mobile && p.mobile.replace(/\D/g, '').includes(cleanMob)) ||
+                        (cleanMob && p.phone && p.phone.replace(/\D/g, '').includes(cleanMob)) ||
+                        (p.regNo && p.regNo.toLowerCase().includes(cleanSearch)) ||
+                        p.id.toLowerCase().includes(cleanSearch);
+
     const matchReligion = selectedReligion === 'All Religions' || 
                           (p.religion && p.religion.toLowerCase().includes(selectedReligion.toLowerCase()));
     const matchCaste = selectedCaste === 'All Communities' || p.caste === selectedCaste;
@@ -57,19 +65,22 @@ export default function AlliancesPage() {
                           (p.subcaste && p.subcaste.toLowerCase().includes(selectedSubcaste.toLowerCase()));
     const matchEducation = selectedEducation === 'All Qualifications' || 
                            (p.education && p.education.toLowerCase().includes(selectedEducation.split('/')[0].trim().toLowerCase()));
-    const matchCity = selectedCity === 'All Cities' || p.city.includes(selectedCity);
+    const matchCity = selectedCity === 'All Cities' || (p.city && p.city.includes(selectedCity));
     const matchHeight = selectedHeight === 'All Heights' || (p.height && p.height.includes(selectedHeight.split(' ')[0]));
     
     let matchGender = true;
-    if (!isAdmin && isGroom) {
+    if (cleanSearch) {
+      matchGender = true;
+    } else if (genderFilter === 'All') {
+      matchGender = true;
+    } else if (genderFilter === 'Female') {
       matchGender = p.gender === 'Female';
-    } else if (!isAdmin && isBride) {
+    } else if (genderFilter === 'Male') {
       matchGender = p.gender === 'Male';
-    } else {
-      matchGender = genderFilter === 'All' || p.gender === genderFilter;
     }
 
-    const matchAge = p.age >= minAge && p.age <= maxAge;
+    const ageVal = p.age || (p.dob ? Math.max(18, new Date().getFullYear() - new Date(p.dob).getFullYear()) : 28);
+    const matchAge = ageVal >= minAge && ageVal <= maxAge;
 
     return matchSearch && matchReligion && matchCaste && matchSubcaste && matchEducation && matchCity && matchHeight && matchGender && matchAge;
   });
@@ -78,9 +89,9 @@ export default function AlliancesPage() {
   const isPaid = (user?.paymentStatus === 'PAID' || user?.membershipStatus === 'Active Paid Member' || user?.registrationStatus === 'PAID_ACTIVE');
   const canViewProfiles = isAdmin || isPaid;
 
-  const pageTitle = isGroom && !isAdmin
+  const pageTitle = genderFilter === 'Female'
     ? (language === 'ta' ? 'கிடைக்கக்கூடிய பெண் வரன்கள் (Brides)' : 'Available Bride Profiles (பெண் வரன்கள்)')
-    : isBride && !isAdmin
+    : genderFilter === 'Male'
     ? (language === 'ta' ? 'கிடைக்கக்கூடிய ஆண் வரன்கள் (Grooms)' : 'Available Groom Profiles (ஆண் வரன்கள்)')
     : (language === 'ta' ? 'அனைத்து வரன்கள் (Grooms & Brides)' : 'Available Alliances (Grooms & Brides)');
 
@@ -141,34 +152,32 @@ export default function AlliancesPage() {
               {pageTitle}
             </h1>
             <p style={{ color: 'var(--text-muted)', fontSize: '0.95rem' }}>
-              Showing <strong>{filteredProfiles.length}</strong> {isGroom && !isAdmin ? 'Bride (Female)' : isBride && !isAdmin ? 'Groom (Male)' : 'active verified'} profiles
+              Showing <strong>{filteredProfiles.length}</strong> {genderFilter === 'Female' ? 'Bride (Female)' : genderFilter === 'Male' ? 'Groom (Male)' : 'active verified'} profiles
             </p>
           </div>
 
-          <div style={{ display: 'flex', gap: '0.5rem' }}>
-            {isAdmin ? (
-              ['All', 'Female', 'Male'].map(g => (
-                <button 
-                  key={g}
-                  onClick={() => setGenderFilter(g)}
-                  style={{
-                    padding: '0.45rem 0.9rem',
-                    borderRadius: 'var(--radius-full)',
-                    border: genderFilter === g ? '1.5px solid var(--primary-maroon)' : '1px solid var(--border-light)',
-                    background: genderFilter === g ? 'var(--maroon-gradient)' : '#FFF',
-                    color: genderFilter === g ? '#FFF' : 'var(--text-main)',
-                    fontWeight: 600,
-                    fontSize: '0.85rem',
-                    cursor: 'pointer'
-                  }}>
-                  {g === 'All' ? '👑 All Profiles (Admin)' : g === 'Female' ? 'Brides (பெண்)' : 'Grooms (ஆண்)'}
-                </button>
-              ))
-            ) : (
-              <span className="badge badge-gold" style={{ padding: '0.5rem 1rem', fontSize: '0.85rem' }}>
-                {isGroom ? '👰 Showing Bride Profiles Only' : isBride ? '🤵 Showing Groom Profiles Only' : '✨ Verified Alliances'}
-              </span>
-            )}
+          <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
+            {[
+              { id: 'All', label: '👑 All Profiles (அனைத்து)' },
+              { id: 'Female', label: '👰 Brides (பெண்)' },
+              { id: 'Male', label: '🤵 Grooms (ஆண்)' }
+            ].map(g => (
+              <button 
+                key={g.id}
+                onClick={() => setGenderFilter(g.id)}
+                style={{
+                  padding: '0.45rem 0.9rem',
+                  borderRadius: 'var(--radius-full)',
+                  border: genderFilter === g.id ? '1.5px solid var(--primary-maroon)' : '1px solid var(--border-light)',
+                  background: genderFilter === g.id ? 'var(--maroon-gradient)' : '#FFF',
+                  color: genderFilter === g.id ? '#FFF' : 'var(--text-main)',
+                  fontWeight: 600,
+                  fontSize: '0.85rem',
+                  cursor: 'pointer'
+                }}>
+                {g.label}
+              </button>
+            ))}
           </div>
         </div>
 

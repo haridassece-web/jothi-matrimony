@@ -77,15 +77,15 @@ export default function AlliancesPage({ setActivePage, onSelectProfile }) {
 
     // Gender filter rule:
     // Groom (Male) sees ONLY Female (Bride) profiles.
-    // Bride (Female) sees ONLY Male (Groom) profiles.
-    // Admin manages both profiles.
     let matchGender = true;
-    if (!isAdmin && isGroom) {
+    if (searchTerm) {
+      matchGender = true;
+    } else if (genderFilter === 'All') {
+      matchGender = true;
+    } else if (genderFilter === 'Female') {
       matchGender = p.gender === 'Female';
-    } else if (!isAdmin && isBride) {
+    } else if (genderFilter === 'Male') {
       matchGender = p.gender === 'Male';
-    } else {
-      matchGender = genderFilter === 'All' || p.gender === genderFilter;
     }
 
     // Age filter
@@ -98,9 +98,9 @@ export default function AlliancesPage({ setActivePage, onSelectProfile }) {
   const isPaid = (user?.paymentStatus === 'PAID' || user?.membershipStatus === 'Active Paid Member' || user?.registrationStatus === 'PAID_ACTIVE');
   const canViewProfiles = isAdmin || isPaid;
 
-  const pageTitle = isGroom && !isAdmin
+  const pageTitle = genderFilter === 'Female'
     ? (language === 'ta' ? 'கிடைக்கக்கூடிய பெண் வரன்கள் (Brides)' : 'Available Bride Profiles (பெண் வரன்கள்)')
-    : isBride && !isAdmin
+    : genderFilter === 'Male'
     ? (language === 'ta' ? 'கிடைக்கக்கூடிய ஆண் வரன்கள் (Grooms)' : 'Available Groom Profiles (ஆண் வரன்கள்)')
     : (language === 'ta' ? 'அனைத்து வரன்கள் (Grooms & Brides)' : 'Available Alliances (Grooms & Brides)');
 
@@ -161,34 +161,32 @@ export default function AlliancesPage({ setActivePage, onSelectProfile }) {
               {pageTitle}
             </h1>
             <p style={{ color: 'var(--text-muted)', fontSize: '0.95rem' }}>
-              Showing <strong>{filteredProfiles.length}</strong> {isGroom && !isAdmin ? 'Bride (Female)' : isBride && !isAdmin ? 'Groom (Male)' : 'active verified'} profiles
+              Showing <strong>{filteredProfiles.length}</strong> {genderFilter === 'Female' ? 'Bride (Female)' : genderFilter === 'Male' ? 'Groom (Male)' : 'active verified'} profiles
             </p>
           </div>
 
-          <div style={{ display: 'flex', gap: '0.5rem' }}>
-            {isAdmin ? (
-              ['All', 'Female', 'Male'].map(g => (
-                <button 
-                  key={g}
-                  onClick={() => setGenderFilter(g)}
-                  style={{
-                    padding: '0.45rem 0.9rem',
-                    borderRadius: 'var(--radius-full)',
-                    border: genderFilter === g ? '1.5px solid var(--primary-maroon)' : '1px solid var(--border-light)',
-                    background: genderFilter === g ? 'var(--maroon-gradient)' : '#FFF',
-                    color: genderFilter === g ? '#FFF' : 'var(--text-main)',
-                    fontWeight: 600,
-                    fontSize: '0.85rem',
-                    cursor: 'pointer'
-                  }}>
-                  {g === 'All' ? '👑 All Profiles (Admin)' : g === 'Female' ? 'Brides (பெண்)' : 'Grooms (ஆண்)'}
-                </button>
-              ))
-            ) : (
-              <span className="badge badge-gold" style={{ padding: '0.5rem 1rem', fontSize: '0.85rem' }}>
-                {isGroom ? '👰 Showing Bride Profiles Only' : isBride ? '🤵 Showing Groom Profiles Only' : '✨ Verified Alliances'}
-              </span>
-            )}
+          <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
+            {[
+              { id: 'All', label: '👑 All Profiles (அனைத்து)' },
+              { id: 'Female', label: '👰 Brides (பெண்)' },
+              { id: 'Male', label: '🤵 Grooms (ஆண்)' }
+            ].map(g => (
+              <button 
+                key={g.id}
+                onClick={() => setGenderFilter(g.id)}
+                style={{
+                  padding: '0.45rem 0.9rem',
+                  borderRadius: 'var(--radius-full)',
+                  border: genderFilter === g.id ? '1.5px solid var(--primary-maroon)' : '1px solid var(--border-light)',
+                  background: genderFilter === g.id ? 'var(--maroon-gradient)' : '#FFF',
+                  color: genderFilter === g.id ? '#FFF' : 'var(--text-main)',
+                  fontWeight: 600,
+                  fontSize: '0.85rem',
+                  cursor: 'pointer'
+                }}>
+                {g.label}
+              </button>
+            ))}
           </div>
         </div>
 
