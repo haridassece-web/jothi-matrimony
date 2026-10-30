@@ -1988,6 +1988,112 @@ export const MOCK_PROFILES = [
     email: "senthamarai.m.jm@gmail.com",
     verified: true,
     joinedDate: "2026-04-08"
+  },
+  {
+    id: "JM2026VIP778",
+    regNo: "VIP-Family-778",
+    name: "N. Shruthilaya",
+    tamilName: "என். ஸ்ருதிலயா",
+    gender: "Female",
+    age: 26,
+    dob: "1999-08-27",
+    birthTime: "07:00 AM",
+    birthPlace: "Alandur, Chennai",
+    tamilMonth: "Aavani (ஆவணி)",
+    siblingPosition: "Only Daughter",
+    height: "5' 6\" (167 cm)",
+    complexion: "Fair / Wheatish (செந்நிறம்)",
+    maritalStatus: "Never Married",
+    motherTongue: "Tamil",
+    religion: "Hindu",
+    caste: "Vanniyar",
+    subcaste: "Vanniyakula Kshatriyar (VIP Family)",
+    gothram: "Siva Gothram (சிவ கோத்திரம்)",
+    education: "B.Sc. TCM / MBA (HR)",
+    institution: "Reputed B-School & Health Sciences College, Chennai",
+    profession: "TCM Management / Own Business",
+    company: "Own Business / Healthcare Management",
+    annualIncome: "₹1,200,000 / annum",
+    monthlyIncome: "₹1,00,000 / month (1 Lakh)",
+    city: "Chennai",
+    nativeTown: "Alandur, Chennai District (ஆலந்தூர்)",
+    state: "Tamil Nadu",
+    country: "India",
+    address: "Alandur, Chennai District, Tamil Nadu",
+    
+    // Horoscope details
+    rasi: "Kumbam (Aquarius)",
+    nakshatra: "Chathayam",
+    padam: "1",
+    lagnam: "Simmam (Leo)",
+    chevvaiDosham: "No",
+    horoscopeAvailable: true,
+    rasiChart: {
+      1: ["Mesham", "Guru", "Sani"],
+      2: ["Rishabam"],
+      3: ["Mithunam"],
+      4: ["Katakam", "Rahu", "Budhan", "Sukran"],
+      5: ["Simmam", "Lagnam", "Suriyan"],
+      6: ["Kanni"],
+      7: ["Thulaam"],
+      8: ["Vrichigam", "Sevvai"],
+      9: ["Dhanusu"],
+      10: ["Makaram", "Kethu"],
+      11: ["Kumbam", "Chandran"],
+      12: ["Meenam"]
+    },
+    navamsamChart: {
+      1: ["Mesham"],
+      2: ["Rishabam", "Budhan", "Sukran"],
+      3: ["Mithunam", "Suriyan", "Kethu"],
+      4: ["Katakam"],
+      5: ["Simmam", "Guru"],
+      6: ["Kanni", "Sani", "Sevvai"],
+      7: ["Thulaam"],
+      8: ["Vrichigam", "Lagnam"],
+      9: ["Dhanusu"],
+      10: ["Makaram"],
+      11: ["Kumbam", "Chandran", "Rahu"],
+      12: ["Meenam"]
+    },
+    
+    // Family Details
+    family: {
+      fatherName: "Thiru M. Nanthakumar",
+      fatherOccupation: "Real-Estate (Own Business)",
+      motherName: "Thirumathi Nanthakumar",
+      motherOccupation: "Homemaker (குடும்ப நிர்வாகம்)",
+      siblings: "None",
+      familyType: "Nuclear VIP Family",
+      familyValues: "Traditional / VIP Family",
+      familyStatus: "VIP / Upper Middle Class",
+      houseProperty: "Own House & Land in Chennai (சொந்த வீடு மற்றும் நிலம்)"
+    },
+    
+    // Partner Expectations
+    partnerPreferences: {
+      ageMin: 27,
+      ageMax: 33,
+      heightMin: "5' 8\"",
+      maritalStatus: "Never Married",
+      education: "B.E. / B.Tech / MBA / Post Graduate / Any Good Degree",
+      profession: "Software Professional / Business / Govt / Well-settled Professional",
+      location: "Chennai / Tamil Nadu / Bangalore / Abroad",
+      castePreference: "Vanniyar / Vanniyakula Kshatriyar",
+      horoscopeMatchReq: "Mandatory"
+    },
+    
+    photo: "/profiles/shruthilaya.jpg",
+    gallery: [
+      "/profiles/shruthilaya.jpg",
+      "/sheets/shruthilaya_sheet.jpg"
+    ],
+    about: "B.Sc. TCM / MBA (HR) qualified bride from an esteemed VIP Vanniyar family in Alandur, Chennai. Managing TCM business earning ₹1 Lakh per month. Father Thiru M. Nanthakumar runs own Real Estate business. Family owns house and land properties in Chennai. Seeking an educated, well-settled groom with good values from Vanniyar community.",
+    phone: "+91 94449 34527",
+    email: "shruthilaya.n.jm@gmail.com",
+    verified: true,
+    membershipStatus: "Active Paid Member",
+    joinedDate: "2026-04-18"
   }
 ];
 
