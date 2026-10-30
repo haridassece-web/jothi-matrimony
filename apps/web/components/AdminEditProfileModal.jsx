@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
   CASTE_LIST, SUBCASTE_MAP, HEIGHT_LIST, RELIGION_LIST, 
   EDUCATION_LIST, PROFESSION_LIST, INCOME_LIST,
@@ -9,7 +9,7 @@ import {
 } from '@jothi-matrimony/shared';
 import { 
   X, Save, User, MapPin, Briefcase, Users, Sparkles, 
-  ShieldCheck, Camera, Check, Upload, Trash2, CreditCard
+  ShieldCheck, Check, Upload
 } from 'lucide-react';
 
 export default function AdminEditProfileModal({ profile, onClose, onSave }) {
@@ -19,67 +19,74 @@ export default function AdminEditProfileModal({ profile, onClose, onSave }) {
   const [isSaving, setIsSaving] = useState(false);
   const [successMsg, setSuccessMsg] = useState('');
 
-  // Pre-populate form state with profile data
-  const [form, setForm] = useState({
-    id: profile.id,
-    regNo: profile.regNo || getDisplayRegNo(profile),
-    name: profile.name || '',
-    gender: profile.gender || 'Male',
-    dob: profile.dob || '1995-05-15',
-    birthTime: profile.birthTime || '07:30 AM',
-    birthPlace: profile.birthPlace || profile.city || 'Chennai',
-    age: profile.age || 29,
-    maritalStatus: profile.maritalStatus || 'Never Married',
-    motherTongue: profile.motherTongue || 'Tamil',
-    religion: profile.religion || 'Hindu',
-    height: profile.height || "5' 8\" (173 cm)",
+  const createInitialForm = (p) => ({
+    id: p?.id || '',
+    regNo: p?.regNo || getDisplayRegNo(p),
+    name: p?.name || '',
+    gender: p?.gender || 'Male',
+    dob: p?.dob || '1995-05-15',
+    birthTime: p?.birthTime || '07:30 AM',
+    birthPlace: p?.birthPlace || p?.city || 'Chennai',
+    age: p?.age || 29,
+    maritalStatus: p?.maritalStatus || 'Never Married',
+    motherTongue: p?.motherTongue || 'Tamil',
+    religion: p?.religion || 'Hindu',
+    height: p?.height || "5' 8\" (173 cm)",
 
     // Contact & Location
-    mobile: profile.mobile || profile.phone || '',
-    phone: profile.phone || profile.mobile || '',
-    email: profile.email || '',
-    city: profile.city || 'Chennai',
-    nativeTown: profile.nativeTown || profile.city || 'Chennai',
-    address: profile.address || '',
-    houseProperty: profile.houseProperty || 'Own House (சொந்த வீடு)',
+    mobile: p?.mobile || p?.phone || '',
+    phone: p?.phone || p?.mobile || '',
+    email: p?.email || '',
+    city: p?.city || 'Chennai',
+    nativeTown: p?.nativeTown || p?.city || 'Chennai',
+    address: p?.address || '',
+    houseProperty: p?.houseProperty || 'Own House (சொந்த வீடு)',
 
     // Caste & Horoscope
-    caste: profile.caste || 'Iyer',
-    subcaste: profile.subcaste || '',
-    gothram: profile.gothram || '',
-    rasi: profile.rasi || 'Mesham (Aries)',
-    nakshatra: profile.nakshatra || 'Ashwini',
-    lagnam: profile.lagnam || 'Mesham (Aries)',
-    chevvaiDosham: profile.chevvaiDosham || 'No',
-    rasiChart: profile.rasiChart || null,
-    navamsamChart: profile.navamsamChart || null,
+    caste: p?.caste || 'Iyer',
+    subcaste: p?.subcaste || '',
+    gothram: p?.gothram || '',
+    rasi: p?.rasi || 'Mesham (Aries)',
+    nakshatra: p?.nakshatra || 'Ashwini',
+    lagnam: p?.lagnam || 'Mesham (Aries)',
+    chevvaiDosham: p?.chevvaiDosham || 'No',
+    rasiChart: p?.rasiChart || null,
+    navamsamChart: p?.navamsamChart || null,
 
     // Education & Career
-    education: profile.education || 'B.Tech / Graduate',
-    institution: profile.institution || '',
-    profession: profile.profession || 'Software Engineer',
-    company: profile.company || '',
-    annualIncome: profile.annualIncome || '₹12,00,000 / annum',
+    education: p?.education || 'B.Tech / Graduate',
+    institution: p?.institution || '',
+    profession: p?.profession || 'Software Engineer',
+    company: p?.company || '',
+    annualIncome: p?.annualIncome || '₹12,00,000 / annum',
 
     // Family
-    fatherName: profile.fatherName || profile.family?.fatherName || '',
-    fatherOccupation: profile.fatherOccupation || profile.family?.fatherOccupation || 'Government / Private Employee',
-    motherName: profile.motherName || profile.family?.motherName || '',
-    motherOccupation: profile.motherOccupation || profile.family?.motherOccupation || 'Homemaker',
-    siblings: profile.siblings || profile.family?.siblings || '1 Brother',
-    familyType: profile.familyType || profile.family?.familyType || 'Nuclear Family',
-    familyStatus: profile.familyStatus || profile.family?.familyStatus || 'Upper Middle Class',
+    fatherName: p?.fatherName || p?.family?.fatherName || '',
+    fatherOccupation: p?.fatherOccupation || p?.family?.fatherOccupation || 'Government / Private Employee',
+    motherName: p?.motherName || p?.family?.motherName || '',
+    motherOccupation: p?.motherOccupation || p?.family?.motherOccupation || 'Homemaker',
+    siblings: p?.siblings || p?.family?.siblings || '1 Brother',
+    familyType: p?.familyType || p?.family?.familyType || 'Nuclear Family',
+    familyStatus: p?.familyStatus || p?.family?.familyStatus || 'Upper Middle Class',
 
     // Status & Photos
-    photo: profile.photo || '',
-    photos: Array.isArray(profile.photos) && profile.photos.length > 0 
-      ? profile.photos 
-      : [profile.photo || 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=600'],
-    about: profile.about || '',
-    verified: profile.verified !== false && profile.isVerified !== false,
-    paymentStatus: profile.paymentStatus || 'PAID',
-    membershipStatus: profile.membershipStatus || 'Active Paid Member'
+    photo: p?.photo || '',
+    photos: Array.isArray(p?.photos) && p.photos.length > 0 
+      ? p.photos 
+      : [p?.photo || 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=600'],
+    about: p?.about || '',
+    verified: p?.verified !== false && p?.isVerified !== false,
+    paymentStatus: p?.paymentStatus || 'PAID',
+    membershipStatus: p?.membershipStatus || 'Active Paid Member'
   });
+
+  const [form, setForm] = useState(() => createInitialForm(profile));
+
+  useEffect(() => {
+    if (profile) {
+      setForm(createInitialForm(profile));
+    }
+  }, [profile]);
 
   // Calculate age when DOB changes
   const handleDobChange = (e) => {
@@ -147,15 +154,23 @@ export default function AdminEditProfileModal({ profile, onClose, onSave }) {
 
   // Submit edits
   const handleSave = async (e) => {
-    e.preventDefault();
+    if (e && e.preventDefault) e.preventDefault();
+
+    if (!form.name || !form.name.trim()) {
+      alert('Please enter the profile Name before saving.');
+      setActiveTab('basic');
+      return;
+    }
+
     setIsSaving(true);
     setSuccessMsg('');
 
-    // Ensure family structure is consistent
     const updatedProfile = {
       ...profile,
       ...form,
-      phone: form.mobile,
+      name: form.name.trim(),
+      phone: form.mobile || form.phone,
+      mobile: form.mobile || form.phone,
       isVerified: form.verified,
       verified: form.verified,
       family: {
@@ -174,13 +189,13 @@ export default function AdminEditProfileModal({ profile, onClose, onSave }) {
       if (onSave) {
         await onSave(updatedProfile);
       }
-      setSuccessMsg('Profile updated successfully!');
+      setSuccessMsg('✅ Profile updated and saved successfully!');
       setTimeout(() => {
         if (onClose) onClose();
       }, 700);
     } catch (err) {
       console.error('Failed to save profile:', err);
-      alert('Error updating profile. Please try again.');
+      alert('Error updating profile: ' + (err.message || 'Please try again.'));
     } finally {
       setIsSaving(false);
     }
@@ -222,7 +237,9 @@ export default function AdminEditProfileModal({ profile, onClose, onSave }) {
           display: 'flex',
           justifyContent: 'space-between',
           alignItems: 'center',
-          borderBottom: '2px solid #FFD700'
+          borderBottom: '2px solid #FFD700',
+          flexWrap: 'wrap',
+          gap: '0.75rem'
         }}>
           <div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
@@ -234,28 +251,52 @@ export default function AdminEditProfileModal({ profile, onClose, onSave }) {
               </span>
             </div>
             <h2 style={{ fontSize: '1.4rem', margin: '0.3rem 0 0 0', fontWeight: 800, color: '#FFF' }}>
-              Editing Profile: {form.name || 'Member'}
+              Editing: {form.name || 'Member'}
             </h2>
           </div>
 
-          <button 
-            type="button"
-            onClick={onClose}
-            style={{
-              background: 'rgba(255,255,255,0.15)',
-              border: 'none',
-              color: '#FFF',
-              borderRadius: '50%',
-              width: '36px',
-              height: '36px',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              cursor: 'pointer',
-              transition: 'background 0.2s'
-            }}>
-            <X size={20} />
-          </button>
+          <div style={{ display: 'flex', gap: '0.6rem', alignItems: 'center' }}>
+            <button
+              type="button"
+              onClick={handleSave}
+              disabled={isSaving}
+              style={{
+                background: '#FFD700',
+                color: '#1A0D03',
+                border: 'none',
+                borderRadius: '8px',
+                padding: '6px 14px',
+                fontWeight: 800,
+                fontSize: '0.88rem',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '6px',
+                cursor: 'pointer',
+                boxShadow: '0 2px 8px rgba(0,0,0,0.2)'
+              }}>
+              <Save size={15} />
+              <span>{isSaving ? 'Saving...' : 'Save Changes'}</span>
+            </button>
+
+            <button 
+              type="button"
+              onClick={onClose}
+              style={{
+                background: 'rgba(255,255,255,0.15)',
+                border: 'none',
+                color: '#FFF',
+                borderRadius: '50%',
+                width: '36px',
+                height: '36px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                cursor: 'pointer',
+                transition: 'background 0.2s'
+              }}>
+              <X size={20} />
+            </button>
+          </div>
         </div>
 
         {/* Tab Buttons */}
@@ -336,12 +377,11 @@ export default function AdminEditProfileModal({ profile, onClose, onSave }) {
                   className="form-input"
                   value={form.name}
                   onChange={(e) => setForm({ ...form, name: e.target.value })}
-                  required
                 />
               </div>
 
               <div className="form-group">
-                <label className="form-label" style={{ fontWeight: 700 }}>Gender (பாலினம்) *</label>
+                <label className="form-label" style={{ fontWeight: 700 }}>Gender (பாலினம்)</label>
                 <select 
                   className="form-select"
                   value={form.gender}
@@ -352,18 +392,17 @@ export default function AdminEditProfileModal({ profile, onClose, onSave }) {
               </div>
 
               <div className="form-group">
-                <label className="form-label" style={{ fontWeight: 700 }}>Date of Birth (பிறந்த தேதி) *</label>
+                <label className="form-label" style={{ fontWeight: 700 }}>Date of Birth (பிறந்த தேதி)</label>
                 <input 
                   type="date" 
                   className="form-input"
                   value={form.dob}
                   onChange={handleDobChange}
-                  required
                 />
               </div>
 
               <div className="form-group">
-                <label className="form-label" style={{ fontWeight: 700 }}>Age (வயது) *</label>
+                <label className="form-label" style={{ fontWeight: 700 }}>Age (வயது)</label>
                 <input 
                   type="number" 
                   className="form-input"
@@ -371,7 +410,6 @@ export default function AdminEditProfileModal({ profile, onClose, onSave }) {
                   onChange={(e) => setForm({ ...form, age: parseInt(e.target.value) || 25 })}
                   min={18}
                   max={80}
-                  required
                 />
               </div>
 
@@ -432,14 +470,13 @@ export default function AdminEditProfileModal({ profile, onClose, onSave }) {
           {activeTab === 'contact' && (
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: '1.25rem' }}>
               <div className="form-group">
-                <label className="form-label" style={{ fontWeight: 700 }}>Mobile / Phone Number *</label>
+                <label className="form-label" style={{ fontWeight: 700 }}>Mobile / Phone Number</label>
                 <input 
                   type="text" 
                   className="form-input"
                   value={form.mobile}
                   onChange={(e) => setForm({ ...form, mobile: e.target.value, phone: e.target.value })}
                   placeholder="+91 98400 12345"
-                  required
                 />
               </div>
 
@@ -455,14 +492,13 @@ export default function AdminEditProfileModal({ profile, onClose, onSave }) {
               </div>
 
               <div className="form-group">
-                <label className="form-label" style={{ fontWeight: 700 }}>Living City (வசிக்கும் நகரம்) *</label>
+                <label className="form-label" style={{ fontWeight: 700 }}>Living City (வசிக்கும் நகரம்)</label>
                 <input 
                   type="text" 
                   className="form-input"
                   value={form.city}
                   onChange={(e) => setForm({ ...form, city: e.target.value })}
                   placeholder="Chennai"
-                  required
                 />
               </div>
 
@@ -536,7 +572,7 @@ export default function AdminEditProfileModal({ profile, onClose, onSave }) {
 
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: '1.25rem' }}>
                 <div className="form-group">
-                  <label className="form-label" style={{ fontWeight: 700 }}>Community / Caste (இனம் / சாதி) *</label>
+                  <label className="form-label" style={{ fontWeight: 700 }}>Community / Caste (இனம் / சாதி)</label>
                   <select 
                     className="form-select"
                     value={form.caste}
@@ -647,7 +683,7 @@ export default function AdminEditProfileModal({ profile, onClose, onSave }) {
           {activeTab === 'career' && (
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: '1.25rem' }}>
               <div className="form-group">
-                <label className="form-label" style={{ fontWeight: 700 }}>Education / Degree (கல்வி) *</label>
+                <label className="form-label" style={{ fontWeight: 700 }}>Education / Degree (கல்வி)</label>
                 <select 
                   className="form-select"
                   value={form.education}
@@ -670,7 +706,7 @@ export default function AdminEditProfileModal({ profile, onClose, onSave }) {
               </div>
 
               <div className="form-group">
-                <label className="form-label" style={{ fontWeight: 700 }}>Profession / Job Role (தொழில்) *</label>
+                <label className="form-label" style={{ fontWeight: 700 }}>Profession / Job Role (தொழில்)</label>
                 <select 
                   className="form-select"
                   value={form.profession}
@@ -912,7 +948,8 @@ export default function AdminEditProfileModal({ profile, onClose, onSave }) {
             </button>
 
             <button 
-              type="submit" 
+              type="button" 
+              onClick={handleSave}
               className="btn btn-primary"
               disabled={isSaving}
               style={{
@@ -922,7 +959,8 @@ export default function AdminEditProfileModal({ profile, onClose, onSave }) {
                 padding: '0.65rem 1.5rem',
                 display: 'flex',
                 alignItems: 'center',
-                gap: '8px'
+                gap: '8px',
+                cursor: 'pointer'
               }}>
               <Save size={16} />
               <span>{isSaving ? 'Saving Changes...' : '💾 Save Profile Changes'}</span>
@@ -935,4 +973,3 @@ export default function AdminEditProfileModal({ profile, onClose, onSave }) {
     </div>
   );
 }
-

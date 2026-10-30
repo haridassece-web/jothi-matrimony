@@ -36,12 +36,15 @@ export default function NextAdminPage() {
   }, [allProfiles]);
 
   const handleAdminSaveProfile = async (updated) => {
+    setProfilesList(prev => prev.map(p => 
+      (p.id === updated.id || (updated.regNo && p.regNo === updated.regNo)) ? updated : p
+    ));
+
     if (adminUpdateProfile) {
       await adminUpdateProfile(updated);
     } else if (updateFullProfile) {
       await updateFullProfile(updated);
     }
-    setProfilesList(prev => prev.map(p => (p.id === updated.id || p.regNo === updated.regNo) ? updated : p));
   };
 
   const handleAdminLogin = (e) => {

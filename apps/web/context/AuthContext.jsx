@@ -278,9 +278,41 @@ export function AuthProvider({ children }) {
     } catch (e) {}
   };
 
-  const adminUpdateProfile = (profileData) => {
-    if (!profileData || !profileData.id) return;
+  const [adminEdits, setAdminEdits] = useState(() => {
+    if (typeof window !== 'undefined') {
+      try {
+        const savedEdits = localStorage.getItem('jothi_admin_edits');
+        return savedEdits ? JSON.parse(savedEdits) : {};
+      } catch (e) {
+        return {};
+      }
+    }
+    return {};
+  });
 
+  const adminUpdateProfile = async (profileData) => {
+    if (!profileData || !profileData.id) return { success: false };
+
+    // 1. Immediately persist to localStorage for instant local persistence
+    if (typeof window !== 'undefined') {
+      try {
+        const current = JSON.parse(localStorage.getItem('jothi_admin_edits') || '{}');
+        current[profileData.id] = profileData;
+        if (profileData.regNo) current[profileData.regNo] = profileData;
+        localStorage.setItem('jothi_admin_edits', JSON.stringify(current));
+      } catch (e) {
+        console.error('Failed to save admin edit to localStorage:', e);
+      }
+    }
+
+    // 2. Update adminEdits state immediately
+    setAdminEdits(prev => ({
+      ...prev,
+      [profileData.id]: profileData,
+      ...(profileData.regNo ? { [profileData.regNo]: profileData } : {})
+    }));
+
+    // 3. Update customProfiles in state
     setState(prev => {
       const isCurrentUser = prev.user && (
         prev.user.id === profileData.id || 
@@ -290,7 +322,7 @@ export function AuthProvider({ children }) {
 
       const currentCustom = prev.customProfiles || [];
       const matchIndex = currentCustom.findIndex(
-        p => p.id === profileData.id || p.regNo === profileData.regNo || (profileData.mobile && p.mobile === profileData.mobile)
+        p => p.id === profileData.id || (profileData.regNo && p.regNo === profileData.regNo)
       );
 
       let updatedCustom;
@@ -308,10 +340,11 @@ export function AuthProvider({ children }) {
       };
     });
 
+    // 4. Update liveProfiles in memory
     setLiveProfiles(prev => {
       const list = Array.isArray(prev) ? [...prev] : [];
       const idx = list.findIndex(
-        p => p.id === profileData.id || p.regNo === profileData.regNo || (profileData.mobile && p.mobile === profileData.mobile)
+        p => p.id === profileData.id || (profileData.regNo && p.regNo === profileData.regNo)
       );
       if (idx >= 0) {
         list[idx] = { ...list[idx], ...profileData };
@@ -320,14 +353,20 @@ export function AuthProvider({ children }) {
       return [{ ...profileData }, ...list];
     });
 
+    // 5. Sync to backend API
     try {
       const API_URL = getApiUrl();
-      fetch(`${API_URL}/profiles`, {
+      const res = await fetch(`${API_URL}/profiles`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(profileData)
-      }).catch(err => console.warn('API admin profile save warning:', err));
-    } catch (e) {}
+      });
+      const data = await res.json();
+      return { success: true, profile: profileData, data };
+    } catch (err) {
+      console.warn('API admin profile save warning:', err);
+      return { success: true, profile: profileData, offline: true };
+    }
   };
 
   const toggleShortlist = (profileId) => {
@@ -470,16 +509,67 @@ export function AuthProvider({ children }) {
   }, []);
 
   const deletedSet = new Set(state.deletedProfileIds || []);
-  const combinedMockAndLive = Array.isArray(liveProfiles) && liveProfiles.length > 0
-    ? [...MOCK_PROFILES, ...liveProfiles.filter(lp => !MOCK_PROFILES.some(mp => mp.id === lp.id))]
-    : MOCK_PROFILES;
 
-  const filteredCombined = combinedMockAndLive.filter(p => !deletedSet.has(p.id));
-  const customProfiles = (state.customProfiles || []).filter(p => !deletedSet.has(p.id));
+  // 1. Merge MOCK_PROFILES with live server data so updates to mock profiles from backend are preserved
+  const serverProfiles = Array.isArray(liveProfiles) && liveProfiles.length > 0 ? liveProfiles : [];
+  
+  const baseCombined = MOCK_PROFILES.map(mp => {
+    const liveMatch = serverProfiles.find(lp => 
+      (lp.id && String(lp.id).toLowerCase() === String(mp.id).toLowerCase()) ||
+      (lp.regNo && mp.regNo && String(lp.regNo).toLowerCase() === String(mp.regNo).toLowerCase())
+    );
+    return liveMatch ? { ...mp, ...liveMatch } : mp;
+  });
 
-  const allProfiles = (state.user && !deletedSet.has(state.user.id))
-    ? [state.user, ...customProfiles.filter(cp => cp.id !== state.user.id), ...filteredCombined.filter(p => p.id !== state.user.id && !customProfiles.some(cp => cp.id === p.id))]
-    : [...customProfiles, ...filteredCombined.filter(p => !customProfiles.some(cp => cp.id === p.id))];
+  // Add any profiles that were created live on the server
+  const extraLiveProfiles = serverProfiles.filter(lp => 
+    !baseCombined.some(bp => 
+      (bp.id && String(bp.id).toLowerCase() === String(lp.id).toLowerCase()) ||
+      (bp.regNo && lp.regNo && String(bp.regNo).toLowerCase() === String(lp.regNo).toLowerCase())
+    )
+  );
+  
+  const mergedBase = [...baseCombined, ...extraLiveProfiles];
+
+  // 2. Apply admin edits (persisted synchronously in localStorage jothi_admin_edits)
+  const withAdminEdits = mergedBase.map(p => {
+    const edit = adminEdits[p.id] || (p.regNo && adminEdits[p.regNo]);
+    return edit ? { ...p, ...edit } : p;
+  });
+
+  // 3. Filter out deleted profiles
+  const filteredLive = withAdminEdits.filter(p => !deletedSet.has(p.id) && !(p.regNo && deletedSet.has(p.regNo)));
+
+  // 4. Merge customProfiles (user registrations)
+  const customList = (state.customProfiles || []).filter(cp => !deletedSet.has(cp.id) && !(cp.regNo && deletedSet.has(cp.regNo)));
+
+  const finalProfiles = filteredLive.map(p => {
+    const cpMatch = customList.find(cp => 
+      (cp.id && String(cp.id).toLowerCase() === String(p.id).toLowerCase()) ||
+      (cp.regNo && p.regNo && String(cp.regNo).toLowerCase() === String(p.regNo).toLowerCase())
+    );
+    return cpMatch ? { ...p, ...cpMatch } : p;
+  });
+
+  const extraCustom = customList.filter(cp => 
+    !finalProfiles.some(fp => 
+      (fp.id && String(fp.id).toLowerCase() === String(cp.id).toLowerCase()) ||
+      (fp.regNo && cp.regNo && String(fp.regNo).toLowerCase() === String(cp.regNo).toLowerCase())
+    )
+  );
+
+  let computedProfiles = [...extraCustom, ...finalProfiles];
+
+  if (state.user && !deletedSet.has(state.user.id)) {
+    const userIdx = computedProfiles.findIndex(p => p.id === state.user.id || (state.user.regNo && p.regNo === state.user.regNo));
+    if (userIdx >= 0) {
+      computedProfiles[userIdx] = { ...computedProfiles[userIdx], ...state.user };
+    } else {
+      computedProfiles = [state.user, ...computedProfiles];
+    }
+  }
+
+  const allProfiles = computedProfiles;
 
   const login = async (identifier) => {
     const input = (identifier || '').trim().toLowerCase();

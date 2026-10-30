@@ -36,9 +36,20 @@ export class ProfilesService {
       return { success: false, message: 'Invalid profile data' };
     }
 
-    const existingIdx = this.profiles.findIndex(
-      p => p.id === profileData.id || p.regNo === profileData.regNo || p.mobile === profileData.mobile
-    );
+    const cleanId = String(profileData.id || '').trim().toLowerCase();
+    const cleanRegNo = String(profileData.regNo || '').trim().toLowerCase();
+    const cleanMob = String(profileData.mobile || profileData.phone || '').replace(/\D/g, '');
+
+    const existingIdx = this.profiles.findIndex(p => {
+      const pId = String(p.id || '').trim().toLowerCase();
+      const pRegNo = String(p.regNo || '').trim().toLowerCase();
+      const pMob = String(p.mobile || p.phone || '').replace(/\D/g, '');
+
+      if (cleanId && pId && cleanId === pId) return true;
+      if (cleanRegNo && pRegNo && cleanRegNo === pRegNo) return true;
+      if (cleanMob && pMob && cleanMob.length >= 7 && pMob.length >= 7 && cleanMob === pMob) return true;
+      return false;
+    });
 
     if (existingIdx >= 0) {
       this.profiles[existingIdx] = { ...this.profiles[existingIdx], ...profileData };
