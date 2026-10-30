@@ -5,13 +5,14 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '../../context/AuthContext';
 import { CASTE_LIST, CITIES_LIST, HEIGHT_LIST, SUBCASTE_MAP, RELIGION_LIST, EDUCATION_LIST } from '@jothi-matrimony/shared';
-import { Search, Filter, Star, Heart, Eye, Sparkles, Trash2, ShieldCheck } from 'lucide-react';
+import AdminEditProfileModal from '../../components/AdminEditProfileModal';
+import { Search, Filter, Star, Heart, Eye, Sparkles, Trash2, ShieldCheck, Edit3 } from 'lucide-react';
 
 export default function AlliancesPage() {
   const router = useRouter();
   const { 
     allProfiles, shortlist, interests, user,
-    toggleShortlist, sendInterest, language, deleteProfile 
+    toggleShortlist, sendInterest, language, deleteProfile, adminUpdateProfile 
   } = useAuth();
 
   const isAdmin = (typeof window !== 'undefined' && sessionStorage.getItem('jothi_admin_authenticated') === 'true') || user?.role === 'ADMIN' || user?.isAdmin || user?.id === 'ADMIN_001';
@@ -28,6 +29,7 @@ export default function AlliancesPage() {
   const [selectedCity, setSelectedCity] = useState('All Cities');
   const [selectedHeight, setSelectedHeight] = useState('All Heights');
   const [genderFilter, setGenderFilter] = useState(defaultGender);
+  const [editingProfile, setEditingProfile] = useState(null);
   const [minAge, setMinAge] = useState(20);
   const [maxAge, setMaxAge] = useState(40);
 
@@ -391,33 +393,63 @@ export default function AlliancesPage() {
                             border: '1px solid var(--border-light)'
                           }}
                         />
-                        <button 
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            if (window.confirm(`Admin Action: Delete profile "${profile.name}" (${profile.id})? Once deleted, it will never show again on the live site.`)) {
-                              deleteProfile(profile.id);
-                            }
-                          }}
-                          title="Admin Delete Profile (Permanently removes from live site)"
-                          style={{
-                            position: 'absolute',
-                            top: '10px',
-                            left: '10px',
-                            background: '#FEE2E2',
-                            color: '#991B1B',
-                            border: '1px solid #FCA5A5',
-                            borderRadius: '50%',
-                            width: '34px',
-                            height: '34px',
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            cursor: 'pointer',
-                            boxShadow: '0 2px 6px rgba(0,0,0,0.15)',
-                            zIndex: 2
-                          }}>
-                          <Trash2 size={16} />
-                        </button>
+                        {isAdmin && (
+                          <>
+                            <button 
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                if (window.confirm(`Admin Action: Delete profile "${profile.name}" (${profile.id})? Once deleted, it will never show again on the live site.`)) {
+                                  deleteProfile(profile.id);
+                                }
+                              }}
+                              title="Admin Delete Profile (Permanently removes from live site)"
+                              style={{
+                                position: 'absolute',
+                                top: '10px',
+                                left: '10px',
+                                background: '#FEE2E2',
+                                color: '#991B1B',
+                                border: '1px solid #FCA5A5',
+                                borderRadius: '50%',
+                                width: '34px',
+                                height: '34px',
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                cursor: 'pointer',
+                                boxShadow: '0 2px 6px rgba(0,0,0,0.15)',
+                                zIndex: 2
+                              }}>
+                              <Trash2 size={16} />
+                            </button>
+
+                            <button 
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                setEditingProfile(profile);
+                              }}
+                              title="Admin Edit Profile (நிர்வாகி திருத்துதல்)"
+                              style={{
+                                position: 'absolute',
+                                top: '10px',
+                                left: '48px',
+                                background: '#0284C7',
+                                color: '#FFF',
+                                border: '1px solid #0369A1',
+                                borderRadius: '50%',
+                                width: '34px',
+                                height: '34px',
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                cursor: 'pointer',
+                                boxShadow: '0 2px 6px rgba(0,0,0,0.15)',
+                                zIndex: 2
+                              }}>
+                              <Edit3 size={16} />
+                            </button>
+                          </>
+                        )}
 
                         <button 
                           onClick={() => toggleShortlist(profile.id)}
@@ -514,6 +546,19 @@ export default function AlliancesPage() {
         </div>
 
       </div>
+
+      {editingProfile && (
+        <AdminEditProfileModal
+          profile={editingProfile}
+          onClose={() => setEditingProfile(null)}
+          onSave={async (updated) => {
+            if (adminUpdateProfile) {
+              await adminUpdateProfile(updated);
+            }
+          }}
+        />
+      )}
+
     </div>
   );
 }

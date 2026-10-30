@@ -6,9 +6,10 @@ import { useRouter } from 'next/navigation';
 import { useAuth } from '../../../context/AuthContext';
 import RasiChart from '../../../components/RasiChart';
 import PoruthamModal from '../../../components/PoruthamModal';
+import AdminEditProfileModal from '../../../components/AdminEditProfileModal';
 import { 
   Star, Heart, Phone, Mail, MapPin, Briefcase, GraduationCap, 
-  Users, Sparkles, ShieldCheck, Lock, CheckCircle2, ArrowLeft, MessageSquare, Trash2 
+  Users, Sparkles, ShieldCheck, Lock, CheckCircle2, ArrowLeft, MessageSquare, Trash2, Edit3 
 } from 'lucide-react';
 
 export default function AllianceDetailPage({ params }) {
@@ -18,10 +19,11 @@ export default function AllianceDetailPage({ params }) {
 
   const { 
     user, allProfiles, shortlist, interests, unlockedContacts,
-    toggleShortlist, sendInterest, unlockContact, language, deleteProfile 
+    toggleShortlist, sendInterest, unlockContact, language, deleteProfile, adminUpdateProfile 
   } = useAuth();
 
   const [isPoruthamModalOpen, setIsPoruthamModalOpen] = useState(false);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
 
   const isAdmin = (typeof window !== 'undefined' && sessionStorage.getItem('jothi_admin_authenticated') === 'true') || user?.role === 'ADMIN' || user?.isAdmin || user?.id === 'ADMIN_001';
   const isRegistered = !!user && (user.registrationStatus === 'BASIC_REGISTERED' || user.registrationStatus === 'PAID_ACTIVE' || !!user.name);
@@ -251,6 +253,16 @@ export default function AllianceDetailPage({ params }) {
                   <span>{isSaved ? 'Shortlisted' : '♡ SHORTLIST'}</span>
                 </button>
 
+                {isAdmin && (
+                  <button 
+                    onClick={() => setIsEditModalOpen(true)}
+                    className="btn btn-lg"
+                    style={{ background: '#0284C7', color: '#FFF', border: '1px solid #0369A1' }}>
+                    <Edit3 size={18} />
+                    <span>✏️ Edit Profile (Admin)</span>
+                  </button>
+                )}
+
                 <button 
                   onClick={async () => {
                     if (window.confirm(`Admin Action: Delete profile "${profile.name}" (${profile.id}) permanently from live site? It will NOT show again on any list.`)) {
@@ -458,6 +470,18 @@ export default function AllianceDetailPage({ params }) {
         targetProfile={profile}
         onSendInterest={(id) => sendInterest(id)}
       />
+
+      {isEditModalOpen && (
+        <AdminEditProfileModal
+          profile={profile}
+          onClose={() => setIsEditModalOpen(false)}
+          onSave={async (updated) => {
+            if (adminUpdateProfile) {
+              await adminUpdateProfile(updated);
+            }
+          }}
+        />
+      )}
 
     </div>
   );

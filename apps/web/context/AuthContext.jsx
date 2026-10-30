@@ -278,6 +278,58 @@ export function AuthProvider({ children }) {
     } catch (e) {}
   };
 
+  const adminUpdateProfile = (profileData) => {
+    if (!profileData || !profileData.id) return;
+
+    setState(prev => {
+      const isCurrentUser = prev.user && (
+        prev.user.id === profileData.id || 
+        prev.user.regNo === profileData.regNo || 
+        (profileData.mobile && prev.user.mobile === profileData.mobile)
+      );
+
+      const currentCustom = prev.customProfiles || [];
+      const matchIndex = currentCustom.findIndex(
+        p => p.id === profileData.id || p.regNo === profileData.regNo || (profileData.mobile && p.mobile === profileData.mobile)
+      );
+
+      let updatedCustom;
+      if (matchIndex >= 0) {
+        updatedCustom = [...currentCustom];
+        updatedCustom[matchIndex] = { ...updatedCustom[matchIndex], ...profileData };
+      } else {
+        updatedCustom = [{ ...profileData }, ...currentCustom];
+      }
+
+      return {
+        ...prev,
+        user: isCurrentUser ? { ...prev.user, ...profileData } : prev.user,
+        customProfiles: updatedCustom
+      };
+    });
+
+    setLiveProfiles(prev => {
+      const list = Array.isArray(prev) ? [...prev] : [];
+      const idx = list.findIndex(
+        p => p.id === profileData.id || p.regNo === profileData.regNo || (profileData.mobile && p.mobile === profileData.mobile)
+      );
+      if (idx >= 0) {
+        list[idx] = { ...list[idx], ...profileData };
+        return list;
+      }
+      return [{ ...profileData }, ...list];
+    });
+
+    try {
+      const API_URL = getApiUrl();
+      fetch(`${API_URL}/profiles`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(profileData)
+      }).catch(err => console.warn('API admin profile save warning:', err));
+    } catch (e) {}
+  };
+
   const toggleShortlist = (profileId) => {
     setState(prev => {
       const isSaved = prev.shortlist.includes(profileId);
@@ -538,7 +590,8 @@ export function AuthProvider({ children }) {
         logout,
         loginDemoUser,
         login,
-        deleteProfile
+        deleteProfile,
+        adminUpdateProfile
       }}
     >
       {children}

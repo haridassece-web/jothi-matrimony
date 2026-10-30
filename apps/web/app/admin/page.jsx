@@ -5,14 +5,15 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '../../context/AuthContext';
 import ChennaiJothiRegistrationForm from '../../components/ChennaiJothiRegistrationForm';
+import AdminEditProfileModal from '../../components/AdminEditProfileModal';
 import { 
   ShieldCheck, Users, CreditCard, Lock, Sparkles, Printer, 
-  Trash2, Eye, Plus, Search, Phone, Mail
+  Trash2, Eye, Plus, Search, Phone, Mail, Edit3
 } from 'lucide-react';
 
 export default function NextAdminPage() {
   const router = useRouter();
-  const { allProfiles, user, language, deleteProfile, updateFullProfile } = useAuth();
+  const { allProfiles, user, language, deleteProfile, updateFullProfile, adminUpdateProfile } = useAuth();
   
   const [isAdminAuthenticated, setIsAdminAuthenticated] = useState(() => {
     if (typeof window !== 'undefined') {
@@ -27,11 +28,21 @@ export default function NextAdminPage() {
   const [searchTerm, setSearchTerm] = useState('');
   const [adminGenderFilter, setAdminGenderFilter] = useState('All');
   const [selectedRegFormProfile, setSelectedRegFormProfile] = useState(null);
+  const [editingProfile, setEditingProfile] = useState(null);
   const [activeTab, setActiveTab] = useState('profiles');
 
   React.useEffect(() => {
     setProfilesList(allProfiles || []);
   }, [allProfiles]);
+
+  const handleAdminSaveProfile = async (updated) => {
+    if (adminUpdateProfile) {
+      await adminUpdateProfile(updated);
+    } else if (updateFullProfile) {
+      await updateFullProfile(updated);
+    }
+    setProfilesList(prev => prev.map(p => (p.id === updated.id || p.regNo === updated.regNo) ? updated : p));
+  };
 
   const handleAdminLogin = (e) => {
     e.preventDefault();
@@ -392,6 +403,14 @@ export default function NextAdminPage() {
                       </td>
                       <td style={{ padding: '12px 10px', textAlign: 'center' }}>
                         <div style={{ display: 'flex', justifyContent: 'center', gap: '0.4rem' }}>
+                          <button 
+                            onClick={() => setEditingProfile(profile)}
+                            title="Edit Profile (Admin Edit Access)"
+                            className="btn btn-outline btn-sm" 
+                            style={{ padding: '4px 8px', borderColor: '#2563EB', color: '#1D4ED8', background: '#EFF6FF' }}>
+                            <Edit3 size={14} />
+                          </button>
+
                           <Link 
                             href={`/alliances/${profile.id}`}
                             title="View Profile Details"
@@ -506,6 +525,15 @@ export default function NextAdminPage() {
             <ChennaiJothiRegistrationForm profile={selectedRegFormProfile} />
           </div>
         </div>
+      )}
+
+      {/* Admin Edit Profile Modal */}
+      {editingProfile && (
+        <AdminEditProfileModal 
+          profile={editingProfile}
+          onClose={() => setEditingProfile(null)}
+          onSave={handleAdminSaveProfile}
+        />
       )}
 
     </div>

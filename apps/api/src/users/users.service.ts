@@ -200,4 +200,39 @@ export class UsersService {
       user: fallbackUser
     };
   }
+
+  async updateUser(id: string, body: any) {
+    this.logger.log(`Received update request for user: ${id}`);
+    const updated = this.profilesService.saveProfile({ ...body, id });
+
+    let supabase;
+    try {
+      supabase = this.supabaseService.getClient();
+    } catch (err: any) {
+      this.logger.error(`Supabase client initialization error: ${err.message}`);
+    }
+
+    if (supabase) {
+      try {
+        const updateFields: any = {};
+        if (body.name || body.full_name) updateFields.full_name = body.name || body.full_name;
+        if (body.email) updateFields.email = body.email;
+        if (body.gender) updateFields.gender = body.gender;
+        if (body.dob || body.date_of_birth) updateFields.date_of_birth = body.dob || body.date_of_birth;
+        if (body.mobile || body.phone) updateFields.mobile = body.mobile || body.phone;
+
+        if (Object.keys(updateFields).length > 0) {
+          await supabase.from('users').update(updateFields).or(`mobile.eq.${id},id.eq.${id}`);
+        }
+      } catch (e: any) {
+        this.logger.warn(`Supabase DB Update Warning: ${e.message}`);
+      }
+    }
+
+    return {
+      success: true,
+      message: 'Profile updated successfully',
+      profile: updated
+    };
+  }
 }
