@@ -27,7 +27,7 @@ export default function AllianceDetailPage({ params }) {
 
   const isAdmin = (typeof window !== 'undefined' && sessionStorage.getItem('jothi_admin_authenticated') === 'true') || user?.role === 'ADMIN' || user?.isAdmin || user?.id === 'ADMIN_001';
   const isRegistered = !!user && (user.registrationStatus === 'BASIC_REGISTERED' || user.registrationStatus === 'PAID_ACTIVE' || !!user.name);
-  const isPaid = (user?.paymentStatus === 'PAID' || user?.membershipStatus === 'Active Paid Member' || user?.registrationStatus === 'PAID_ACTIVE');
+  const isPaid = user?.paymentStatus === 'PAID' && user?.registrationStatus === 'PAID_ACTIVE';
   const canViewProfiles = isAdmin || isPaid;
 
   const cleanId = (profileId || '').replace(/[\s\-\+]/g, '').toLowerCase();

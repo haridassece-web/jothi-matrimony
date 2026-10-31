@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
-import RazorpayModal from './components/RazorpayModal';
 import FloatingContactButtons from './components/FloatingContactButtons';
 
 // Pages
@@ -28,17 +27,12 @@ function AppContent() {
   
   const [activePage, setActivePage] = useState('home'); // 'home' | 'register' | 'payment' | 'payment-success' | 'profile-setup' | 'dashboard' | 'alliances' | 'alliance-detail' | 'interests' | 'shortlist' | 'messages' | 'profile' | 'how-it-works' | 'about'
   const [selectedProfileId, setSelectedProfileId] = useState('JM202600709');
-  const [isRazorpayOpen, setIsRazorpayOpen] = useState(false);
 
   const isPaidMember = registrationStatus === 'PAID_ACTIVE';
 
   const handleSelectProfile = (id) => {
     setSelectedProfileId(id);
     setActivePage('alliance-detail');
-  };
-
-  const handleRazorpaySuccess = () => {
-    setActivePage('payment-success');
   };
 
   // Protected pages logic
@@ -73,7 +67,7 @@ function AppContent() {
 
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
                   <button 
-                    onClick={() => setIsRazorpayOpen(true)} 
+                    onClick={() => setActivePage('payment')} 
                     className="btn btn-gold btn-lg btn-full pulse-button">
                     <Sparkles size={18} />
                     <span>[ Pay ₹1,000 via Razorpay ]</span>
@@ -93,7 +87,7 @@ function AppContent() {
             {activePage === 'home' && (
               <LandingPage 
                 setActivePage={setActivePage} 
-                onOpenRazorpay={() => setIsRazorpayOpen(true)} 
+                onOpenRazorpay={() => setActivePage('payment')} 
               />
             )}
 
@@ -108,7 +102,7 @@ function AppContent() {
             {activePage === 'payment' && (
               <PaymentPage 
                 setActivePage={setActivePage} 
-                onOpenRazorpay={() => setIsRazorpayOpen(true)} 
+                onOpenRazorpay={() => setActivePage('payment')} 
               />
             )}
 
@@ -259,12 +253,7 @@ function AppContent() {
 
       <FloatingContactButtons />
 
-      {/* Simulated Razorpay Modal */}
-      <RazorpayModal 
-        isOpen={isRazorpayOpen}
-        onClose={() => setIsRazorpayOpen(false)}
-        onSuccess={handleRazorpaySuccess}
-      />
+
     </div>
   );
 }

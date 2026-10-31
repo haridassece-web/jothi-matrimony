@@ -248,6 +248,50 @@ export default function ProfileSetupPage({ setActivePage }) {
     setActivePage('dashboard');
   };
 
+  const isAdmin = (typeof window !== 'undefined' && sessionStorage.getItem('jothi_admin_authenticated') === 'true') || user?.role === 'ADMIN' || user?.isAdmin;
+  const isPaid = user?.paymentStatus === 'PAID' && user?.registrationStatus === 'PAID_ACTIVE';
+  const canAccessProfileSetup = isAdmin || isPaid;
+
+  if (!canAccessProfileSetup) {
+    return (
+      <div style={{ padding: '4rem 0', minHeight: '85vh', background: 'var(--bg-silk)' }}>
+        <div className="container" style={{ maxWidth: '580px' }}>
+          <div className="card" style={{
+            padding: '3rem 2rem',
+            textAlign: 'center',
+            borderRadius: '16px',
+            border: '2px solid var(--border-gold)',
+            boxShadow: 'var(--shadow-lg)'
+          }}>
+            <div style={{
+              width: '72px', height: '72px', borderRadius: '50%',
+              background: 'linear-gradient(135deg, #7A0C2E 0%, #4A061B 100%)',
+              color: '#FFD700', display: 'flex', alignItems: 'center', justifyContent: 'center',
+              margin: '0 auto 1.5rem', border: '2px solid #D4AF37'
+            }}>
+              <Sparkles size={32} />
+            </div>
+
+            <h2 style={{ fontSize: '1.8rem', color: 'var(--primary-maroon-dark)', fontWeight: 800, marginBottom: '0.4rem' }}>
+              Registration Payment Required (₹1,000)
+            </h2>
+
+            <p style={{ color: 'var(--text-muted)', fontSize: '0.95rem', marginBottom: '1.75rem', lineHeight: 1.6 }}>
+              To complete your detailed matrimonial profile, upload gallery photos, and generate your Thirukanitham horoscope, please complete your ₹1,000 official registration fee online via Razorpay.
+            </p>
+
+            <button 
+              onClick={() => setActivePage && setActivePage('payment')}
+              className="btn btn-primary btn-full btn-lg" 
+              style={{ background: '#7A0C2E', padding: '0.85rem', fontWeight: 800 }}>
+              Pay ₹1,000 Online via Razorpay Now ➔
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div style={{ padding: '3.5rem 0', minHeight: '80vh' }}>
       <div className="container" style={{ maxWidth: '800px' }}>

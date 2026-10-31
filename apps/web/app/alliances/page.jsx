@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation';
 import { useAuth } from '../../context/AuthContext';
 import { CASTE_LIST, CITIES_LIST, HEIGHT_LIST, SUBCASTE_MAP, RELIGION_LIST, EDUCATION_LIST } from '@jothi-matrimony/shared';
 import AdminEditProfileModal from '../../components/AdminEditProfileModal';
-import { Search, Filter, Star, Heart, Eye, Sparkles, Trash2, ShieldCheck, Edit3 } from 'lucide-react';
+import { Search, Filter, Star, Heart, Eye, Sparkles, Trash2, ShieldCheck, Edit3, Lock, CreditCard } from 'lucide-react';
 
 export default function AlliancesPage() {
   const router = useRouter();
@@ -232,6 +232,77 @@ export default function AlliancesPage() {
           </div>
         </div>
 
+        {!canViewProfiles ? (
+          <div className="card" style={{
+            maxWidth: '680px',
+            margin: '2rem auto 4rem',
+            padding: '3rem 2.5rem',
+            textAlign: 'center',
+            borderRadius: '20px',
+            border: '2px solid var(--border-gold)',
+            boxShadow: 'var(--shadow-lg)',
+            background: 'linear-gradient(180deg, #FFFFFF 0%, #FFFDF7 100%)'
+          }}>
+            <div style={{
+              width: '80px', height: '80px', borderRadius: '50%',
+              background: 'linear-gradient(135deg, #7A0C2E 0%, #4A061B 100%)',
+              color: '#FFD700', display: 'flex', alignItems: 'center', justifyContent: 'center',
+              margin: '0 auto 1.5rem', border: '3px solid #D4AF37',
+              boxShadow: '0 6px 18px rgba(122, 12, 46, 0.25)'
+            }}>
+              <Lock size={38} />
+            </div>
+
+            <span className="badge badge-gold" style={{ marginBottom: '0.75rem', fontWeight: 800, fontSize: '0.85rem' }}>
+              🔒 ONLINE PAYMENT REQUIRED (₹1,000)
+            </span>
+
+            <h2 style={{ fontSize: '1.9rem', color: 'var(--primary-maroon-dark)', fontWeight: 800, marginBottom: '0.5rem' }}>
+              {language === 'ta' ? 'வரன்களைப் பார்க்க பதிவுக் கட்டணம் செலுத்தவும்' : 'Unlock Alliance Profiles (வரன்கள்)'}
+            </h2>
+
+            <p style={{ color: 'var(--text-muted)', fontSize: '0.96rem', lineHeight: 1.6, marginBottom: '1.75rem' }}>
+              {language === 'ta'
+                ? 'சென்னை ஜோதி திருமண தகவல் மைய விதிமுறைப்படி, ₹1,000 பதிவுக் கட்டணத்தை ஆன்லைனில் செலுத்திய பிறகே வரன்களின் முழு விவரங்கள், ஜாதகம் மற்றும் தொடர்புகளைப் பார்க்க முடியும்.'
+                : 'Per Chennai Jothi Matrimony official regulations, candidates must complete the ₹1,000 registration fee online via Razorpay to unlock and browse bride & groom alliance profiles, horoscope charts, and contact details.'}
+            </p>
+
+            <div style={{
+              background: '#FFF8E7', border: '1px solid #F0D999',
+              borderRadius: '12px', padding: '1.25rem', marginBottom: '2rem', textAlign: 'left'
+            }}>
+              <div style={{ fontWeight: 700, color: '#8C6A0A', marginBottom: '0.5rem', fontSize: '0.9rem' }}>
+                ⭐ What is included with ₹1,000 Registration Fee:
+              </div>
+              <ul style={{ margin: 0, paddingLeft: '1.25rem', fontSize: '0.88rem', color: '#4B5563', lineHeight: 1.8 }}>
+                <li>Access to authentic verified Bride & Groom profiles</li>
+                <li>Original photograph viewing & 1-page official registration sheet</li>
+                <li>Thirukanitham Horoscope matching & Rasi / Navamsam chart details</li>
+                <li>Direct mutual contact sharing & organizer assistance (Dr. Chandra Babu)</li>
+                <li>Day-by-Day WhatsApp Updates via +91 90437 73977</li>
+              </ul>
+            </div>
+
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.85rem' }}>
+              <Link 
+                href="/payment" 
+                className="btn btn-primary btn-full btn-lg" 
+                style={{ padding: '0.9rem', fontSize: '1.1rem', fontWeight: 800, background: '#7A0C2E' }}>
+                <CreditCard size={20} />
+                <span>{language === 'ta' ? '₹1,000 ஆன்லைனில் செலுத்தவும் (Pay Online) ➔' : 'Pay ₹1,000 Online via Razorpay Now ➔'}</span>
+              </Link>
+
+              <a 
+                href="https://wa.me/919043773977?text=Vanakkam!%20I%20want%20to%20complete%20my%20matrimony%20payment%20and%20activate%20my%20account."
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn btn-outline btn-full"
+                style={{ padding: '0.75rem', borderColor: '#25D366', color: '#166534', fontWeight: 700 }}>
+                <span>📲 WhatsApp Payment Verification (+91 90437 73977)</span>
+              </a>
+            </div>
+          </div>
+        ) : (
         <div className="alliances-grid">
           
           {/* Left Filters Sidebar */}
@@ -593,6 +664,7 @@ export default function AlliancesPage() {
           </div>
 
         </div>
+        )}
 
       </div>
 

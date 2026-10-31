@@ -3,15 +3,12 @@
 export const dynamic = 'force-dynamic';
 
 import React, { useState } from 'react';
-import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 import { useAuth } from '../../context/AuthContext';
-import RazorpayModal from '../../components/RazorpayModal';
-import CheckoutWrapper from '../../components/CheckoutWrapper';
 import RazorpayPaymentButton from '../../components/RazorpayPaymentButton';
-import { ShieldCheck, CheckCircle2, Lock, Sparkles, CreditCard, Landmark, Copy, Check } from 'lucide-react';
+import { ShieldCheck, CheckCircle2, Lock, Sparkles, CreditCard, Landmark, Copy, Check, AlertCircle } from 'lucide-react';
 
 export default function PaymentPage() {
-  const router = useRouter();
   const { user, registrationId, language } = useAuth();
   const [copiedField, setCopiedField] = useState(null);
 
@@ -29,222 +26,269 @@ export default function PaymentPage() {
     setTimeout(() => setCopiedField(null), 2000);
   };
 
+  const displayRegId = registrationId || user?.regNo || user?.id || 'JM2026001234';
+
   return (
-    <CheckoutWrapper onPaymentSuccess={() => router.push('/payment/success')}>
-      {({ handleOpenRazorpay, isProcessing }) => (
-        <div style={{ padding: '4rem 0', minHeight: '80vh', background: 'var(--bg-silk)' }}>
-          <div className="container" style={{ maxWidth: '540px' }}>
-            
-            {/* Header Notice */}
-            <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
-              <span className="badge badge-gold" style={{ marginBottom: '0.6rem', padding: '0.4rem 1rem' }}>
-                <Sparkles size={14} /> STEP 3: REGISTRATION PAYMENT
-              </span>
-              <h2 style={{ fontSize: '2.1rem', color: 'var(--primary-maroon-dark)', marginBottom: '0.4rem' }}>
-                {language === 'ta' ? 'பதிவுக் கட்டணம் ₹1,000' : 'Activate Your Matrimony Account'}
-              </h2>
-              <p style={{ color: 'var(--text-muted)', fontSize: '0.95rem' }}>
-                Registration ID: <strong style={{ color: 'var(--primary-maroon)' }}>{registrationId || user?.id || 'JM2026001234'}</strong>
-              </p>
-            </div>
+    <div style={{ padding: '3.5rem 0 5rem', minHeight: '85vh', background: 'var(--bg-silk)' }}>
+      <div className="container" style={{ maxWidth: '560px' }}>
+        
+        {/* Header Notice */}
+        <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
+          <span className="badge badge-gold" style={{ marginBottom: '0.6rem', padding: '0.4rem 1rem', fontWeight: 800 }}>
+            <Sparkles size={14} /> STEP 3: OFFICIAL REGISTRATION PAYMENT
+          </span>
+          <h2 style={{ fontSize: '2.1rem', color: 'var(--primary-maroon-dark)', marginBottom: '0.4rem', fontWeight: 800 }}>
+            {language === 'ta' ? 'பதிவுக் கட்டணம் ₹1,000 செலுத்தவும்' : 'Online Registration Payment (₹1,000)'}
+          </h2>
+          <p style={{ color: 'var(--text-muted)', fontSize: '0.95rem' }}>
+            Registration ID: <strong style={{ color: 'var(--primary-maroon)' }}>{displayRegId}</strong>
+          </p>
 
-            {/* Registration Payment Box */}
-            <div className="card" style={{
-              padding: '2.5rem 2rem',
-              borderRadius: 'var(--radius-lg)',
-              border: '2px solid var(--border-gold)',
-              boxShadow: 'var(--shadow-lg)',
-              textAlign: 'center',
-              background: 'linear-gradient(180deg, #FFFFFF 0%, #FFFDF9 100%)',
-              position: 'relative',
-              marginBottom: '2rem'
-            }}>
-              
-              <div style={{
-                fontSize: '1.25rem',
-                fontWeight: 800,
-                fontFamily: 'var(--font-heading)',
-                color: 'var(--primary-maroon-dark)',
-                letterSpacing: '0.05em',
-                marginBottom: '1rem'
-              }}>
-                CHENNAI JOTHI MATRIMONY
-              </div>
+          <div style={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: '6px',
+            background: '#FEF3C7',
+            border: '1px solid #FCD34D',
+            color: '#92400E',
+            padding: '6px 14px',
+            borderRadius: '20px',
+            fontSize: '0.82rem',
+            fontWeight: 700,
+            marginTop: '0.5rem'
+          }}>
+            <AlertCircle size={15} />
+            <span>Payment Status: Pending • Online payment required to unlock alliances</span>
+          </div>
+        </div>
 
-              <div style={{
-                fontSize: '0.9rem',
-                color: 'var(--text-muted)',
-                fontWeight: 600,
-                textTransform: 'uppercase',
-                letterSpacing: '0.05em',
-                marginBottom: '0.5rem'
-              }}>
-                1 Year Registration Fee
-              </div>
+        {/* Official Registration Payment Box */}
+        <div className="card" style={{
+          padding: '2.5rem 2rem',
+          borderRadius: 'var(--radius-lg)',
+          border: '2px solid var(--border-gold)',
+          boxShadow: 'var(--shadow-lg)',
+          textAlign: 'center',
+          background: 'linear-gradient(180deg, #FFFFFF 0%, #FFFDF9 100%)',
+          position: 'relative',
+          marginBottom: '2rem'
+        }}>
+          
+          <div style={{
+            fontSize: '1.25rem',
+            fontWeight: 800,
+            fontFamily: 'var(--font-heading)',
+            color: 'var(--primary-maroon-dark)',
+            letterSpacing: '0.05em',
+            marginBottom: '0.4rem'
+          }}>
+            CHENNAI JOTHI MATRIMONY
+          </div>
 
-              {/* Amount Badge */}
-              <div style={{
-                fontSize: '3.2rem',
-                fontWeight: 900,
-                color: 'var(--primary-maroon-dark)',
-                margin: '0.5rem 0 1.5rem',
-                lineHeight: 1
-              }}>
-                ₹1,000
-              </div>
+          <div style={{
+            fontSize: '0.85rem',
+            color: 'var(--text-muted)',
+            fontWeight: 600,
+            textTransform: 'uppercase',
+            letterSpacing: '0.05em',
+            marginBottom: '0.5rem'
+          }}>
+            Official 1-Year Registration & Membership Fee
+          </div>
 
-              {/* Benefits List */}
-              <div style={{
-                background: 'var(--bg-surface)',
-                border: '1px solid var(--border-light)',
-                borderRadius: 'var(--radius-md)',
-                padding: '1.25rem 1.5rem',
-                textAlign: 'left',
-                marginBottom: '2rem'
-              }}>
-                {[
-                  'Create Matrimony Profile',
-                  'View Available Alliances',
-                  'Search Profiles with Filters',
-                  'Send & Receive Unlimited Interests',
-                  'Check Horoscope Match',
-                  'Mutual Contact Details Sharing'
-                ].map((feature, i) => (
-                  <div key={i} style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '0.75rem',
-                    fontSize: '0.92rem',
-                    color: 'var(--text-main)',
-                    fontWeight: 600,
-                    marginBottom: i === 5 ? 0 : '0.65rem'
-                  }}>
-                    <CheckCircle2 size={18} color="#166534" />
-                    <span>{feature}</span>
-                  </div>
-                ))}
-              </div>
+          {/* Amount Badge */}
+          <div style={{
+            fontSize: '3.2rem',
+            fontWeight: 900,
+            color: 'var(--primary-maroon-dark)',
+            margin: '0.5rem 0 1.25rem',
+            lineHeight: 1
+          }}>
+            ₹1,000
+          </div>
 
-              {/* Embedded Razorpay Payment Button */}
-              <div style={{
-                background: '#F8FAFC',
-                border: '2px dashed #0284C7',
-                borderRadius: 'var(--radius-md)',
-                padding: '1rem',
-                marginBottom: '1.25rem',
-                textAlign: 'center'
-              }}>
-                <div style={{ fontSize: '0.85rem', fontWeight: 700, color: '#0369A1', marginBottom: '0.5rem' }}>
-                  💳 Pay via Official Razorpay Gateway Button (pl_TuQgSgXdvzHPKY)
-                </div>
-                <RazorpayPaymentButton paymentButtonId="pl_TuQgSgXdvzHPKY" />
-              </div>
-
-              {/* Fallback Custom Pay Button */}
-              <button 
-                onClick={handleOpenRazorpay}
-                type="button"
-                disabled={isProcessing}
-                className="btn btn-gold btn-full btn-lg pulse-button"
-                style={{ fontSize: '1.1rem', letterSpacing: '0.02em', marginBottom: '1rem', cursor: 'pointer' }}>
-                <CreditCard size={20} />
-                <span>{isProcessing ? 'INITIALIZING PAYMENT...' : '[ OPEN RAZORPAY UPI / CARDS MODAL ]'}</span>
-              </button>
-
-              <div style={{
+          {/* Benefits List */}
+          <div style={{
+            background: 'var(--bg-surface)',
+            border: '1px solid var(--border-light)',
+            borderRadius: 'var(--radius-md)',
+            padding: '1.25rem 1.5rem',
+            textAlign: 'left',
+            marginBottom: '2rem'
+          }}>
+            {[
+              'Unlock & Browse All Available Bride / Groom Alliances',
+              'View Original Photographs & Detailed Profile Sheets',
+              'Thirukanitham Horoscope Match & Rasi/Navamsam Charts',
+              'Mutual Contact Number & Parent Details Sharing',
+              'Day-by-Day WhatsApp Updates via +91 90437 73977',
+              'Personal Guidance by Organizer Dr. Chandra Babu'
+            ].map((feature, i) => (
+              <div key={i} style={{
                 display: 'flex',
                 alignItems: 'center',
-                justifyContent: 'center',
-                gap: '0.4rem',
-                fontSize: '0.8rem',
-                color: 'var(--text-muted)'
+                gap: '0.75rem',
+                fontSize: '0.90rem',
+                color: 'var(--text-main)',
+                fontWeight: 600,
+                marginBottom: i === 5 ? 0 : '0.65rem'
               }}>
-                <Lock size={14} color="var(--gold-dark)" />
-                <span>Razorpay 256-bit SSL Secure Payment & Server Verification</span>
+                <CheckCircle2 size={18} color="#166534" />
+                <span>{feature}</span>
               </div>
+            ))}
+          </div>
 
+          {/* OFFICIAL RAZORPAY PAYMENT GATEWAY BUTTON */}
+          <div style={{
+            background: '#F0F9FF',
+            border: '2px solid #0284C7',
+            borderRadius: '12px',
+            padding: '1.5rem 1.25rem',
+            marginBottom: '1.5rem',
+            textAlign: 'center'
+          }}>
+            <div style={{ fontSize: '0.95rem', fontWeight: 800, color: '#0369A1', marginBottom: '0.3rem', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px' }}>
+              <CreditCard size={18} />
+              <span>Official Online Payment Gateway (Razorpay)</span>
+            </div>
+            
+            <p style={{ fontSize: '0.84rem', color: '#475569', margin: '0 0 1rem 0' }}>
+              Pay securely via UPI (Google Pay, PhonePe, Paytm), Debit/Credit Cards, or NetBanking:
+            </p>
+
+            {/* Razorpay Button pl_TuQgSgXdvzHPKY */}
+            <div style={{ minHeight: '52px', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+              <RazorpayPaymentButton paymentButtonId="pl_TuQgSgXdvzHPKY" />
             </div>
 
-            {/* Direct Bank Account Transfer Card */}
-            <div className="card" style={{
-              padding: '1.75rem',
-              borderRadius: 'var(--radius-lg)',
-              border: '1px solid var(--border-light)',
-              background: '#FFFFFF',
-              boxShadow: 'var(--shadow-md)'
+            <div style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: '0.4rem',
+              fontSize: '0.76rem',
+              color: '#64748B',
+              marginTop: '0.85rem'
             }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', marginBottom: '1rem' }}>
-                <Landmark size={22} color="var(--primary-maroon)" />
-                <h3 style={{ fontSize: '1.15rem', color: 'var(--primary-maroon-dark)', margin: 0, fontWeight: 700 }}>
-                  Direct Bank Account Transfer (IMPS / NEFT / RTGS)
-                </h3>
+              <Lock size={13} color="#0284C7" />
+              <span>Direct Bank Settlement to Chennai Jothi Matrimony • 256-bit SSL</span>
+            </div>
+          </div>
+
+          <div style={{
+            background: '#FFFBEB',
+            border: '1px solid #FCD34D',
+            borderRadius: '8px',
+            padding: '0.85rem 1rem',
+            fontSize: '0.84rem',
+            color: '#B45309',
+            lineHeight: 1.5,
+            textAlign: 'left'
+          }}>
+            📌 <strong>Important Notice:</strong> Once your ₹1,000 online payment is completed on the Razorpay screen above, Razorpay will issue your receipt and automatically redirect you to complete your horoscope and browse alliances.
+          </div>
+
+        </div>
+
+        {/* Direct Bank Account Transfer Card (Alternative) */}
+        <div className="card" style={{
+          padding: '1.75rem',
+          borderRadius: 'var(--radius-lg)',
+          border: '1px solid var(--border-light)',
+          background: '#FFFFFF',
+          boxShadow: 'var(--shadow-md)',
+          marginBottom: '2rem'
+        }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', marginBottom: '1rem' }}>
+            <Landmark size={22} color="var(--primary-maroon)" />
+            <h3 style={{ fontSize: '1.15rem', color: 'var(--primary-maroon-dark)', margin: 0, fontWeight: 700 }}>
+              Direct Bank Account Transfer (IMPS / NEFT / RTGS)
+            </h3>
+          </div>
+
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+            
+            <div style={bankRowStyle}>
+              <span style={labelStyle}>Bank Name:</span>
+              <strong style={valueStyle}>{bankDetails.bankName}</strong>
+            </div>
+
+            <div style={bankRowStyle}>
+              <span style={labelStyle}>Account Holder:</span>
+              <strong style={valueStyle}>{bankDetails.accountName}</strong>
+            </div>
+
+            <div style={bankRowStyle}>
+              <span style={labelStyle}>Account Number:</span>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                <strong style={{ ...valueStyle, letterSpacing: '0.05em' }}>{bankDetails.accountNo}</strong>
+                <button
+                  type="button"
+                  onClick={() => handleCopy('acc', bankDetails.accountNo)}
+                  style={copyBtnStyle}>
+                  {copiedField === 'acc' ? <Check size={14} color="#166534" /> : <Copy size={14} />}
+                  <span>{copiedField === 'acc' ? 'Copied' : 'Copy'}</span>
+                </button>
               </div>
+            </div>
 
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
-                
-                <div style={bankRowStyle}>
-                  <span style={labelStyle}>Bank Name:</span>
-                  <strong style={valueStyle}>{bankDetails.bankName}</strong>
-                </div>
-
-                <div style={bankRowStyle}>
-                  <span style={labelStyle}>Account Holder:</span>
-                  <strong style={valueStyle}>{bankDetails.accountName}</strong>
-                </div>
-
-                <div style={bankRowStyle}>
-                  <span style={labelStyle}>Account Number:</span>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                    <strong style={{ ...valueStyle, letterSpacing: '0.05em' }}>{bankDetails.accountNo}</strong>
-                    <button
-                      type="button"
-                      onClick={() => handleCopy('acc', bankDetails.accountNo)}
-                      style={copyBtnStyle}>
-                      {copiedField === 'acc' ? <Check size={14} color="#166534" /> : <Copy size={14} />}
-                      <span>{copiedField === 'acc' ? 'Copied' : 'Copy'}</span>
-                    </button>
-                  </div>
-                </div>
-
-                <div style={bankRowStyle}>
-                  <span style={labelStyle}>IFSC Code:</span>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                    <strong style={{ ...valueStyle, letterSpacing: '0.05em' }}>{bankDetails.ifsc}</strong>
-                    <button
-                      type="button"
-                      onClick={() => handleCopy('ifsc', bankDetails.ifsc)}
-                      style={copyBtnStyle}>
-                      {copiedField === 'ifsc' ? <Check size={14} color="#166534" /> : <Copy size={14} />}
-                      <span>{copiedField === 'ifsc' ? 'Copied' : 'Copy'}</span>
-                    </button>
-                  </div>
-                </div>
-
-                <div style={bankRowStyle}>
-                  <span style={labelStyle}>Branch:</span>
-                  <strong style={valueStyle}>{bankDetails.branch}</strong>
-                </div>
-
+            <div style={bankRowStyle}>
+              <span style={labelStyle}>IFSC Code:</span>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                <strong style={{ ...valueStyle, letterSpacing: '0.05em' }}>{bankDetails.ifsc}</strong>
+                <button
+                  type="button"
+                  onClick={() => handleCopy('ifsc', bankDetails.ifsc)}
+                  style={copyBtnStyle}>
+                  {copiedField === 'ifsc' ? <Check size={14} color="#166534" /> : <Copy size={14} />}
+                  <span>{copiedField === 'ifsc' ? 'Copied' : 'Copy'}</span>
+                </button>
               </div>
+            </div>
 
-              <div style={{
-                marginTop: '1.25rem',
-                padding: '0.75rem 1rem',
-                background: '#FFFBEB',
-                border: '1px solid #FCD34D',
-                borderRadius: '6px',
-                fontSize: '0.82rem',
-                color: '#B45309',
-                lineHeight: 1.4
-              }}>
-                💡 <strong>Note:</strong> After making the bank transfer, please mention your <strong>Registration ID ({registrationId || user?.id || 'JM2026001234'})</strong> in the payment remarks or contact support to instantly verify your account.
-              </div>
+            <div style={bankRowStyle}>
+              <span style={labelStyle}>Branch:</span>
+              <strong style={valueStyle}>{bankDetails.branch}</strong>
             </div>
 
           </div>
+
+          <div style={{
+            marginTop: '1.25rem',
+            padding: '0.75rem 1rem',
+            background: '#F0FDF4',
+            border: '1px solid #BBF7D0',
+            borderRadius: '6px',
+            fontSize: '0.84rem',
+            color: '#166534',
+            lineHeight: 1.5
+          }}>
+            💬 <strong>Bank Transfer / GPay Verification:</strong> If you paid directly to SBI Bank account or GPay (<strong>90437 73977</strong>), please send your payment screenshot with your Registration ID (<strong>{displayRegId}</strong>) to WhatsApp: <strong>+91 90437 73977</strong> or Helpline: <strong>+91 94456 38377</strong> to activate your account.
+          </div>
+
+          <div style={{ marginTop: '1rem', textAlign: 'center' }}>
+            <a 
+              href={`https://wa.me/919043773977?text=Vanakkam!%20I%20have%20transferred%20the%20Rs.1000%20registration%20fee%20for%20Registration%20ID:%20${displayRegId}.%20Please%20verify%20and%20activate%20my%20matrimony%20account.`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn btn-full"
+              style={{ background: '#25D366', color: '#FFF', fontWeight: 700, padding: '0.65rem', borderRadius: '8px', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: '6px' }}>
+              <span>📲 Send Payment Confirmation via WhatsApp (+91 90437 73977)</span>
+            </a>
+          </div>
         </div>
-      )}
-    </CheckoutWrapper>
+
+        {/* Navigation to Alliances with Locked Paywall Notice */}
+        <div style={{ textAlign: 'center', fontSize: '0.88rem', color: 'var(--text-muted)' }}>
+          <span>Already paid and verified by Organizer?</span>{' '}
+          <Link href="/alliances" style={{ color: 'var(--primary-maroon-dark)', fontWeight: 700, textDecoration: 'underline' }}>
+            Check Alliance Profiles Access ➔
+          </Link>
+        </div>
+
+      </div>
+    </div>
   );
 }
 
@@ -283,4 +327,3 @@ const copyBtnStyle = {
   fontWeight: 700,
   cursor: 'pointer'
 };
-

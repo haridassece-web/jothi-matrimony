@@ -1,13 +1,115 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect, useState, Suspense } from 'react';
 import Link from 'next/link';
+import { useSearchParams } from 'next/navigation';
 import { useAuth } from '../../../context/AuthContext';
-import { CheckCircle2, ShieldCheck, ArrowRight, UserCheck } from 'lucide-react';
+import { CheckCircle2, ShieldCheck, ArrowRight, UserCheck, AlertTriangle, Lock } from 'lucide-react';
 
-export default function PaymentSuccessPage() {
-  const { user, paymentDetails, language } = useAuth();
+function PaymentSuccessContent() {
+  const searchParams = useSearchParams();
+  const { user, paymentDetails, processPaymentSuccess, language } = useAuth();
+  const [isVerified, setIsVerified] = useState(false);
+  const [verifiedPaymentId, setVerifiedPaymentId] = useState('');
 
+  useEffect(() => {
+    const rzpPaymentId = searchParams ? (
+      searchParams.get('razorpay_payment_id') || 
+      searchParams.get('payment_id') || 
+      searchParams.get('razorpay_payment_link_id')
+    ) : null;
+
+    // 1. If redirected by Razorpay with a genuine payment ID
+    if (rzpPaymentId && rzpPaymentId.startsWith('pay_')) {
+      if (processPaymentSuccess) {
+        processPaymentSuccess({
+          paymentId: rzpPaymentId,
+          gateway: 'Razorpay Online Gateway (pl_TuQgSgXdvzHPKY)'
+        });
+      }
+      setIsVerified(true);
+      setVerifiedPaymentId(rzpPaymentId);
+      return;
+    }
+
+    // 2. If the authenticated user is genuinely paid (not mock test)
+    const isAuthenticPaid = user?.paymentStatus === 'PAID' && 
+      user?.registrationStatus === 'PAID_ACTIVE' &&
+      paymentDetails?.id &&
+      (paymentDetails.id.startsWith('pay_') || paymentDetails.gateway?.includes('pl_TuQgSgXdvzHPKY'));
+
+    if (isAuthenticPaid) {
+      setIsVerified(true);
+      setVerifiedPaymentId(paymentDetails.id);
+      return;
+    }
+
+    // 3. Otherwise: Unverified / Not paid
+    setIsVerified(false);
+  }, [searchParams, user, paymentDetails, processPaymentSuccess]);
+
+  // UNVERIFIED: An unpaid visitor navigated here directly without paying
+  if (!isVerified) {
+    return (
+      <div style={{ padding: '4rem 0', minHeight: '80vh', background: 'var(--bg-silk)' }}>
+        <div className="container" style={{ maxWidth: '560px' }}>
+          <div className="card" style={{
+            padding: '3rem 2rem',
+            textAlign: 'center',
+            borderRadius: 'var(--radius-lg)',
+            border: '2px solid #EF4444',
+            boxShadow: 'var(--shadow-lg)'
+          }}>
+            <div style={{
+              width: '72px',
+              height: '72px',
+              borderRadius: '50%',
+              background: '#FEE2E2',
+              color: '#DC2626',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              margin: '0 auto 1.5rem',
+              boxShadow: '0 4px 14px rgba(220, 38, 38, 0.2)'
+            }}>
+              <AlertTriangle size={44} />
+            </div>
+
+            <h2 style={{ fontSize: '1.8rem', color: '#991B1B', marginBottom: '0.5rem', fontWeight: 800 }}>
+              {language === 'ta' ? 'ஆன்லைன் கட்டணம் செலுத்தப்படவில்லை' : 'Online Payment Not Completed'}
+            </h2>
+
+            <p style={{ color: 'var(--text-muted)', fontSize: '0.95rem', marginBottom: '1.75rem', lineHeight: 1.6 }}>
+              {language === 'ta'
+                ? 'உங்கள் ஆன்லைன் கட்டணம் சரிபார்க்கப்படவில்லை. வரன்களைப் பார்க்க ₹1,000 பதிவுக் கட்டணத்தை ஆன்லைனில் செலுத்தவும்.'
+                : 'No verified Razorpay online payment was confirmed for this session. To unlock and view candidate alliance profiles, you must complete your ₹1,000 registration fee online.'}
+            </p>
+
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.8rem' }}>
+              <Link 
+                href="/payment" 
+                className="btn btn-primary btn-full btn-lg"
+                style={{ background: '#7A0C2E', padding: '0.85rem' }}>
+                <Lock size={18} />
+                <span>{language === 'ta' ? 'கட்டணப் பக்கத்திற்குச் செல்லவும் (₹1,000) ➔' : 'Go to Official Payment Page (₹1,000) ➔'}</span>
+              </Link>
+
+              <a 
+                href="https://wa.me/919043773977?text=Vanakkam!%20I%20have%20an%20issue%20with%20payment%20verification."
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn btn-outline btn-full"
+                style={{ borderColor: '#25D366', color: '#166534', fontWeight: 700 }}>
+                <span>📲 Contact WhatsApp Support (+91 90437 73977)</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // VERIFIED: Genuine online payment confirmed
   return (
     <div style={{ padding: '4rem 0', minHeight: '80vh', background: 'var(--bg-silk)' }}>
       <div className="container" style={{ maxWidth: '560px' }}>
@@ -38,7 +140,7 @@ export default function PaymentSuccessPage() {
             {language === 'ta' ? 'பதிவுக் கட்டணம் வெற்றி!' : 'Registration Payment Verified!'}
           </h2>
           <p style={{ color: 'var(--text-muted)', fontSize: '0.95rem', marginBottom: '1.5rem' }}>
-            Thank you! Your ₹1,000 payment was confirmed server-side. Your account is now fully active for 1 year.
+            Thank you! Your ₹1,000 online payment has been confirmed by Razorpay. Your account is now fully active for 1 year.
           </p>
 
           <div style={{
@@ -51,12 +153,12 @@ export default function PaymentSuccessPage() {
             fontSize: '0.88rem'
           }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.5rem' }}>
-              <span style={{ color: '#4B5563' }}>Member ID:</span>
-              <strong style={{ color: '#166534' }}>{user?.id || 'JM2026001234'}</strong>
+              <span style={{ color: '#4B5563' }}>Member / Reg ID:</span>
+              <strong style={{ color: '#166534' }}>{user?.regNo || user?.id || 'JM2026001234'}</strong>
             </div>
             <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.5rem' }}>
-              <span style={{ color: '#4B5563' }}>Transaction Ref:</span>
-              <strong style={{ color: '#166534' }}>{paymentDetails?.id || 'PAY_98234729'}</strong>
+              <span style={{ color: '#4B5563' }}>Razorpay Payment Ref:</span>
+              <strong style={{ color: '#166534' }}>{verifiedPaymentId || paymentDetails?.id || 'Razorpay Verified'}</strong>
             </div>
             <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.5rem' }}>
               <span style={{ color: '#4B5563' }}>Amount Paid:</span>
@@ -64,7 +166,7 @@ export default function PaymentSuccessPage() {
             </div>
             <div style={{ display: 'flex', justifyContent: 'space-between' }}>
               <span style={{ color: '#4B5563' }}>Membership Status:</span>
-              <span className="badge badge-green">✓ Active Paid Member</span>
+              <span className="badge badge-green">✓ Active Paid Member (1 Year)</span>
             </div>
           </div>
 
@@ -86,5 +188,13 @@ export default function PaymentSuccessPage() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function PaymentSuccessPage() {
+  return (
+    <Suspense fallback={<div style={{ padding: '4rem', textAlign: 'center' }}>Loading payment confirmation...</div>}>
+      <PaymentSuccessContent />
+    </Suspense>
   );
 }

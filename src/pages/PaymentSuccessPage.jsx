@@ -5,6 +5,37 @@ import { CheckCircle2, Sparkles, UserCheck, ArrowRight, Download } from 'lucide-
 export default function PaymentSuccessPage({ setActivePage }) {
   const { user, registrationId, paymentDetails } = useAuth();
 
+  const isVerified = user?.paymentStatus === 'PAID' && user?.registrationStatus === 'PAID_ACTIVE';
+
+  if (!isVerified) {
+    return (
+      <div style={{ padding: '4rem 0', minHeight: '80vh' }}>
+        <div className="container" style={{ maxWidth: '560px' }}>
+          <div className="card" style={{
+            padding: '3rem 2rem',
+            textAlign: 'center',
+            borderRadius: 'var(--radius-lg)',
+            border: '2px solid #EF4444',
+            boxShadow: 'var(--shadow-lg)'
+          }}>
+            <h2 style={{ fontSize: '1.8rem', color: '#991B1B', marginBottom: '0.5rem', fontWeight: 800 }}>
+              ⚠️ Online Payment Not Completed
+            </h2>
+            <p style={{ color: 'var(--text-muted)', fontSize: '0.95rem', marginBottom: '1.75rem' }}>
+              No verified online payment found for this account. To unlock and view candidate alliance profiles, please complete the ₹1,000 official registration fee online.
+            </p>
+            <button 
+              onClick={() => setActivePage && setActivePage('payment')}
+              className="btn btn-primary btn-full btn-lg"
+              style={{ background: '#7A0C2E', padding: '0.85rem', fontWeight: 800 }}>
+              Go to Payment Page (₹1,000) ➔
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div style={{ padding: '4rem 0', minHeight: '80vh' }}>
       <div className="container" style={{ maxWidth: '560px' }}>

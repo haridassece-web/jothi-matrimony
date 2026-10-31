@@ -48,6 +48,27 @@ export function AuthProvider({ children }) {
       const saved = localStorage.getItem(STORAGE_KEY);
       if (saved) {
         const parsed = JSON.parse(saved);
+        
+        // Strip dummy/simulated payments for test accounts so they are properly marked UNPAID
+        if (parsed.user && parsed.paymentDetails) {
+          const pid = String(parsed.paymentDetails.id || '');
+          const isDummyPayId = (pid.startsWith('PAY_') && pid.length <= 14) || pid === 'sig_mock_verified' || pid === 'PAY_DEMO998877';
+          const isMockGateway = parsed.paymentDetails.gateway?.includes('Mock');
+          const isOfficialMember = ['709','710','711','712','713','714','715','716','717','718','778','779','780','781'].includes(String(parsed.user.id || ''));
+
+          if ((isDummyPayId || isMockGateway) && !isOfficialMember) {
+            parsed.paymentStatus = 'UNPAID';
+            parsed.registrationStatus = 'BASIC_REGISTERED';
+            parsed.paymentDetails = null;
+            if (parsed.user) {
+              parsed.user.paymentStatus = 'UNPAID';
+              parsed.user.registrationStatus = 'BASIC_REGISTERED';
+              parsed.user.is_paid_member = false;
+              parsed.user.membershipStatus = 'Registered Member';
+            }
+          }
+        }
+
         setState(prev => ({
           ...defaultState,
           ...parsed,
@@ -178,14 +199,23 @@ export function AuthProvider({ children }) {
     return newUser;
   };
 
-  const processPaymentSuccess = (paymentResponse) => {
+  const processPaymentSuccess = (paymentResponse = {}) => {
+    const realPaymentId = paymentResponse.paymentId || 
+      paymentResponse.razorpay_payment_id || 
+      paymentResponse.id;
+
+    if (!realPaymentId) {
+      console.warn('Real online payment ID required to activate membership');
+      return null;
+    }
+
     const paymentRecord = {
-      id: 'PAY_' + Math.random().toString(36).substring(2, 10).toUpperCase(),
-      orderId: 'ORD_' + Math.random().toString(36).substring(2, 10).toUpperCase(),
+      id: realPaymentId,
+      orderId: paymentResponse.orderId || paymentResponse.razorpay_order_id || `RZP_${Date.now()}`,
       amount: 1000,
       currency: 'INR',
       status: 'SUCCESS',
-      gateway: paymentResponse.gateway || 'Razorpay UPI / Cards',
+      gateway: paymentResponse.gateway || 'Razorpay Online Gateway (pl_TuQgSgXdvzHPKY)',
       paidAt: new Date().toISOString()
     };
 
@@ -467,13 +497,26 @@ export function AuthProvider({ children }) {
     });
 
     if (matched) {
+      const isMatchedPaid = (matched.paymentStatus === 'PAID' || 
+        matched.registrationStatus === 'PAID_ACTIVE' || 
+        matched.is_paid_member === true) && 
+        matched.paymentStatus !== 'UNPAID';
+
+      if (!isMatchedPaid) {
+        return {
+          success: false,
+          requiresPayment: true,
+          message: 'Payment Pending. Please complete your ₹1,000 online registration fee via Razorpay to activate login access.'
+        };
+      }
+
       const loggedInUser = {
         ...matched,
         id: matched.id,
         name: matched.name,
         gender: matched.gender,
         registrationStatus: 'PAID_ACTIVE',
-        paymentStatus: 'SUCCESS',
+        paymentStatus: 'PAID',
         is_paid_member: true,
         membershipStatus: 'Active Paid Member'
       };

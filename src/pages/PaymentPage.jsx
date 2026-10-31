@@ -117,28 +117,36 @@ export default function PaymentPage({ setActivePage, onOpenRazorpay }) {
 
           {/* Embedded Razorpay Payment Button */}
           <div style={{
-            background: '#F8FAFC',
-            border: '2px dashed #0284C7',
+            background: '#F0F9FF',
+            border: '2px solid #0284C7',
             borderRadius: 'var(--radius-md)',
-            padding: '1rem',
+            padding: '1.25rem',
             marginBottom: '1.25rem',
             textAlign: 'center'
           }}>
-            <div style={{ fontSize: '0.85rem', fontWeight: 700, color: '#0369A1', marginBottom: '0.5rem' }}>
-              💳 Pay via Official Razorpay Gateway Button (pl_TuQgSgXdvzHPKY)
+            <div style={{ fontSize: '0.92rem', fontWeight: 800, color: '#0369A1', marginBottom: '0.5rem', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px' }}>
+              <CreditCard size={18} />
+              <span>Official Online Payment Gateway (Razorpay)</span>
             </div>
+            <p style={{ fontSize: '0.84rem', color: '#475569', margin: '0 0 1rem 0' }}>
+              Pay securely via UPI (Google Pay, PhonePe, Paytm), Debit/Credit Cards, or NetBanking:
+            </p>
             <RazorpayPaymentButton paymentButtonId="pl_TuQgSgXdvzHPKY" />
           </div>
 
-          {/* Fallback Custom Pay Button */}
-          <button 
-            onClick={onOpenRazorpay}
-            type="button"
-            className="btn btn-gold btn-full btn-lg pulse-button"
-            style={{ fontSize: '1.1rem', letterSpacing: '0.02em', marginBottom: '1rem', cursor: 'pointer' }}>
-            <CreditCard size={20} />
-            <span>[ OPEN RAZORPAY UPI / CARDS MODAL ]</span>
-          </button>
+          <div style={{
+            background: '#FFFBEB',
+            border: '1px solid #FCD34D',
+            borderRadius: '8px',
+            padding: '0.85rem 1rem',
+            fontSize: '0.84rem',
+            color: '#B45309',
+            lineHeight: 1.5,
+            textAlign: 'left',
+            marginBottom: '1rem'
+          }}>
+            📌 <strong>Important Notice:</strong> Once your ₹1,000 online payment is completed on the Razorpay screen above, Razorpay will issue your receipt and automatically unlock access to browse alliances.
+          </div>
 
           <div style={{
             display: 'flex',
