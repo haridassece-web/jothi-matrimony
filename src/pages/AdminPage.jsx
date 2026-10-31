@@ -266,7 +266,7 @@ export default function AdminPage({ setActivePage, onSelectProfile }) {
               </div>
             </div>
 
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1.5rem', fontSize: '0.85rem' }}>
+            <div style={{ display: 'flex', alignItems: 'center', marginBottom: '1.5rem', fontSize: '0.85rem' }}>
               <label style={{ display: 'flex', alignItems: 'center', gap: '6px', cursor: 'pointer', color: 'var(--text-main)', fontWeight: 600 }}>
                 <input 
                   type="checkbox" 
@@ -276,7 +276,6 @@ export default function AdminPage({ setActivePage, onSelectProfile }) {
                 />
                 Remember me on this device
               </label>
-              <span style={{ color: 'var(--text-muted)', fontSize: '0.8rem' }}>Default: jothi2026</span>
             </div>
 
             <button type="submit" className="btn btn-primary btn-full" style={{ padding: '0.75rem', fontSize: '1.05rem', fontWeight: 800 }}>
