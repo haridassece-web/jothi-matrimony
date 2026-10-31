@@ -2,9 +2,9 @@ import React, { useEffect, useRef } from 'react';
 
 /**
  * Official Razorpay Payment Button Component
- * Embeds script: <form><script src="https://checkout.razorpay.com/v1/payment-button.js" data-payment_button_id="pl_TjVL3MecrAQliL" async> </script> </form>
+ * Embeds script: <form><script src="https://checkout.razorpay.com/v1/payment-button.js" data-payment_button_id="pl_TuQgSgXdvzHPKY" async> </script> </form>
  */
-export default function RazorpayPaymentButton({ paymentButtonId = "pl_TjVL3MecrAQliL" }) {
+export default function RazorpayPaymentButton({ paymentButtonId = "pl_TuQgSgXdvzHPKY" }) {
   const containerRef = useRef(null);
 
   useEffect(() => {

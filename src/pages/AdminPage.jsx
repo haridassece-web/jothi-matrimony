@@ -449,7 +449,7 @@ export default function AdminPage({ setActivePage, onSelectProfile }) {
                       <td style={{ padding: '12px 10px', fontWeight: 700 }}>
                         {profile.name} ({getDisplayRegNo(profile)})
                       </td>
-                      <td style={{ padding: '12px 10px' }}>Razorpay UPI / Button pl_TjVL3MecrAQliL</td>
+                      <td style={{ padding: '12px 10px' }}>Razorpay UPI / Button pl_TuQgSgXdvzHPKY</td>
                       <td style={{ padding: '12px 10px', fontWeight: 800, color: '#166534' }}>₹1,000</td>
                       <td style={{ padding: '12px 10px' }}>
                         <span className="badge badge-green">✓ SUCCESS</span>

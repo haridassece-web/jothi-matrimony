@@ -135,9 +135,9 @@ export default function PaymentPage() {
                 textAlign: 'center'
               }}>
                 <div style={{ fontSize: '0.85rem', fontWeight: 700, color: '#0369A1', marginBottom: '0.5rem' }}>
-                  💳 Pay via Official Razorpay Gateway Button (pl_TjVL3MecrAQliL)
+                  💳 Pay via Official Razorpay Gateway Button (pl_TuQgSgXdvzHPKY)
                 </div>
-                <RazorpayPaymentButton paymentButtonId="pl_TjVL3MecrAQliL" />
+                <RazorpayPaymentButton paymentButtonId="pl_TuQgSgXdvzHPKY" />
               </div>
 
               {/* Fallback Custom Pay Button */}
