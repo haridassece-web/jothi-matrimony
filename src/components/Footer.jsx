@@ -105,7 +105,11 @@ export default function Footer({ setActivePage }) {
                 <Phone size={13} color="var(--gold-primary)" style={{ flexShrink: 0 }} />
                 <a href="tel:9043773977" style={{ color: '#E8DCD3', textDecoration: 'none' }}>+91 90437 73977</a>
                 <span>/</span>
-                <a href="tel:9444934527" style={{ color: '#E8DCD3', textDecoration: 'none' }}>+91 94449 34527</a>
+                <a href="tel:9445638377" style={{ color: '#E8DCD3', textDecoration: 'none' }}>+91 94456 38377</a>
+              </div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', color: '#25D366', fontSize: '0.72rem', marginTop: '0.1rem', fontWeight: 600 }}>
+                <span>📲</span>
+                <span>Day-by-Day Alliance Updates via WhatsApp: <a href="https://wa.me/919043773977?text=Vanakkam!%20Please%20send%20me%20day-by-day%20new%20matrimonial%20alliance%20updates." target="_blank" rel="noopener noreferrer" style={{ color: '#25D366', textDecoration: 'underline' }}>90437 73977</a></span>
               </div>
               <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', overflow: 'hidden', textOverflow: 'ellipsis' }}>
                 <Mail size={13} color="var(--gold-primary)" style={{ flexShrink: 0 }} />

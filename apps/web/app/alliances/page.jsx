@@ -147,6 +147,55 @@ export default function AlliancesPage() {
           </div>
         )}
 
+        {/* Day-by-Day WhatsApp Updates Notification Banner */}
+        <div style={{
+          background: 'linear-gradient(135deg, #064E3B 0%, #065F46 100%)',
+          color: '#FFFFFF',
+          borderRadius: 'var(--radius-md)',
+          padding: '0.85rem 1.25rem',
+          marginBottom: '1.75rem',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          flexWrap: 'wrap',
+          gap: '1rem',
+          boxShadow: '0 4px 16px rgba(6, 78, 59, 0.2)',
+          border: '1.5px solid #10B981'
+        }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+            <span style={{ fontSize: '1.6rem' }}>📲</span>
+            <div>
+              <div style={{ fontWeight: 800, fontSize: '0.95rem', display: 'flex', alignItems: 'center', gap: '0.4rem', flexWrap: 'wrap' }}>
+                <span>{language === 'ta' ? 'தினசரி புதிய வரன்கள் WhatsApp மூலம் அனுப்பப்படும்!' : 'Day-by-Day New Alliance Updates Sent via WhatsApp!'}</span>
+                <span style={{ background: '#25D366', color: '#064E3B', fontSize: '0.68rem', fontWeight: 900, padding: '2px 7px', borderRadius: '4px' }}>NEW UPDATES</span>
+              </div>
+              <div style={{ fontSize: '0.8rem', color: '#D1FAE5', marginTop: '2px' }}>
+                WhatsApp No: <strong>+91 90437 73977</strong> | Helpline: <strong>+91 94456 38377</strong>
+              </div>
+            </div>
+          </div>
+          <a 
+            href="https://wa.me/919043773977?text=Vanakkam!%20Please%20send%20me%20day-by-day%20new%20matrimonial%20alliance%20updates."
+            target="_blank"
+            rel="noopener noreferrer"
+            className="btn"
+            style={{
+              background: '#25D366',
+              color: '#FFFFFF',
+              fontWeight: 700,
+              fontSize: '0.82rem',
+              padding: '0.5rem 1rem',
+              borderRadius: 'var(--radius-full)',
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '6px',
+              textDecoration: 'none',
+              boxShadow: '0 3px 10px rgba(0,0,0,0.2)'
+            }}>
+            <span>💬 {language === 'ta' ? 'வாட்ஸ்அப்பில் பெற' : 'Get Daily Updates on WhatsApp'}</span>
+          </a>
+        </div>
+
         {/* Page Header */}
         <div style={{ marginBottom: '2rem', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '1rem' }}>
           <div>

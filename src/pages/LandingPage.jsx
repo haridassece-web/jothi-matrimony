@@ -113,7 +113,7 @@ export default function LandingPage({ setActivePage }) {
                     textDecoration: 'none'
                   }}>
                   <PhoneCall size={16} color="var(--gold-primary)" />
-                  <span>Call: 9043773977 / 9444934527</span>
+                  <span>Call: 9043773977 / 9445638377</span>
                 </a>
               </div>
 
@@ -412,8 +412,8 @@ export default function LandingPage({ setActivePage }) {
                     <a href="tel:9043773977" style={{ color: 'var(--primary-maroon)', textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
                       📞 +91 90437 73977
                     </a>
-                    <a href="tel:9444934527" style={{ color: 'var(--primary-maroon)', textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
-                      📞 +91 94449 34527
+                    <a href="tel:9445638377" style={{ color: 'var(--primary-maroon)', textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+                      📞 +91 94456 38377
                     </a>
                     <a href="mailto:arulbabuvalllalar@gmail.com" style={{ fontSize: '0.9rem', color: 'var(--text-main)', fontWeight: 600, textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
                       ✉️ arulbabuvalllalar@gmail.com

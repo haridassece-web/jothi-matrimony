@@ -224,7 +224,7 @@ function AppContent() {
                         <h4 style={{ color: 'var(--primary-maroon-dark)', marginBottom: '0.5rem' }}>📞 Contact Details</h4>
                         <div style={{ lineHeight: 1.8, fontSize: '0.92rem' }}>
                           <div><strong>Phone 1:</strong> <a href="tel:9043773977" style={{ color: 'var(--primary-maroon)' }}>+91 90437 73977</a></div>
-                          <div><strong>Phone 2:</strong> <a href="tel:9444934527" style={{ color: 'var(--primary-maroon)' }}>+91 94449 34527</a></div>
+                          <div><strong>Phone 2:</strong> <a href="tel:9445638377" style={{ color: 'var(--primary-maroon)' }}>+91 94456 38377</a></div>
                           <div><strong>Email:</strong> <a href="mailto:arulbabuvalllalar@gmail.com" style={{ color: 'var(--primary-maroon)' }}>arulbabuvalllalar@gmail.com</a></div>
                         </div>
                       </div>

@@ -75,6 +75,53 @@ export default function LandingPage() {
                 </Link>
               </div>
 
+              {/* Day-by-Day WhatsApp Updates Highlight Banner */}
+              <div style={{
+                background: 'linear-gradient(135deg, rgba(37, 211, 102, 0.22) 0%, rgba(212, 175, 55, 0.25) 100%)',
+                border: '1.5px solid #25D366',
+                borderRadius: 'var(--radius-md)',
+                padding: '0.75rem 1rem',
+                marginBottom: '1rem',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                gap: '0.75rem',
+                flexWrap: 'wrap',
+                boxShadow: '0 4px 15px rgba(0,0,0,0.2)'
+              }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
+                  <span style={{ fontSize: '1.4rem' }}>📲</span>
+                  <div>
+                    <div style={{ fontWeight: 800, fontSize: '0.88rem', color: '#FFFFFF', display: 'flex', alignItems: 'center', gap: '0.4rem', flexWrap: 'wrap' }}>
+                      <span>{language === 'ta' ? 'தினசரி புதிய வரன்கள் WhatsApp மூலம் அனுப்பப்படும்' : 'Day-by-Day New Alliance Updates Sent via WhatsApp'}</span>
+                      <span style={{ background: '#25D366', color: '#000', fontSize: '0.65rem', fontWeight: 900, padding: '2px 6px', borderRadius: '4px' }}>DAILY UPDATES</span>
+                    </div>
+                    <div style={{ fontSize: '0.76rem', color: '#F3E5AB', marginTop: '2px' }}>
+                      WhatsApp No: <strong>+91 90437 73977</strong>
+                    </div>
+                  </div>
+                </div>
+                <a 
+                  href="https://wa.me/919043773977?text=Vanakkam!%20Please%20send%20me%20day-by-day%20new%20matrimonial%20alliance%20updates."
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{
+                    background: '#25D366',
+                    color: '#FFFFFF',
+                    fontWeight: 700,
+                    fontSize: '0.78rem',
+                    padding: '0.4rem 0.85rem',
+                    borderRadius: '20px',
+                    textDecoration: 'none',
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '4px',
+                    boxShadow: '0 2px 8px rgba(37, 211, 102, 0.4)'
+                  }}>
+                  <span>💬 {language === 'ta' ? 'வாட்ஸ்அப்பில் பெற' : 'Get Daily Updates'}</span>
+                </a>
+              </div>
+
               {/* Instant WhatsApp & Call Buttons Row */}
               <div style={{ display: 'flex', gap: '0.65rem', flexWrap: 'wrap', marginBottom: '1.5rem' }}>
                 <a 
@@ -116,7 +163,7 @@ export default function LandingPage() {
                     textDecoration: 'none'
                   }}>
                   <PhoneCall size={16} color="var(--gold-primary)" />
-                  <span>Call: 9043773977 / 9444934527</span>
+                  <span>Call: 9043773977 / 9445638377</span>
                 </a>
               </div>
 

@@ -18,10 +18,10 @@ export default function FloatingContactButtons() {
     >
       {/* WhatsApp Symbol Only Button */}
       <a 
-        href="https://wa.me/919043773977?text=Vanakkam!%20I%20am%20interested%20in%20Chennai%20Jothi%20Matrimony%20alliance%20registration."
+        href="https://wa.me/919043773977?text=Vanakkam!%20Please%20send%20me%20day-by-day%20new%20matrimonial%20alliance%20updates."
         target="_blank"
         rel="noopener noreferrer"
-        title="WhatsApp Us (+91 90437 73977)"
+        title="Day-by-Day Alliance Updates sent through WhatsApp: +91 90437 73977"
         style={{
           width: '52px',
           height: '52px',
@@ -43,7 +43,7 @@ export default function FloatingContactButtons() {
       {/* Direct Call Symbol Only Button */}
       <a 
         href="tel:9043773977"
-        title="Call Chennai Jothi Matrimony (9043773977 / 9444934527)"
+        title="Call Chennai Jothi Matrimony (9043773977 / 9445638377)"
         style={{
           width: '52px',
           height: '52px',
