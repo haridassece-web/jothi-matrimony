@@ -12,74 +12,71 @@ import {
   ShieldCheck, Check, Upload
 } from 'lucide-react';
 
-export default function AdminEditProfileModal({ profile, onClose, onSave }) {
-  if (!profile) return null;
+const createInitialForm = (p) => ({
+  id: p?.id || '',
+  regNo: p?.regNo || (p ? getDisplayRegNo(p) : ''),
+  name: p?.name || '',
+  gender: p?.gender || 'Male',
+  dob: p?.dob || '1995-05-15',
+  birthTime: p?.birthTime || '07:30 AM',
+  birthPlace: p?.birthPlace || p?.city || 'Chennai',
+  age: p?.age || 29,
+  maritalStatus: p?.maritalStatus || 'Never Married',
+  motherTongue: p?.motherTongue || 'Tamil',
+  religion: p?.religion || 'Hindu',
+  height: p?.height || "5' 8\" (173 cm)",
 
+  // Contact & Location
+  mobile: p?.mobile || p?.phone || '',
+  phone: p?.phone || p?.mobile || '',
+  email: p?.email || '',
+  city: p?.city || 'Chennai',
+  nativeTown: p?.nativeTown || p?.city || 'Chennai',
+  address: p?.address || '',
+  houseProperty: p?.houseProperty || 'Own House (சொந்த வீடு)',
+
+  // Caste & Horoscope
+  caste: p?.caste || 'Iyer',
+  subcaste: p?.subcaste || '',
+  gothram: p?.gothram || '',
+  rasi: p?.rasi || 'Mesham (Aries)',
+  nakshatra: p?.nakshatra || 'Ashwini',
+  lagnam: p?.lagnam || 'Mesham (Aries)',
+  chevvaiDosham: p?.chevvaiDosham || 'No',
+  rasiChart: p?.rasiChart || null,
+  navamsamChart: p?.navamsamChart || null,
+
+  // Education & Career
+  education: p?.education || 'B.Tech / Graduate',
+  institution: p?.institution || '',
+  profession: p?.profession || 'Software Engineer',
+  company: p?.company || '',
+  annualIncome: p?.annualIncome || '₹12,00,000 / annum',
+
+  // Family
+  fatherName: p?.fatherName || p?.family?.fatherName || '',
+  fatherOccupation: p?.fatherOccupation || p?.family?.fatherOccupation || 'Government / Private Employee',
+  motherName: p?.motherName || p?.family?.motherName || '',
+  motherOccupation: p?.motherOccupation || p?.family?.motherOccupation || 'Homemaker',
+  siblings: p?.siblings || p?.family?.siblings || '1 Brother',
+  familyType: p?.familyType || p?.family?.familyType || 'Nuclear Family',
+  familyStatus: p?.familyStatus || p?.family?.familyStatus || 'Upper Middle Class',
+
+  // Status & Photos
+  photo: p?.photo || '',
+  photos: Array.isArray(p?.photos) && p.photos.length > 0 
+    ? p.photos 
+    : [p?.photo || 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=600'],
+  about: p?.about || '',
+  verified: p?.verified !== false && p?.isVerified !== false,
+  paymentStatus: p?.paymentStatus || 'PAID',
+  membershipStatus: p?.membershipStatus || 'Active Paid Member'
+});
+
+export default function AdminEditProfileModal({ profile, onClose, onSave }) {
   const [activeTab, setActiveTab] = useState('basic');
   const [isSaving, setIsSaving] = useState(false);
   const [successMsg, setSuccessMsg] = useState('');
-
-  const createInitialForm = (p) => ({
-    id: p?.id || '',
-    regNo: p?.regNo || getDisplayRegNo(p),
-    name: p?.name || '',
-    gender: p?.gender || 'Male',
-    dob: p?.dob || '1995-05-15',
-    birthTime: p?.birthTime || '07:30 AM',
-    birthPlace: p?.birthPlace || p?.city || 'Chennai',
-    age: p?.age || 29,
-    maritalStatus: p?.maritalStatus || 'Never Married',
-    motherTongue: p?.motherTongue || 'Tamil',
-    religion: p?.religion || 'Hindu',
-    height: p?.height || "5' 8\" (173 cm)",
-
-    // Contact & Location
-    mobile: p?.mobile || p?.phone || '',
-    phone: p?.phone || p?.mobile || '',
-    email: p?.email || '',
-    city: p?.city || 'Chennai',
-    nativeTown: p?.nativeTown || p?.city || 'Chennai',
-    address: p?.address || '',
-    houseProperty: p?.houseProperty || 'Own House (சொந்த வீடு)',
-
-    // Caste & Horoscope
-    caste: p?.caste || 'Iyer',
-    subcaste: p?.subcaste || '',
-    gothram: p?.gothram || '',
-    rasi: p?.rasi || 'Mesham (Aries)',
-    nakshatra: p?.nakshatra || 'Ashwini',
-    lagnam: p?.lagnam || 'Mesham (Aries)',
-    chevvaiDosham: p?.chevvaiDosham || 'No',
-    rasiChart: p?.rasiChart || null,
-    navamsamChart: p?.navamsamChart || null,
-
-    // Education & Career
-    education: p?.education || 'B.Tech / Graduate',
-    institution: p?.institution || '',
-    profession: p?.profession || 'Software Engineer',
-    company: p?.company || '',
-    annualIncome: p?.annualIncome || '₹12,00,000 / annum',
-
-    // Family
-    fatherName: p?.fatherName || p?.family?.fatherName || '',
-    fatherOccupation: p?.fatherOccupation || p?.family?.fatherOccupation || 'Government / Private Employee',
-    motherName: p?.motherName || p?.family?.motherName || '',
-    motherOccupation: p?.motherOccupation || p?.family?.motherOccupation || 'Homemaker',
-    siblings: p?.siblings || p?.family?.siblings || '1 Brother',
-    familyType: p?.familyType || p?.family?.familyType || 'Nuclear Family',
-    familyStatus: p?.familyStatus || p?.family?.familyStatus || 'Upper Middle Class',
-
-    // Status & Photos
-    photo: p?.photo || '',
-    photos: Array.isArray(p?.photos) && p.photos.length > 0 
-      ? p.photos 
-      : [p?.photo || 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=600'],
-    about: p?.about || '',
-    verified: p?.verified !== false && p?.isVerified !== false,
-    paymentStatus: p?.paymentStatus || 'PAID',
-    membershipStatus: p?.membershipStatus || 'Active Paid Member'
-  });
-
   const [form, setForm] = useState(() => createInitialForm(profile));
 
   useEffect(() => {
@@ -87,6 +84,8 @@ export default function AdminEditProfileModal({ profile, onClose, onSave }) {
       setForm(createInitialForm(profile));
     }
   }, [profile]);
+
+  if (!profile) return null;
 
   // Calculate age when DOB changes
   const handleDobChange = (e) => {

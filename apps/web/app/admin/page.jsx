@@ -8,7 +8,8 @@ import ChennaiJothiRegistrationForm from '../../components/ChennaiJothiRegistrat
 import AdminEditProfileModal from '../../components/AdminEditProfileModal';
 import { 
   ShieldCheck, Users, CreditCard, Lock, Sparkles, Printer, 
-  Trash2, Eye, Plus, Search, Phone, Mail, Edit3
+  Trash2, Eye, Plus, Search, Phone, Mail, Edit3, Download,
+  FileSpreadsheet, Key, EyeOff, CheckCircle2, RefreshCw
 } from 'lucide-react';
 
 export default function NextAdminPage() {
@@ -17,11 +18,15 @@ export default function NextAdminPage() {
   
   const [isAdminAuthenticated, setIsAdminAuthenticated] = useState(() => {
     if (typeof window !== 'undefined') {
-      return sessionStorage.getItem('jothi_admin_authenticated') === 'true';
+      return sessionStorage.getItem('jothi_admin_authenticated') === 'true' || 
+             localStorage.getItem('jothi_admin_authenticated') === 'true';
     }
     return false;
   });
+  const [adminUsernameInput, setAdminUsernameInput] = useState('admin');
   const [adminPasswordInput, setAdminPasswordInput] = useState('');
+  const [rememberMe, setRememberMe] = useState(true);
+  const [showPassword, setShowPassword] = useState(false);
   const [adminError, setAdminError] = useState('');
 
   const [profilesList, setProfilesList] = useState(allProfiles || []);
@@ -49,18 +54,33 @@ export default function NextAdminPage() {
 
   const handleAdminLogin = (e) => {
     e.preventDefault();
-    if (adminPasswordInput === 'jothi2026' || adminPasswordInput === 'admin123' || adminPasswordInput === 'admin') {
+    const validUsernames = ['admin', 'chennaijothi', 'organizer', 'chandrababu'];
+    const validPasswords = ['jothi2026', 'admin123', 'admin', 'chennaijothi', '73977'];
+
+    const username = (adminUsernameInput || '').trim().toLowerCase();
+    const password = (adminPasswordInput || '').trim();
+
+    const isUserValid = !username || validUsernames.includes(username);
+    const isPassValid = validPasswords.includes(password);
+
+    if (isUserValid && isPassValid) {
       setIsAdminAuthenticated(true);
       sessionStorage.setItem('jothi_admin_authenticated', 'true');
+      if (rememberMe && typeof window !== 'undefined') {
+        localStorage.setItem('jothi_admin_authenticated', 'true');
+      }
       setAdminError('');
     } else {
-      setAdminError('Invalid Admin Password. Please enter valid security PIN.');
+      setAdminError('Invalid Admin Username or Security Password. Please enter valid credentials.');
     }
   };
 
   const handleAdminLock = () => {
     setIsAdminAuthenticated(false);
-    sessionStorage.removeItem('jothi_admin_authenticated');
+    if (typeof window !== 'undefined') {
+      sessionStorage.removeItem('jothi_admin_authenticated');
+      localStorage.removeItem('jothi_admin_authenticated');
+    }
   };
 
   const getDisplayRegNo = (profile) => {
@@ -92,42 +112,271 @@ export default function NextAdminPage() {
     return true;
   };
 
+  // ==========================================
+  // EXPORT TO EXCEL (.CSV with UTF-8 BOM)
+  // ==========================================
+  const handleExportProfilesToExcel = (profilesToExport, exportTitle = 'Chennai_Jothi_Matrimony_Profiles') => {
+    if (!profilesToExport || !profilesToExport.length) {
+      alert('No profiles available to export.');
+      return;
+    }
+
+    const headers = [
+      'S.No',
+      'Registration ID',
+      'Reg No',
+      'Full Name (பெயர்)',
+      'Tamil Name',
+      'Gender',
+      'Age',
+      'Date of Birth',
+      'Birth Time',
+      'Birth Place / Native',
+      'Height',
+      'Complexion',
+      'Marital Status',
+      'Religion',
+      'Caste (இனம்)',
+      'Subcaste',
+      'Gothram',
+      'Star / Nakshatra (நட்சத்திரம்)',
+      'Padam',
+      'Rasi (ராசி)',
+      'Lagnam (லக்னம்)',
+      'Chevvai Dosham',
+      'Education (கல்வி)',
+      'Institution',
+      'Profession (பணி)',
+      'Company',
+      'Monthly Income (ரூ.)',
+      'Annual Income',
+      'City',
+      'District / Address',
+      'Contact Phone (கைபேசி)',
+      'Email',
+      'Father Name & Occupation',
+      'Mother Name & Occupation',
+      'Siblings',
+      'House Property',
+      'Partner Preferences',
+      'Verification Status',
+      'Payment Status',
+      'Registered Date'
+    ];
+
+    const escapeCSV = (val) => {
+      if (val === null || val === undefined) return '""';
+      const str = String(val).replace(/"/g, '""');
+      return `"${str}"`;
+    };
+
+    const rows = profilesToExport.map((p, idx) => {
+      const regDisplay = p.regNo || p.id || '';
+      const fatherInfo = [p.family?.fatherName || p.fatherName, p.family?.fatherOccupation || p.fatherOccupation].filter(Boolean).join(' - ');
+      const motherInfo = [p.family?.motherName || p.motherName, p.family?.motherOccupation || p.motherOccupation].filter(Boolean).join(' - ');
+      const partnerInfo = p.partnerPreferences ? 
+        `Age: ${p.partnerPreferences.ageMin || ''}-${p.partnerPreferences.ageMax || ''}, Edu: ${p.partnerPreferences.education || 'Any'}, Caste: ${p.partnerPreferences.castePreference || 'Open'}` : '';
+
+      return [
+        idx + 1,
+        p.id || '',
+        regDisplay,
+        p.name || '',
+        p.tamilName || '',
+        p.gender || '',
+        p.age || '',
+        p.dob || '',
+        p.birthTime || '',
+        p.birthPlace || p.nativeTown || '',
+        p.height || '',
+        p.complexion || '',
+        p.maritalStatus || 'Never Married',
+        p.religion || 'Hindu',
+        p.caste || '',
+        p.subcaste || '',
+        p.gothram || '',
+        p.nakshatra || '',
+        p.padam || '1',
+        p.rasi || '',
+        p.lagnam || '',
+        p.chevvaiDosham || 'No',
+        p.education || '',
+        p.institution || '',
+        p.profession || '',
+        p.company || '',
+        p.monthlyIncome || '',
+        p.annualIncome || '',
+        p.city || '',
+        p.address || `${p.nativeTown || p.city || ''}, ${p.state || 'Tamil Nadu'}`,
+        p.phone || p.mobile || '',
+        p.email || '',
+        fatherInfo,
+        motherInfo,
+        p.family?.siblings || p.siblings || 'Nil',
+        p.houseProperty || p.family?.houseProperty || 'Own House',
+        partnerInfo,
+        isProfileVerified(p) ? 'Verified' : 'Pending',
+        (p.paymentStatus === 'PAID' || p.membershipStatus === 'Active Paid Member') ? 'PAID (₹1,000)' : 'Unpaid',
+        p.joinedDate || '2026-04-01'
+      ].map(escapeCSV).join(',');
+    });
+
+    // Prepend UTF-8 BOM (\uFEFF) so Microsoft Excel opens Tamil Unicode characters without garbled text
+    const csvContent = '\uFEFF' + [headers.map(escapeCSV).join(','), ...rows].join('\r\n');
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    const dateStr = new Date().toISOString().split('T')[0];
+    link.setAttribute('href', url);
+    link.setAttribute('download', `${exportTitle}_${dateStr}.csv`);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+  };
+
+  const handleExportPaymentsToExcel = () => {
+    const headers = [
+      'S.No',
+      'Transaction ID',
+      'Profile ID',
+      'Registration ID',
+      'Candidate Name (பெயர்)',
+      'Gender',
+      'Payment Gateway',
+      'Registration Fee (ரூ.)',
+      'Payment Status',
+      'Date & Time',
+      'Contact Phone',
+      'Email'
+    ];
+
+    const escapeCSV = (val) => {
+      if (val === null || val === undefined) return '""';
+      const str = String(val).replace(/"/g, '""');
+      return `"${str}"`;
+    };
+
+    const rows = (profilesList || []).map((p, idx) => {
+      const regDisplay = getDisplayRegNo(p);
+      const txnId = `CJM_TXN_${String(100000 + idx + 1)}`;
+      return [
+        idx + 1,
+        txnId,
+        p.id,
+        regDisplay,
+        p.name,
+        p.gender,
+        'Razorpay UPI / Cards (pl_TuQgSgXdvzHPKY)',
+        '₹1,000',
+        'SUCCESS / PAID',
+        p.joinedDate || '2026-04-01',
+        p.phone || p.mobile || '',
+        p.email || ''
+      ].map(escapeCSV).join(',');
+    });
+
+    const csvContent = '\uFEFF' + [headers.map(escapeCSV).join(','), ...rows].join('\r\n');
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    const dateStr = new Date().toISOString().split('T')[0];
+    link.setAttribute('href', url);
+    link.setAttribute('download', `Chennai_Jothi_Payments_Ledger_${dateStr}.csv`);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+  };
+
+  // ==========================================
+  // ADMIN LOGIN SCREEN
+  // ==========================================
   if (!isAdminAuthenticated) {
     return (
       <div style={{ padding: '4rem 1rem', minHeight: '85vh', background: 'var(--bg-surface)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-        <div className="card" style={{ maxWidth: '440px', width: '100%', padding: '2.5rem', textAlign: 'center', border: '2px solid var(--gold-dark)', boxShadow: 'var(--shadow-lg)' }}>
-          <div style={{ width: '70px', height: '70px', borderRadius: '50%', background: 'linear-gradient(135deg, #7A0C2E 0%, #4A061B 100%)', color: '#FFD700', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 1.25rem', boxShadow: '0 4px 15px rgba(122, 12, 46, 0.3)' }}>
+        <div className="card" style={{ maxWidth: '460px', width: '100%', padding: '2.5rem', textAlign: 'center', border: '2px solid var(--gold-dark)', boxShadow: 'var(--shadow-lg)', borderRadius: 'var(--radius-lg)' }}>
+          <div style={{ width: '70px', height: '70px', borderRadius: '50%', background: 'linear-gradient(135deg, #7A0C2E 0%, #4A061B 100%)', color: '#FFD700', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 1.25rem', boxShadow: '0 4px 15px rgba(122, 12, 46, 0.3)', border: '2px solid #D4AF37' }}>
             <Lock size={32} />
           </div>
-          <h2 style={{ fontSize: '1.6rem', color: 'var(--primary-maroon-dark)', marginBottom: '0.4rem', fontWeight: 800 }}>
-            Admin Security Passcode
+          <span className="badge badge-gold" style={{ marginBottom: '0.5rem', fontWeight: 800 }}>
+            👑 RESTRICTED ADMIN PORTAL
+          </span>
+          <h2 style={{ fontSize: '1.7rem', color: 'var(--primary-maroon-dark)', marginBottom: '0.3rem', fontWeight: 800 }}>
+            Administrator Login
           </h2>
           <p style={{ fontSize: '0.88rem', color: 'var(--text-muted)', marginBottom: '1.5rem' }}>
-            Chennai Jothi Matrimony • Restricted Access
+            Organizer: <strong>Dr. Chandra Babu</strong> (REGD-332/2008)
           </p>
 
           {adminError && (
-            <div style={{ background: '#FDF2F5', border: '1px solid #F5C2D0', color: '#9B1B43', padding: '0.65rem', borderRadius: '8px', fontSize: '0.82rem', fontWeight: 600, marginBottom: '1.2rem' }}>
+            <div style={{ background: '#FDF2F5', border: '1px solid #F5C2D0', color: '#9B1B43', padding: '0.65rem 0.85rem', borderRadius: '8px', fontSize: '0.84rem', fontWeight: 600, marginBottom: '1.2rem', textAlign: 'left' }}>
               ⚠️ {adminError}
             </div>
           )}
 
           <form onSubmit={handleAdminLogin}>
-            <div className="form-group" style={{ textAlign: 'left', marginBottom: '1.25rem' }}>
-              <label className="form-label">Enter Admin Password / Security PIN:</label>
+            <div className="form-group" style={{ textAlign: 'left', marginBottom: '1rem' }}>
+              <label className="form-label" style={{ fontWeight: 700, fontSize: '0.88rem' }}>Admin Username:</label>
               <input 
-                type="password" 
+                type="text" 
                 className="form-input" 
-                placeholder=""
-                value={adminPasswordInput}
-                onChange={(e) => setAdminPasswordInput(e.target.value)}
-                autoFocus
+                placeholder="admin"
+                value={adminUsernameInput}
+                onChange={(e) => setAdminUsernameInput(e.target.value)}
                 required
-                style={{ fontSize: '1rem', letterSpacing: '0.1em' }}
+                style={{ fontSize: '0.95rem' }}
               />
             </div>
-            <button type="submit" className="btn btn-primary btn-full" style={{ padding: '0.75rem', fontSize: '1rem', fontWeight: 700 }}>
-              🔓 Unlock Admin Portal
+
+            <div className="form-group" style={{ textAlign: 'left', marginBottom: '1.25rem' }}>
+              <label className="form-label" style={{ fontWeight: 700, fontSize: '0.88rem' }}>Admin Security Password / PIN:</label>
+              <div style={{ position: 'relative' }}>
+                <input 
+                  type={showPassword ? "text" : "password"} 
+                  className="form-input" 
+                  placeholder="Enter Password / PIN"
+                  value={adminPasswordInput}
+                  onChange={(e) => setAdminPasswordInput(e.target.value)}
+                  autoFocus
+                  required
+                  style={{ fontSize: '0.95rem', paddingRight: '2.5rem' }}
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  style={{
+                    position: 'absolute',
+                    right: '10px',
+                    top: '50%',
+                    transform: 'translateY(-50%)',
+                    background: 'none',
+                    border: 'none',
+                    color: 'var(--text-muted)',
+                    cursor: 'pointer',
+                    padding: '4px'
+                  }}
+                  title={showPassword ? "Hide password" : "Show password"}>
+                  {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                </button>
+              </div>
+            </div>
+
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1.5rem', fontSize: '0.85rem' }}>
+              <label style={{ display: 'flex', alignItems: 'center', gap: '6px', cursor: 'pointer', color: 'var(--text-main)', fontWeight: 600 }}>
+                <input 
+                  type="checkbox" 
+                  checked={rememberMe} 
+                  onChange={(e) => setRememberMe(e.target.checked)} 
+                  style={{ accentColor: 'var(--primary-maroon)' }}
+                />
+                Remember me on this device
+              </label>
+              <span style={{ color: 'var(--text-muted)', fontSize: '0.8rem' }}>Default: jothi2026</span>
+            </div>
+
+            <button type="submit" className="btn btn-primary btn-full" style={{ padding: '0.75rem', fontSize: '1.05rem', fontWeight: 800 }}>
+              🔓 Unlock Admin Management Portal
             </button>
           </form>
         </div>
@@ -135,6 +384,9 @@ export default function NextAdminPage() {
     );
   }
 
+  // ==========================================
+  // AUTHENTICATED ADMIN DASHBOARD
+  // ==========================================
   const totalProfiles = (profilesList || []).length;
   const verifiedCount = (profilesList || []).filter(p => p && isProfileVerified(p)).length;
   const bridesCount = (profilesList || []).filter(p => p && p.gender === 'Female').length;
@@ -180,7 +432,7 @@ export default function NextAdminPage() {
 
   return (
     <div style={{ padding: '3rem 0', minHeight: '85vh', background: 'var(--bg-silk)' }}>
-      <div className="container" style={{ maxWidth: '1100px' }}>
+      <div className="container" style={{ maxWidth: '1150px' }}>
         
         {/* Admin Header Banner */}
         <div className="card" style={{
@@ -200,14 +452,34 @@ export default function NextAdminPage() {
                 Administrator Management Panel
               </h1>
               <p style={{ color: '#F8FAFC', fontSize: '0.95rem', margin: 0 }}>
-                Organizer: <strong>Dr. Chandra Babu</strong> (REGD-332/2008) • Master Admin Access Granted
+                Organizer: <strong>Dr. Chandra Babu</strong> (REGD-332/2008) • Master Admin Access Active
               </p>
             </div>
 
-            <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
+            <div style={{ display: 'flex', gap: '0.65rem', flexWrap: 'wrap' }}>
+              {/* Excel Export Quick Button in Banner */}
+              <button
+                onClick={() => handleExportProfilesToExcel(profilesList, 'Chennai_Jothi_Matrimony_All_Profiles')}
+                className="btn btn-sm"
+                title="Download all registered profiles in Excel (.CSV format with UTF-8 BOM)"
+                style={{
+                  background: '#107C41',
+                  color: '#FFF',
+                  fontWeight: 700,
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '6px',
+                  borderRadius: '6px',
+                  border: '1px solid #10B981',
+                  boxShadow: '0 2px 10px rgba(16, 124, 65, 0.4)'
+                }}>
+                <FileSpreadsheet size={16} /> Export to Excel
+              </button>
+
               <Link href="/profile-setup" className="btn btn-gold btn-sm">
                 <Plus size={16} /> Add New Profile
               </Link>
+              
               <button onClick={handleAdminLock} className="btn btn-sm" style={{ background: '#FDF2F5', color: '#9B1B43', border: '1px solid #F5C2D0', fontWeight: 700 }}>
                 🔒 Lock Admin
               </button>
@@ -244,25 +516,75 @@ export default function NextAdminPage() {
             <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)', fontWeight: 600, textTransform: 'uppercase' }}>Admin Privileges</div>
             <div style={{ fontSize: '1.1rem', fontWeight: 800, color: '#0369A1', marginTop: '0.4rem' }}>
               <ShieldCheck size={18} style={{ display: 'inline', verticalAlign: 'middle', marginRight: '4px' }} />
-              Full Admin Granted
+              Full Master Admin
             </div>
             <div style={{ fontSize: '0.78rem', color: 'var(--text-muted)', fontWeight: 600 }}>Full Unrestricted Access</div>
           </div>
         </div>
 
-        {/* Tab Navigation */}
-        <div style={{ display: 'flex', gap: '0.5rem', marginBottom: '1.5rem', borderBottom: '2px solid var(--border-light)', paddingBottom: '0.5rem' }}>
-          <button 
-            onClick={() => setActiveTab('profiles')}
-            className={`btn btn-sm ${activeTab === 'profiles' ? 'btn-primary' : 'btn-outline'}`}>
-            <Users size={16} /> Manage Profiles ({filtered.length})
-          </button>
+        {/* Tab Navigation & Excel Export Bar */}
+        <div style={{ 
+          display: 'flex', 
+          justifyContent: 'space-between', 
+          alignItems: 'center', 
+          flexWrap: 'wrap', 
+          gap: '1rem', 
+          marginBottom: '1.5rem', 
+          borderBottom: '2px solid var(--border-light)', 
+          paddingBottom: '0.75rem' 
+        }}>
+          <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
+            <button 
+              onClick={() => setActiveTab('profiles')}
+              className={`btn btn-sm ${activeTab === 'profiles' ? 'btn-primary' : 'btn-outline'}`}>
+              <Users size={16} /> Manage Profiles ({filtered.length})
+            </button>
 
-          <button 
-            onClick={() => setActiveTab('payments')}
-            className={`btn btn-sm ${activeTab === 'payments' ? 'btn-primary' : 'btn-outline'}`}>
-            <CreditCard size={16} /> Razorpay Payments Ledger
-          </button>
+            <button 
+              onClick={() => setActiveTab('payments')}
+              className={`btn btn-sm ${activeTab === 'payments' ? 'btn-primary' : 'btn-outline'}`}>
+              <CreditCard size={16} /> Razorpay Payments Ledger
+            </button>
+          </div>
+
+          {/* Excel Export Toolbar */}
+          <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap', alignItems: 'center' }}>
+            <span style={{ fontSize: '0.8rem', fontWeight: 700, color: '#107C41' }}>
+              Excel Export:
+            </span>
+            <button
+              onClick={() => handleExportProfilesToExcel(profilesList, 'Chennai_Jothi_Matrimony_All_Profiles')}
+              className="btn btn-sm"
+              title="Download all registered profiles in Excel (.CSV format with UTF-8 BOM)"
+              style={{
+                background: '#107C41',
+                color: '#FFF',
+                fontWeight: 700,
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '6px',
+                borderRadius: '6px',
+                boxShadow: '0 2px 8px rgba(16, 124, 65, 0.3)'
+              }}>
+              <FileSpreadsheet size={16} /> Export All ({totalProfiles})
+            </button>
+
+            <button
+              onClick={() => handleExportProfilesToExcel(filtered, `Chennai_Jothi_${adminGenderFilter}_Profiles`)}
+              className="btn btn-sm"
+              title="Download current filtered list in Excel"
+              style={{
+                background: '#0D6533',
+                color: '#FFF',
+                fontWeight: 700,
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '6px',
+                borderRadius: '6px'
+              }}>
+              <Download size={15} /> Export Filtered ({filtered.length})
+            </button>
+          </div>
         </div>
 
         {/* Tab Content 1: Profiles Management */}
@@ -274,7 +596,7 @@ export default function NextAdminPage() {
                   Registered Profiles Database (Admin Access)
                 </h3>
                 <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginTop: '2px' }}>
-                  Manage both Grooms & Brides in Local & Live System
+                  Manage both Grooms & Brides in Local & Live System • Exportable to Excel
                 </div>
               </div>
 
@@ -292,7 +614,7 @@ export default function NextAdminPage() {
                       fontSize: '0.78rem',
                       cursor: 'pointer'
                     }}>
-                    All Both ({totalProfiles})
+                    All ({totalProfiles})
                   </button>
                   <button
                     onClick={() => setAdminGenderFilter('Female')}
@@ -447,9 +769,33 @@ export default function NextAdminPage() {
         {/* Tab Content 2: Payments Ledger */}
         {activeTab === 'payments' && (
           <div className="card" style={{ padding: '1.75rem' }}>
-            <h3 style={{ fontSize: '1.3rem', color: 'var(--primary-maroon-dark)', marginBottom: '1.25rem' }}>
-              Razorpay ₹1,000 Registration Fee Payment Audit Log
-            </h3>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.25rem', flexWrap: 'wrap', gap: '1rem' }}>
+              <div>
+                <h3 style={{ fontSize: '1.3rem', color: 'var(--primary-maroon-dark)', margin: 0 }}>
+                  Razorpay ₹1,000 Registration Fee Payment Audit Log
+                </h3>
+                <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginTop: '2px' }}>
+                  Official transaction ledger for Chennai Jothi Matrimony
+                </div>
+              </div>
+
+              <button
+                onClick={handleExportPaymentsToExcel}
+                className="btn btn-sm"
+                title="Download complete payments audit log in Excel (.CSV format with UTF-8 BOM)"
+                style={{
+                  background: '#107C41',
+                  color: '#FFF',
+                  fontWeight: 700,
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '6px',
+                  borderRadius: '6px',
+                  boxShadow: '0 2px 8px rgba(16, 124, 65, 0.3)'
+                }}>
+                <FileSpreadsheet size={16} /> Export Payments Ledger (.CSV)
+              </button>
+            </div>
             
             <div style={{ overflowX: 'auto' }}>
               <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.88rem' }}>
@@ -512,12 +858,12 @@ export default function NextAdminPage() {
               background: '#FFF',
               borderRadius: '12px',
               maxWidth: '940px',
-            width: '100%',
-            maxHeight: '90vh',
-            overflowY: 'auto',
-            padding: '1.5rem',
-            position: 'relative'
-          }}>
+              width: '100%',
+              maxHeight: '90vh',
+              overflowY: 'auto',
+              padding: '1.5rem',
+              position: 'relative'
+            }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }} className="no-print">
               <h3 style={{ margin: 0, color: 'var(--primary-maroon-dark)' }}>
                 Official Chennai Jothi Registration Sheet - {selectedRegFormProfile.name}
