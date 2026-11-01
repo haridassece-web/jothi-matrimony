@@ -64,8 +64,8 @@ export default function RazorpayStandardCheckout({
 
       const orderData = await res.json();
 
-      if (!res.ok || !orderData.order_id) {
-        throw new Error(orderData.error || orderData.details || 'Failed to create payment order on server');
+      if (!res.ok && !orderData.key_id) {
+        throw new Error(orderData.error || orderData.details || 'Failed to initialize payment gateway');
       }
 
       if (!window.Razorpay) {
@@ -85,7 +85,7 @@ export default function RazorpayStandardCheckout({
         name: 'Chennai Jothi Matrimony',
         description: '1-Year Membership Registration Fee (₹1,000)',
         image: '/logo.jpg',
-        order_id: orderData.order_id,
+        // order_id attached conditionally below
         prefill: {
           name: userName,
           email: userEmail,
@@ -112,9 +112,9 @@ export default function RazorpayStandardCheckout({
                 'Content-Type': 'application/json'
               },
               body: JSON.stringify({
-                razorpay_order_id: response.razorpay_order_id,
+                razorpay_order_id: response.razorpay_order_id || null,
                 razorpay_payment_id: response.razorpay_payment_id,
-                razorpay_signature: response.razorpay_signature,
+                razorpay_signature: response.razorpay_signature || null,
                 userId: userId
               })
             });
@@ -147,6 +147,10 @@ export default function RazorpayStandardCheckout({
           }
         }
       };
+
+      if (orderData.order_id) {
+        options.order_id = orderData.order_id;
+      }
 
       const rzpInstance = new window.Razorpay(options);
 
