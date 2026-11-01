@@ -8,8 +8,8 @@ export class PaymentsService {
   private razorpay: Razorpay | null = null;
 
   constructor(private readonly supabaseService: SupabaseService) {
-    const key_id = process.env.RAZORPAY_KEY_ID;
-    const key_secret = process.env.RAZORPAY_KEY_SECRET;
+    const key_id = process.env.RAZORPAY_KEY_ID || 'rzp_test_TuwWQrlQ3IHgya';
+    const key_secret = process.env.RAZORPAY_KEY_SECRET || 'UjAkJ0ivj9ouPX9lB9YFF5iw';
     if (key_id && key_secret && key_id !== 'YOUR_RAZORPAY_KEY') {
       this.razorpay = new Razorpay({
         key_id,
@@ -57,7 +57,7 @@ export class PaymentsService {
   }
 
   verifySignature(orderId: string, paymentId: string, signature: string): boolean {
-    const keySecret = process.env.RAZORPAY_KEY_SECRET;
+    const keySecret = process.env.RAZORPAY_KEY_SECRET || 'UjAkJ0ivj9ouPX9lB9YFF5iw';
     if (!keySecret) {
       return false;
     }

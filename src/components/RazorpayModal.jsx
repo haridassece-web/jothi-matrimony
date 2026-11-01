@@ -52,20 +52,21 @@ export default function RazorpayModal({ isOpen, onClose, onSuccess }) {
       });
       const verifyData = await verifyRes.json();
 
-      // 3. Activate membership_status = ACTIVE
-      const record = processPaymentSuccess({
-        gateway: gatewayName,
-        orderId: orderData.orderId,
-        status: verifyData.status || 'PAID_ACTIVE'
-      });
-
-      setPaymentInfo(record);
-      setPaymentState('SUCCESS');
+      if (verifyRes.ok && verifyData.success) {
+        // Activate membership_status = ACTIVE only when verified
+        const record = processPaymentSuccess({
+          gateway: gatewayName,
+          orderId: orderData.orderId,
+          status: 'PAID_ACTIVE'
+        });
+        setPaymentInfo(record);
+        setPaymentState('SUCCESS');
+      } else {
+        throw new Error(verifyData.error || 'Payment verification failed');
+      }
     } catch (err) {
-      console.warn('API verification fallback to mock local payment', err);
-      const record = processPaymentSuccess({ gateway: gatewayName });
-      setPaymentInfo(record);
-      setPaymentState('SUCCESS');
+      console.error('Payment verification error:', err);
+      setPaymentState('ERROR');
     }
   };
 
