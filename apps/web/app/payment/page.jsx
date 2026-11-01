@@ -179,7 +179,7 @@ export default function PaymentPage() {
               userName={user?.name || 'Valued Member'}
               userEmail={user?.email || 'member@chennaijothimatrimony.com'}
               userPhone={user?.mobile || user?.phone || '9043773977'}
-              buttonText="💳 Pay ₹1,000 via Razorpay Standard Checkout"
+              buttonText="Pay ₹1,000 via Razorpay Standard Checkout"
               onSuccess={handlePaymentSuccess}
             />
 
