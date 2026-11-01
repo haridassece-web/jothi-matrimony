@@ -113,7 +113,7 @@ export default function PaymentPage() {
             letterSpacing: '0.05em',
             marginBottom: '0.5rem'
           }}>
-            Official 1-Year Registration & Membership Fee
+            Official Matrimonial Matchmaking 1-Year Registration Fee
           </div>
 
           {/* Amount Badge */}

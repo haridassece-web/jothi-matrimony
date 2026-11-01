@@ -83,7 +83,7 @@ export default function RazorpayStandardCheckout({
         amount: orderData.amount,
         currency: orderData.currency || 'INR',
         name: 'Chennai Jothi Matrimony',
-        description: '1-Year Membership Registration Fee (₹1,000)',
+        description: '1-Year Matchmaking Registration Fee (₹1,000)',
         image: '/logo.jpg',
         order_id: orderData.order_id,
         prefill: {

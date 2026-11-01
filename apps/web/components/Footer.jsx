@@ -51,8 +51,8 @@ export default function Footer() {
             </div>
             <p style={{ fontSize: '0.76rem', color: '#D9C8BE', lineHeight: 1.4, marginBottom: '0.5rem' }}>
               {language === 'ta'
-                ? 'சென்னை ஜோதி மேட்ரிமோனி (Dr. சந்திரபாபு): அனைத்து சமூகத்தினர்க்கும் திருமண வரன்கள் ஜோதிட முறையில் அமைத்து தரப்படும்.'
-                : 'Chennai Jothi Matrimony (Dr. Chandrababu). Authentic horoscope matchmaking for all communities.'}
+                ? 'சென்னை ஜோதி மேட்ரிமோனி (Dr. சந்திரபாபு): அனைத்து சமூகத்தினர்க்கும் பாரம்பரிய திருமண வரன்கள் மற்றும் ஜாதகப் பொருத்தம் அமைத்து தரும் மேட்ச்மேக்கிங் நிறுவனம். இது திருமண வரன்களுக்கான தளம் மட்டுமே (டேட்டிங் சேவை அல்ல).'
+                : 'Chennai Jothi Matrimony (Dr. Chandrababu): Traditional matrimonial matchmaking business for all Tamil communities. Solely for marriage solemnization (Not a dating service).'}
             </p>
             <div style={{ display: 'flex', gap: '0.35rem', flexWrap: 'wrap' }}>
               <span className="badge badge-gold" style={{ fontSize: '0.65rem', padding: '1px 6px' }}>
@@ -64,16 +64,19 @@ export default function Footer() {
             </div>
           </div>
 
-          {/* Quick Links */}
+          {/* Quick Links & Policies */}
           <div>
             <h4 style={{ color: 'var(--gold-primary)', marginBottom: '0.4rem', fontSize: '0.88rem' }}>
-              {language === 'ta' ? 'விரைவு இணைப்புகள்' : 'Quick Links'}
+              {language === 'ta' ? 'இணைப்புகள் & கொள்கைகள்' : 'Quick Links & Policies'}
             </h4>
             <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '0.3rem', fontSize: '0.78rem', color: '#E8DCD3', padding: 0, margin: 0 }}>
               <li><Link href="/" style={linkStyle}>Home / முகப்பு</Link></li>
               <li><Link href="/register" style={linkStyle}>₹1,000 Registration</Link></li>
               <li><Link href="/payment" style={linkStyle}>Payment Options</Link></li>
               <li><Link href="/alliances" style={linkStyle}>Browse Tamil Alliances</Link></li>
+              <li><Link href="/terms" style={linkStyle}>Terms & Conditions</Link></li>
+              <li><Link href="/privacy" style={linkStyle}>Privacy Policy</Link></li>
+              <li><Link href="/refund-policy" style={linkStyle}>Cancellation & Refund</Link></li>
             </ul>
           </div>
 
@@ -120,7 +123,7 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* Bottom Copyright */}
+        {/* Bottom Copyright & Policy Links */}
         <div style={{
           paddingTop: '0.6rem',
           display: 'flex',
@@ -132,7 +135,14 @@ export default function Footer() {
           color: '#B5A297'
         }}>
           <div>
-            © 2026 Chennai Jothi Matrimony. All rights reserved.
+            © 2026 Chennai Jothi Matrimony (Matchmaking Business). All rights reserved.
+          </div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', flexWrap: 'wrap' }}>
+            <Link href="/terms" style={{ color: '#D9C8BE', textDecoration: 'none' }}>Terms</Link>
+            <span>•</span>
+            <Link href="/privacy" style={{ color: '#D9C8BE', textDecoration: 'none' }}>Privacy</Link>
+            <span>•</span>
+            <Link href="/refund-policy" style={{ color: '#D9C8BE', textDecoration: 'none' }}>Refunds</Link>
           </div>
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
             <span>Made with</span>

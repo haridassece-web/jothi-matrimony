@@ -38,7 +38,7 @@ export async function POST(request) {
         currency: currency.toUpperCase(),
         receipt: receipt || `rcpt_${Date.now()}`,
         notes: notes || {
-          purpose: 'Chennai Jothi Matrimony 1-Year Registration Fee'
+          purpose: 'Chennai Jothi Matrimony 1-Year Matchmaking Registration Fee'
         }
       });
 
