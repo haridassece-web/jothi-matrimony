@@ -1,20 +1,25 @@
 import { Injectable } from '@nestjs/common';
 import * as crypto from 'crypto';
-import Razorpay from 'razorpay';
+const Razorpay = require('razorpay');
 import { SupabaseService } from '../supabase/supabase.service';
 
 @Injectable()
 export class PaymentsService {
-  private razorpay: Razorpay | null = null;
+  private razorpay: any = null;
 
   constructor(private readonly supabaseService: SupabaseService) {
     const key_id = process.env.RAZORPAY_KEY_ID || 'rzp_test_TuxtCKUR66AmyF';
     const key_secret = process.env.RAZORPAY_KEY_SECRET || 'mniToCh9JHutflRqXTijMIXk';
     if (key_id && key_secret && key_id !== 'YOUR_RAZORPAY_KEY') {
-      this.razorpay = new Razorpay({
-        key_id,
-        key_secret,
-      });
+      try {
+        const RazorpayClass = typeof Razorpay === 'function' ? Razorpay : Razorpay.default;
+        this.razorpay = new RazorpayClass({
+          key_id,
+          key_secret,
+        });
+      } catch (err) {
+        console.error('Failed to initialize Razorpay in PaymentsService:', err);
+      }
     }
   }
 
