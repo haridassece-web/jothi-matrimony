@@ -13,7 +13,7 @@ export default function PaymentPage({ setActivePage, onOpenRazorpay }) {
       processPaymentSuccess({
         paymentId: paymentResult.paymentId,
         orderId: paymentResult.orderId,
-        gateway: 'Razorpay Standard Checkout (rzp_test_TuwWQrlQ3IHgya)'
+        gateway: 'Razorpay Standard Checkout (rzp_test_TuxtCKUR66AmyF)'
       });
     }
     if (setActivePage) {

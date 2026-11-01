@@ -75,7 +75,7 @@ export default function RazorpayStandardCheckout({
       const keyId = orderData.key_id || 
                     process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID || 
                     process.env.VITE_RAZORPAY_KEY_ID || 
-                    'rzp_test_TuwWQrlQ3IHgya';
+                    'rzp_test_TuxtCKUR66AmyF';
 
       // STEP 2: Open Razorpay Standard Checkout Modal
       const options = {

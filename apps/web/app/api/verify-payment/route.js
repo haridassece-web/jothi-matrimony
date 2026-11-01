@@ -31,7 +31,7 @@ export async function POST(request) {
       );
     }
 
-    const keySecret = process.env.RAZORPAY_KEY_SECRET || 'UjAkJ0ivj9ouPX9lB9YFF5iw';
+    const keySecret = process.env.RAZORPAY_KEY_SECRET || 'mniToCh9JHutflRqXTijMIXk';
     if (!keySecret) {
       return NextResponse.json(
         { success: false, error: 'Server configuration error: RAZORPAY_KEY_SECRET is missing.' },
