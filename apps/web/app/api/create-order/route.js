@@ -49,26 +49,23 @@ export async function POST(request) {
         key_id: keyId
       });
     } catch (rzpError) {
-      console.warn('Razorpay server orders.create failed, falling back to direct Standard Checkout with Key ID:', rzpError?.message || rzpError);
+      console.error('Razorpay orders.create failed:', rzpError);
+      const statusCode = rzpError.statusCode || rzpError.status || 500;
+      const desc = rzpError.error?.description || rzpError.message || 'Razorpay order creation failed';
       
-      // Fallback: If Orders API fails (e.g. secret mismatch or regeneration), allow Razorpay Standard Checkout
-      // to open directly with the valid public Key ID, so checkout is NEVER blocked!
-      return NextResponse.json({
-        order_id: null,
-        amount: parsedAmount,
-        currency: currency.toUpperCase(),
-        key_id: keyId,
-        fallback: true
-      });
+      return NextResponse.json(
+        { 
+          error: `Razorpay Order Error (${statusCode}): ${desc}. Please verify that your Key ID and Key Secret in Razorpay Dashboard are active.`,
+          details: desc
+        },
+        { status: statusCode }
+      );
     }
   } catch (error) {
     console.error('Internal server error in /api/create-order:', error);
-    return NextResponse.json({
-      order_id: null,
-      amount: 1000 * 100,
-      currency: 'INR',
-      key_id: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID || 'rzp_test_TuxtCKUR66AmyF',
-      fallback: true
-    });
+    return NextResponse.json(
+      { error: 'Failed to create Razorpay order', details: error.message },
+      { status: 500 }
+    );
   }
 }
