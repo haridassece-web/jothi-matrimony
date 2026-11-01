@@ -36,7 +36,7 @@ function PaymentSuccessContent() {
     const isAuthenticPaid = user?.paymentStatus === 'PAID' && 
       user?.registrationStatus === 'PAID_ACTIVE' &&
       paymentDetails?.id &&
-      (paymentDetails.id.startsWith('pay_') || paymentDetails.gateway?.includes('pl_TuQgSgXdvzHPKY'));
+      (paymentDetails.id.startsWith('pay_') || paymentDetails.gateway?.includes('Razorpay') || paymentDetails.gateway?.includes('pl_TuQgSgXdvzHPKY'));
 
     if (isAuthenticPaid) {
       setIsVerified(true);

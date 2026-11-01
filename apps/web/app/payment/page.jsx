@@ -4,13 +4,27 @@ export const dynamic = 'force-dynamic';
 
 import React, { useState } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { useAuth } from '../../context/AuthContext';
+import RazorpayStandardCheckout from '../../components/RazorpayStandardCheckout';
 import RazorpayPaymentButton from '../../components/RazorpayPaymentButton';
 import { ShieldCheck, CheckCircle2, Lock, Sparkles, CreditCard, Landmark, Copy, Check, AlertCircle } from 'lucide-react';
 
 export default function PaymentPage() {
-  const { user, registrationId, language } = useAuth();
+  const router = useRouter();
+  const { user, registrationId, language, processPaymentSuccess } = useAuth();
   const [copiedField, setCopiedField] = useState(null);
+
+  const handlePaymentSuccess = (paymentResult) => {
+    if (processPaymentSuccess) {
+      processPaymentSuccess({
+        paymentId: paymentResult.paymentId,
+        orderId: paymentResult.orderId,
+        gateway: 'Razorpay Standard Checkout (rzp_test_TuwWQrlQ3IHgya)'
+      });
+    }
+    router.push(`/payment/success?razorpay_payment_id=${paymentResult.paymentId}&razorpay_order_id=${paymentResult.orderId}`);
+  };
 
   const bankDetails = {
     bankName: 'State Bank of India',
@@ -139,7 +153,7 @@ export default function PaymentPage() {
             ))}
           </div>
 
-          {/* OFFICIAL RAZORPAY PAYMENT GATEWAY BUTTON */}
+          {/* OFFICIAL RAZORPAY STANDARD WEB CHECKOUT */}
           <div style={{
             background: '#F0F9FF',
             border: '2px solid #0284C7',
@@ -148,31 +162,37 @@ export default function PaymentPage() {
             marginBottom: '1.5rem',
             textAlign: 'center'
           }}>
-            <div style={{ fontSize: '0.95rem', fontWeight: 800, color: '#0369A1', marginBottom: '0.3rem', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px' }}>
+            <div style={{ fontSize: '1rem', fontWeight: 800, color: '#0369A1', marginBottom: '0.35rem', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px' }}>
               <CreditCard size={18} />
-              <span>Official Online Payment Gateway (Razorpay)</span>
+              <span>Razorpay Standard Web Checkout (Instant Verification)</span>
             </div>
             
-            <p style={{ fontSize: '0.84rem', color: '#475569', margin: '0 0 1rem 0' }}>
-              Pay securely via UPI (Google Pay, PhonePe, Paytm), Debit/Credit Cards, or NetBanking:
+            <p style={{ fontSize: '0.84rem', color: '#475569', margin: '0 0 1.25rem 0' }}>
+              Pay securely with instant activation via UPI (GPay, PhonePe, Paytm), Cards & NetBanking:
             </p>
 
-            {/* Razorpay Button pl_TuQgSgXdvzHPKY */}
-            <div style={{ minHeight: '52px', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-              <RazorpayPaymentButton paymentButtonId="pl_TuQgSgXdvzHPKY" />
+            {/* Standard Checkout Integration */}
+            <RazorpayStandardCheckout
+              amount={1000 * 100}
+              currency="INR"
+              userId={displayRegId}
+              userName={user?.name || 'Valued Member'}
+              userEmail={user?.email || 'member@chennaijothimatrimony.com'}
+              userPhone={user?.mobile || user?.phone || '9043773977'}
+              buttonText="💳 Pay ₹1,000 via Razorpay Standard Checkout"
+              onSuccess={handlePaymentSuccess}
+            />
+
+            <div style={{ margin: '1.5rem 0 0.85rem', position: 'relative' }}>
+              <div style={{ position: 'absolute', top: '50%', left: '10%', right: '10%', height: '1px', background: '#BAE6FD' }}></div>
+              <span style={{ position: 'relative', background: '#F0F9FF', padding: '0 12px', fontSize: '0.74rem', color: '#64748B', fontWeight: 700 }}>
+                OR USE DIRECT PAYMENT BUTTON
+              </span>
             </div>
 
-            <div style={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              gap: '0.4rem',
-              fontSize: '0.76rem',
-              color: '#64748B',
-              marginTop: '0.85rem'
-            }}>
-              <Lock size={13} color="#0284C7" />
-              <span>Direct Bank Settlement to Chennai Jothi Matrimony • 256-bit SSL</span>
+            {/* Direct Razorpay Button pl_TuQgSgXdvzHPKY */}
+            <div style={{ minHeight: '48px', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+              <RazorpayPaymentButton paymentButtonId="pl_TuQgSgXdvzHPKY" />
             </div>
           </div>
 
