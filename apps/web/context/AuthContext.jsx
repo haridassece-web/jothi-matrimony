@@ -69,6 +69,27 @@ export function AuthProvider({ children }) {
           }
         }
 
+        // Sanitize any legacy cached numbers (94449 34527 / 94456 38377 -> 94457 56377)
+        const sanitizePhone = (val) => {
+          if (!val || typeof val !== 'string') return val;
+          return val
+            .replace(/\+?91[\s\-]?(94449[\s\-]?34527|94456[\s\-]?38377)/g, '+91 94457 56377')
+            .replace(/(9444934527|9445638377)/g, '9445756377');
+        };
+
+        if (parsed.user) {
+          if (parsed.user.phone) parsed.user.phone = sanitizePhone(parsed.user.phone);
+          if (parsed.user.mobile) parsed.user.mobile = sanitizePhone(parsed.user.mobile);
+        }
+
+        if (Array.isArray(parsed.customProfiles)) {
+          parsed.customProfiles = parsed.customProfiles.map(p => ({
+            ...p,
+            phone: sanitizePhone(p.phone),
+            mobile: sanitizePhone(p.mobile)
+          }));
+        }
+
         setState(prev => ({
           ...defaultState,
           ...parsed,
