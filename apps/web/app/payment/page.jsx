@@ -20,7 +20,7 @@ export default function PaymentPage() {
       processPaymentSuccess({
         paymentId: paymentResult.paymentId,
         orderId: paymentResult.orderId,
-        gateway: 'Razorpay Standard Checkout (rzp_test_TuxtCKUR66AmyF)'
+        gateway: 'Razorpay Standard Checkout (rzp_test_Tuz6CvkXYtRSA2)'
       });
     }
     router.push(`/payment/success?razorpay_payment_id=${paymentResult.paymentId}&razorpay_order_id=${paymentResult.orderId}`);

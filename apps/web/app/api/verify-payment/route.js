@@ -31,7 +31,7 @@ export async function POST(request) {
       );
     }
 
-    const keySecret = process.env.RAZORPAY_KEY_SECRET || 'mniToCh9JHutflRqXTijMIXk';
+    const keySecret = process.env.RAZORPAY_KEY_SECRET || '5ybIBDOBUds3WGpivZ5zsrzB';
 
     // If order_id and signature are present, verify HMAC-SHA256 signature
     if (razorpay_order_id && razorpay_signature && keySecret) {

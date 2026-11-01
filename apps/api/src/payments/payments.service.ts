@@ -8,8 +8,8 @@ export class PaymentsService {
   private razorpay: any = null;
 
   constructor(private readonly supabaseService: SupabaseService) {
-    const key_id = process.env.RAZORPAY_KEY_ID || 'rzp_test_TuxtCKUR66AmyF';
-    const key_secret = process.env.RAZORPAY_KEY_SECRET || 'mniToCh9JHutflRqXTijMIXk';
+    const key_id = process.env.RAZORPAY_KEY_ID || 'rzp_test_Tuz6CvkXYtRSA2';
+    const key_secret = process.env.RAZORPAY_KEY_SECRET || '5ybIBDOBUds3WGpivZ5zsrzB';
     if (key_id && key_secret && key_id !== 'YOUR_RAZORPAY_KEY') {
       try {
         const RazorpayClass = typeof Razorpay === 'function' ? Razorpay : Razorpay.default;
@@ -29,7 +29,7 @@ export class PaymentsService {
     currency: string = 'INR',
     receipt?: string,
   ) {
-    const keyId = process.env.RAZORPAY_KEY_ID || 'rzp_test_TuxtCKUR66AmyF';
+    const keyId = process.env.RAZORPAY_KEY_ID || 'rzp_test_Tuz6CvkXYtRSA2';
 
     if (this.razorpay) {
       try {
@@ -62,7 +62,7 @@ export class PaymentsService {
   }
 
   verifySignature(orderId: string, paymentId: string, signature: string): boolean {
-    const keySecret = process.env.RAZORPAY_KEY_SECRET || 'mniToCh9JHutflRqXTijMIXk';
+    const keySecret = process.env.RAZORPAY_KEY_SECRET || '5ybIBDOBUds3WGpivZ5zsrzB';
     if (!keySecret) {
       return false;
     }

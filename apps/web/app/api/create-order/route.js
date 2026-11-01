@@ -24,8 +24,8 @@ export async function POST(request) {
       );
     }
 
-    const keyId = process.env.RAZORPAY_KEY_ID || process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID || 'rzp_test_TuxtCKUR66AmyF';
-    const keySecret = process.env.RAZORPAY_KEY_SECRET || 'mniToCh9JHutflRqXTijMIXk';
+    const keyId = process.env.RAZORPAY_KEY_ID || process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID || 'rzp_test_Tuz6CvkXYtRSA2';
+    const keySecret = process.env.RAZORPAY_KEY_SECRET || '5ybIBDOBUds3WGpivZ5zsrzB';
 
     try {
       const razorpay = new Razorpay({
