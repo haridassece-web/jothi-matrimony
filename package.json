@@ -10,7 +10,7 @@
     "dev": "npm run dev:web",
     "dev:web": "npm --prefix apps/web run dev",
     "dev:api": "npm --prefix apps/api run dev",
-    "build": "npm run build --workspaces --if-present",
+    "build": "npm run build:api",
     "build:api": "npm --prefix apps/api run build",
     "build:web": "npm --prefix apps/web run build",
     "start": "node apps/api/dist/main.js",
