@@ -264,7 +264,7 @@ export default function PaymentPage() {
             color: '#166534',
             lineHeight: 1.5
           }}>
-            💬 <strong>Bank Transfer / GPay Verification:</strong> If you paid directly to SBI Bank account or GPay (<strong>90437 73977</strong>), please send your payment screenshot with your Registration ID (<strong>{displayRegId}</strong>) to WhatsApp: <strong>+91 90437 73977</strong> or Helpline: <strong>+91 94456 38377</strong> to activate your account.
+            💬 <strong>Bank Transfer / GPay Verification:</strong> If you paid directly to SBI Bank account or GPay (<strong>90437 73977</strong>), please send your payment screenshot with your Registration ID (<strong>{displayRegId}</strong>) to WhatsApp: <strong>+91 90437 73977</strong> or Helpline: <strong>+91 94457 56377</strong> to activate your account.
           </div>
 
           <div style={{ marginTop: '1rem', textAlign: 'center' }}>

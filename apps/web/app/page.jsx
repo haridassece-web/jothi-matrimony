@@ -163,7 +163,7 @@ export default function LandingPage() {
                     textDecoration: 'none'
                   }}>
                   <PhoneCall size={16} color="var(--gold-primary)" />
-                  <span>Call: 9043773977 / 9445638377</span>
+                  <span>Call: 9043773977 / 9445756377</span>
                 </a>
               </div>
 

@@ -170,7 +170,7 @@ export default function AlliancesPage() {
                 <span style={{ background: '#25D366', color: '#064E3B', fontSize: '0.68rem', fontWeight: 900, padding: '2px 7px', borderRadius: '4px' }}>NEW UPDATES</span>
               </div>
               <div style={{ fontSize: '0.8rem', color: '#D1FAE5', marginTop: '2px' }}>
-                WhatsApp No: <strong>+91 90437 73977</strong> | Helpline: <strong>+91 94456 38377</strong>
+                WhatsApp No: <strong>+91 90437 73977</strong> | Helpline: <strong>+91 94457 56377</strong>
               </div>
             </div>
           </div>

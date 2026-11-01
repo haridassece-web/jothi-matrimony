@@ -314,7 +314,7 @@ export const MOCK_PROFILES = [
       "/profiles/710.jpg"
     ],
     about: "B.Sc Chemistry graduate working as Sales Manager at Dr. Reddy's Laboratories (HYD). Native of Dharmapuri with own house and 1 acre agricultural land. Looking for a traditional bride from MBC Vanniyakula Kshatriyar community.",
-    phone: "+91 94456 38377",
+    phone: "+91 94457 56377",
     email: "manikandan.r.jm@gmail.com",
     verified: true,
     joinedDate: "2026-03-05"
@@ -488,7 +488,7 @@ export const MOCK_PROFILES = [
       "/profiles/777.jpg"
     ],
     about: "Tall (6'1\") Senior Software Engineer working at Solaris Tech, Chennai earning ₹9L PA. Native of Kattumannarkoil, Cuddalore. Father holds M.S. in Software Engineering & runs business. Family owns 4.5 ground property. Seeking IT working bride in Chennai.",
-    phone: "+91 94456 38377",
+    phone: "+91 94457 56377",
     email: "sowmiksiva.j.jm@gmail.com",
     verified: true,
     joinedDate: "2026-03-12"
@@ -664,7 +664,7 @@ export const MOCK_PROFILES = [
       "/profiles/713.jpg"
     ],
     about: "Entrepreneur running own Hotel & Catering business in Walajabad/Arakkonam. Father ex-railway chef running family catering business. Own house in Walajabad. Seeking a simple, cultured bride from Vanniyar community (+2 / Degree non-engg).",
-    phone: "+91 94456 38377",
+    phone: "+91 94457 56377",
     email: "kavimani.m.jm@gmail.com",
     verified: true,
     joinedDate: "2026-03-18"
@@ -840,7 +840,7 @@ export const MOCK_PROFILES = [
       "/profiles/kalaivani.jpg"
     ],
     about: "Doctor & M.Sc / Ph.D holder working as Consultant Doctor at S.P. Kovil Pvt Hospital earning ₹1 Lakh/month. Belongs to a highly respected Vanniyar VIP family in Singaperumal Kovil with 3.5 acres land and rental income of ₹2 Lakhs/month. Father runs Agriculture & Real Estate business. Seeking an MBBS / BDS / Medical / Tech groom in Chennai/Chengalpattu surrounding.",
-    phone: "+91 94456 38377",
+    phone: "+91 94457 56377",
     email: "dr.kalaivani.r.jm@gmail.com",
     verified: true,
     joinedDate: "2026-03-26"
@@ -928,7 +928,7 @@ export const MOCK_PROFILES = [
       "/profiles/vaanathi.jpg"
     ],
     about: "M.B.B.S., D.G.O. Gynecologist specialist earning ₹5 Lakhs/month from a prestigious VIP Doctor family in Dharmapuri. Father Dr. Senthil is a Senior Doctor & Ex-MP, and mother Dr. Navagam is also a Senior Doctor. Seeking a qualified Doctor / Medical Professional groom for a dignified remarriage.",
-    phone: "+91 94456 38377",
+    phone: "+91 94457 56377",
     email: "dr.vaanathi.ms@gmail.com",
     verified: true,
     joinedDate: "2026-03-27"
@@ -1104,7 +1104,7 @@ export const MOCK_PROFILES = [
       "/profiles/sanjay.jpg"
     ],
     about: "M.B.B.S. Doctor & CEO of MedicalAndroid.com with Fellowship in Regenerative Medicine. Earning ₹1 Lakh/month + rental income. Tall (5'11\"). Son of Poovai G. Avadi (President, 15th Circle Congress Committee, DAE Central Govt of India) & Susheela. Own 3-storey building in Kilpauk, Chennai. Seeking M.B.B.S / B.D.S doctor bride.",
-    phone: "+91 94456 38377",
+    phone: "+91 94457 56377",
     email: "dr.sanjay.a.jm@gmail.com",
     verified: true,
     joinedDate: "2026-03-29"
@@ -1368,7 +1368,7 @@ export const MOCK_PROFILES = [
       "/profiles/srinivasan.jpg"
     ],
     about: "Diploma & E.E.E. Engineering graduate working as Sales Manager at SOBHA Ltd earning ₹50,000/month. Native of Mangadu, Chennai with 2 own houses and 1 acre land. Son of K. Murugasamy and Thanalakshmi. Seeking an educated bride from a good middle class Vanniyar family.",
-    phone: "+91 94456 38377",
+    phone: "+91 94457 56377",
     email: "srinivasan.m.jm@gmail.com",
     verified: true,
     joinedDate: "2026-04-01"
@@ -1720,7 +1720,7 @@ export const MOCK_PROFILES = [
       "/profiles/nithya.jpg"
     ],
     about: "B.E. (ECE) & LL.B. Advocate practicing in Chidambaram. Daughter of Advocate Anbalagan (B.A., B.L.) and Malarvizhi. Family owns 1 house, 3 plots, and 10 acres land in Chidambaram. Seeking an educated, cultured groom from Vanniyar community.",
-    phone: "+91 94456 38377",
+    phone: "+91 94457 56377",
     email: "nithya.a.jm@gmail.com",
     verified: true,
     joinedDate: "2026-04-05"
@@ -1808,7 +1808,7 @@ export const MOCK_PROFILES = [
       "/profiles/rajasekar.jpg"
     ],
     about: "B.E. (Electronic & Instrumentation) graduate running T.S.R Marketing, Transport and Finance earning ₹1 Lakh/month. Son of Thiru T.S. Raja (Co-operative Society Chairman & Business Owner). Own house in Thiruverkadu, Chennai. Seeking any degree bride.",
-    phone: "+91 94456 38377",
+    phone: "+91 94457 56377",
     email: "rajasekar.r.jm@gmail.com",
     verified: true,
     joinedDate: "2026-04-06"
@@ -2089,7 +2089,7 @@ export const MOCK_PROFILES = [
       "/sheets/shruthilaya_sheet.jpg"
     ],
     about: "B.Sc. TCM / MBA (HR) qualified bride from an esteemed VIP Vanniyar family in Alandur, Chennai. Managing TCM business earning ₹1 Lakh per month. Father Thiru M. Nanthakumar runs own Real Estate business. Family owns house and land properties in Chennai. Seeking an educated, well-settled groom with good values from Vanniyar community.",
-    phone: "+91 94456 38377",
+    phone: "+91 94457 56377",
     email: "shruthilaya.n.jm@gmail.com",
     verified: true,
     membershipStatus: "Active Paid Member",
