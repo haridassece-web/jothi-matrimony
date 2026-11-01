@@ -18,10 +18,10 @@ export default function FloatingContactButtons() {
     >
       {/* WhatsApp Symbol Only Button */}
       <a 
-        href="https://wa.me/919043773977?text=Vanakkam!%20Please%20send%20me%20day-by-day%20new%20matrimonial%20alliance%20updates."
+        href="https://wa.me/919043773977?text=Vanakkam!%20I%20am%20interested%20in%20Chennai%20Jothi%20Matrimony%20alliance%20registration."
         target="_blank"
         rel="noopener noreferrer"
-        title="Day-by-Day Alliance Updates sent through WhatsApp: +91 90437 73977"
+        title="WhatsApp Us (+91 90437 73977)"
         style={{
           width: '52px',
           height: '52px',
