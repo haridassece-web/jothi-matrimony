@@ -23,7 +23,13 @@ export default function PaymentPage() {
         gateway: 'Razorpay Standard Checkout (rzp_test_Tuz6CvkXYtRSA2)'
       });
     }
-    router.push(`/payment/success?razorpay_payment_id=${paymentResult.paymentId}&razorpay_order_id=${paymentResult.orderId}`);
+    if (typeof document !== 'undefined') {
+      try {
+        document.querySelectorAll('.razorpay-container').forEach(el => el.remove());
+        document.body.style.overflow = 'auto';
+      } catch (e) {}
+    }
+    window.location.assign(`/payment/success?razorpay_payment_id=${paymentResult.paymentId}&razorpay_order_id=${paymentResult.orderId}`);
   };
 
   const bankDetails = {

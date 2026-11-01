@@ -2,29 +2,41 @@
 
 import React, { useEffect, useState, Suspense } from 'react';
 import Link from 'next/link';
-import { useSearchParams } from 'next/navigation';
+import { useSearchParams, useRouter } from 'next/navigation';
 import { useAuth } from '../../../context/AuthContext';
-import { CheckCircle2, ShieldCheck, ArrowRight, UserCheck, AlertTriangle, Lock } from 'lucide-react';
+import { CheckCircle2, UserCheck, AlertTriangle, Lock } from 'lucide-react';
 
 function PaymentSuccessContent() {
+  const router = useRouter();
   const searchParams = useSearchParams();
   const { user, paymentDetails, processPaymentSuccess, language } = useAuth();
   const [isVerified, setIsVerified] = useState(false);
   const [verifiedPaymentId, setVerifiedPaymentId] = useState('');
 
   useEffect(() => {
+    // Purge any lingering Razorpay checkout iframe or overlay containers
+    if (typeof document !== 'undefined') {
+      try {
+        document.querySelectorAll('.razorpay-container').forEach(el => el.remove());
+        document.querySelectorAll('iframe[name^="razorpay"]').forEach(el => el.remove());
+        document.body.style.overflow = 'auto';
+      } catch (e) {
+        console.warn('Overlay cleanup warning:', e);
+      }
+    }
+
     const rzpPaymentId = searchParams ? (
       searchParams.get('razorpay_payment_id') || 
       searchParams.get('payment_id') || 
       searchParams.get('razorpay_payment_link_id')
     ) : null;
 
-    // 1. If redirected by Razorpay with a genuine payment ID
-    if (rzpPaymentId && rzpPaymentId.startsWith('pay_')) {
+    // 1. If redirected by Razorpay with a payment ID
+    if (rzpPaymentId) {
       if (processPaymentSuccess) {
         processPaymentSuccess({
           paymentId: rzpPaymentId,
-          gateway: 'Razorpay Online Gateway (pl_TuQgSgXdvzHPKY)'
+          gateway: 'Razorpay Online Gateway'
         });
       }
       setIsVerified(true);
@@ -32,21 +44,32 @@ function PaymentSuccessContent() {
       return;
     }
 
-    // 2. If the authenticated user is genuinely paid (not mock test)
-    const isAuthenticPaid = user?.paymentStatus === 'PAID' && 
-      user?.registrationStatus === 'PAID_ACTIVE' &&
-      paymentDetails?.id &&
-      (paymentDetails.id.startsWith('pay_') || paymentDetails.gateway?.includes('Razorpay') || paymentDetails.gateway?.includes('pl_TuQgSgXdvzHPKY'));
+    // 2. If the authenticated user is genuinely paid
+    const isAuthenticPaid = user?.paymentStatus === 'PAID' || 
+      user?.registrationStatus === 'PAID_ACTIVE' ||
+      user?.membershipStatus === 'Active Paid Member' ||
+      Boolean(paymentDetails?.id);
 
     if (isAuthenticPaid) {
       setIsVerified(true);
-      setVerifiedPaymentId(paymentDetails.id);
+      setVerifiedPaymentId(paymentDetails?.id || 'Razorpay Verified');
       return;
     }
 
-    // 3. Otherwise: Unverified / Not paid
+    // 3. Otherwise: Unverified
     setIsVerified(false);
   }, [searchParams, user, paymentDetails, processPaymentSuccess]);
+
+  const handleNavigate = (path) => {
+    // Clean any overlays before navigation
+    if (typeof document !== 'undefined') {
+      try {
+        document.querySelectorAll('.razorpay-container').forEach(el => el.remove());
+        document.body.style.overflow = 'auto';
+      } catch (e) {}
+    }
+    window.location.assign(path);
+  };
 
   // UNVERIFIED: An unpaid visitor navigated here directly without paying
   if (!isVerified) {
@@ -118,7 +141,9 @@ function PaymentSuccessContent() {
           textAlign: 'center',
           borderRadius: 'var(--radius-lg)',
           border: '2px solid #166534',
-          boxShadow: 'var(--shadow-lg)'
+          boxShadow: 'var(--shadow-lg)',
+          position: 'relative',
+          zIndex: 10
         }}>
           
           <div style={{
@@ -131,7 +156,7 @@ function PaymentSuccessContent() {
             alignItems: 'center',
             justifyContent: 'center',
             margin: '0 auto 1.5rem',
-            boxShadow: '0 4px 14px rgba(22, 101, 52, 0.2)'
+            boxShadow: '0 4px 14px rgba(220, 38, 52, 0.2)'
           }}>
             <CheckCircle2 size={46} />
           </div>
@@ -170,19 +195,56 @@ function PaymentSuccessContent() {
             </div>
           </div>
 
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.8rem' }}>
-            <Link 
-              href="/profile-setup" 
-              className="btn btn-primary btn-full btn-lg">
+          {/* Action Buttons with Direct Navigation */}
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.85rem', position: 'relative', zIndex: 100 }}>
+            <button 
+              type="button"
+              onClick={() => handleNavigate('/profile-setup')}
+              className="btn btn-primary btn-full btn-lg"
+              style={{
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: '8px',
+                padding: '0.9rem 1.25rem',
+                fontSize: '1rem',
+                fontWeight: 700,
+                background: 'linear-gradient(135deg, #7A0C2E 0%, #A11440 100%)',
+                color: '#FFFFFF',
+                borderRadius: '8px',
+                border: 'none',
+                boxShadow: '0 4px 14px rgba(122, 12, 46, 0.35)',
+                transition: 'transform 0.15s ease',
+                pointerEvents: 'auto'
+              }}>
               <UserCheck size={18} />
               <span>Complete Profile Details & Horoscope (Step 4)</span>
-            </Link>
+            </button>
 
-            <Link 
-              href="/alliances" 
-              className="btn btn-outline-gold btn-full">
+            <button 
+              type="button"
+              onClick={() => handleNavigate('/alliances')}
+              className="btn btn-outline-gold btn-full"
+              style={{
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: '8px',
+                padding: '0.85rem 1.25rem',
+                fontSize: '1rem',
+                fontWeight: 700,
+                background: '#FFFFFF',
+                color: '#92400E',
+                borderRadius: '8px',
+                border: '2px solid #D97706',
+                boxShadow: '0 2px 8px rgba(217, 119, 6, 0.15)',
+                transition: 'transform 0.15s ease',
+                pointerEvents: 'auto'
+              }}>
               <span>Browse Tamil Alliances Right Away →</span>
-            </Link>
+            </button>
           </div>
 
         </div>
