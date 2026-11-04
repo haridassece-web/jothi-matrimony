@@ -1,7 +1,7 @@
 import { Controller, Post, Body, Headers, BadRequestException } from '@nestjs/common';
 import { PaymentsService } from './payments.service';
 
-@Controller('payments')
+@Controller(['payments', 'api/payment'])
 export class PaymentsController {
   constructor(private readonly paymentsService: PaymentsService) {}
 
@@ -130,5 +130,26 @@ export class PaymentsController {
     }
 
     return { status: 'ok', received: true };
+  }
+
+  @Post('create')
+  async createPayUPayment(
+    @Body()
+    body: {
+      userId?: string;
+      firstname?: string;
+      email?: string;
+      phone?: string;
+    },
+  ) {
+    if (!body.userId || !body.firstname || !body.email || !body.phone) {
+      throw new BadRequestException('Required member details missing');
+    }
+    return this.paymentsService.createPayUPayment(
+      body.userId,
+      body.firstname,
+      body.email,
+      body.phone,
+    );
   }
 }

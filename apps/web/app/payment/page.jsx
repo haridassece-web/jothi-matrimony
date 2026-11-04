@@ -8,6 +8,7 @@ import { useRouter } from 'next/navigation';
 import { useAuth } from '../../context/AuthContext';
 import RazorpayStandardCheckout from '../../components/RazorpayStandardCheckout';
 import RazorpayPaymentButton from '../../components/RazorpayPaymentButton';
+import PayUMembership from '../../components/PayUMembership';
 import { ShieldCheck, CheckCircle2, Lock, Sparkles, CreditCard, Landmark, Copy, Check, AlertCircle } from 'lucide-react';
 
 export default function PaymentPage() {
@@ -200,6 +201,21 @@ export default function PaymentPage() {
             <div style={{ minHeight: '48px', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
               <RazorpayPaymentButton paymentButtonId="pl_TuQgSgXdvzHPKY" />
             </div>
+
+            {/* PayU Hosted Integration Button */}
+            <div style={{ marginTop: '1.25rem', paddingTop: '1.25rem', borderTop: '1px dashed #CBD5E1' }}>
+              <div style={{ fontSize: '0.85rem', fontWeight: 700, color: '#065F46', marginBottom: '0.6rem', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px' }}>
+                <ShieldCheck size={16} /> Pay via PayU Hosted Checkout (Cards, NetBanking, UPI)
+              </div>
+              <PayUMembership 
+                user={user || { 
+                  id: displayRegId, 
+                  full_name: user?.fullName || 'Valued Member', 
+                  email: user?.email || 'member@chennaijothimatrimony.com', 
+                  mobile: user?.mobile || '9043773977' 
+                }} 
+              />
+            </div>
           </div>
 
           <div style={{
@@ -353,3 +369,4 @@ const copyBtnStyle = {
   fontWeight: 700,
   cursor: 'pointer'
 };
+

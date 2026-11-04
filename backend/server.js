@@ -11,6 +11,14 @@ const PORT = process.env.PORT || 5000;
 app.use(cors());
 app.use(express.json());
 
+// PayU Payment Gateway Routes
+try {
+  app.use('/api/payment', require('./routes/payment'));
+  console.log('✅ PayU Payment Routes mounted at /api/payment');
+} catch (routeErr) {
+  console.warn('⚠️ Failed to mount PayU routes:', routeErr.message);
+}
+
 // Helper to create SHA-256 hash of OTP
 function hashOtp(otp) {
   return crypto.createHash('sha256').update(String(otp).trim()).digest('hex');

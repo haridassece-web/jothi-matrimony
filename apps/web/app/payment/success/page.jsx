@@ -25,22 +25,25 @@ function PaymentSuccessContent() {
       }
     }
 
-    const rzpPaymentId = searchParams ? (
+    const paymentId = searchParams ? (
+      searchParams.get('payu_payment_id') ||
       searchParams.get('razorpay_payment_id') || 
       searchParams.get('payment_id') || 
-      searchParams.get('razorpay_payment_link_id')
+      searchParams.get('razorpay_payment_link_id') ||
+      searchParams.get('txnid')
     ) : null;
 
-    // 1. If redirected by Razorpay with a payment ID
-    if (rzpPaymentId) {
+    // 1. If redirected by PayU or Razorpay with a payment ID
+    if (paymentId) {
+      const isPayU = Boolean(searchParams.get('payu_payment_id') || searchParams.get('txnid'));
       if (processPaymentSuccess) {
         processPaymentSuccess({
-          paymentId: rzpPaymentId,
-          gateway: 'Razorpay Online Gateway'
+          paymentId: paymentId,
+          gateway: isPayU ? 'PayU Hosted Checkout' : 'Online Payment Gateway'
         });
       }
       setIsVerified(true);
-      setVerifiedPaymentId(rzpPaymentId);
+      setVerifiedPaymentId(paymentId);
       return;
     }
 

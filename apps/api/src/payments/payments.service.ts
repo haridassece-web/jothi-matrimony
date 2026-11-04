@@ -117,4 +117,63 @@ export class PaymentsService {
       razorpayPaymentId,
     };
   }
+
+  async createPayUPayment(userId: string, firstname: string, email: string, phone: string) {
+    const payuKey = process.env.PAYU_KEY || process.env.VITE_PAYU_KEY || '';
+    const payuSalt = process.env.PAYU_SALT || '';
+    const payuUrl = process.env.PAYU_ENV === 'production'
+      ? 'https://secure.payu.in/_payment'
+      : 'https://test.payu.in/_payment';
+
+    const amount = '1000.00';
+    const txnid = 'CJM' + Date.now() + Math.random().toString(36).slice(2, 7);
+    const apiBaseUrl = process.env.API_URL || 'https://jothi-matrimony.onrender.com';
+
+    const hashString = [
+      payuKey,
+      txnid,
+      amount,
+      'Chennai Jothi Matrimony Membership',
+      firstname.trim(),
+      email.trim().toLowerCase(),
+      userId,
+      '', '', '', '', '', '', '', '', '', '',
+      payuSalt,
+    ].join('|');
+
+    const hash = crypto.createHash('sha512').update(hashString).digest('hex');
+
+    const payment = {
+      key: payuKey,
+      txnid,
+      amount,
+      productinfo: 'Chennai Jothi Matrimony Membership',
+      firstname: firstname.trim(),
+      email: email.trim().toLowerCase(),
+      phone: phone.replace(/\D/g, '').slice(-10),
+      udf1: userId,
+      udf2: '', udf3: '', udf4: '', udf5: '',
+      surl: `${apiBaseUrl}/api/payment/success`,
+      furl: `${apiBaseUrl}/api/payment/failure`,
+      hash,
+    };
+
+    try {
+      const supabase = this.supabaseService.getClient();
+      await supabase.from('membership_payments').insert({
+        user_id: userId,
+        txnid,
+        amount: 1000.0,
+        gateway: 'PayU',
+        status: 'pending',
+      });
+    } catch (e) {
+      console.warn('[PayU DB Insert Warning]:', e.message);
+    }
+
+    return {
+      paymentUrl: payuUrl,
+      paymentData: payment,
+    };
+  }
 }
