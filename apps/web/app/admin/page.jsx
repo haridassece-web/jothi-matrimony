@@ -400,15 +400,79 @@ export default function NextAdminPage() {
     const regNoStr = p.regNo ? String(p.regNo).toLowerCase() : '';
     const idStr = p.id ? String(p.id).toLowerCase() : '';
     
+    const phoneStr = (p.phone || p.mobile || '').replace(/[\s\-\+]/g, '').toLowerCase();
+    const cleanSearch = searchLower.replace(/[\s\-\+]/g, '');
+
     const matchesSearch = nameStr.includes(searchLower) ||
       casteStr.includes(searchLower) ||
       regNoStr.includes(searchLower) ||
-      idStr.includes(searchLower);
+      idStr.includes(searchLower) ||
+      (phoneStr && cleanSearch && phoneStr.includes(cleanSearch));
 
-    const matchesGender = adminGenderFilter === 'All' || p.gender === adminGenderFilter;
+    const isPaid = p.paymentStatus === 'PAID' || p.membershipStatus === 'Active Paid Member' || p.is_paid_member === true;
+    let matchesFilter = true;
+    if (adminGenderFilter === 'Female') matchesFilter = p.gender === 'Female';
+    else if (adminGenderFilter === 'Male') matchesFilter = p.gender === 'Male';
+    else if (adminGenderFilter === 'PendingPayment') matchesFilter = !isPaid;
+    else if (adminGenderFilter === 'PaidMembers') matchesFilter = isPaid;
 
-    return matchesSearch && matchesGender;
+    return matchesSearch && matchesFilter;
   });
+
+  
+  const handleManualPaymentActivate = async (profile) => {
+    const regNo = getDisplayRegNo(profile);
+    const isCurrentlyPaid = profile.paymentStatus === 'PAID' || 
+                            profile.membershipStatus === 'Active Paid Member' ||
+                            profile.is_paid_member === true;
+
+    if (isCurrentlyPaid) {
+      if (window.confirm(`Profile for ${profile.name} (${regNo}) is currently marked as PAID.\n\nDo you want to switch this account back to UNPAID?`)) {
+        const updated = {
+          ...profile,
+          paymentStatus: 'UNPAID',
+          registrationStatus: 'PENDING',
+          membershipStatus: 'Pending Payment',
+          is_paid_member: false,
+          verified: false,
+          isVerified: false
+        };
+        setProfilesList(prev => prev.map(p => (p.id === profile.id || (p.regNo && p.regNo === profile.regNo)) ? updated : p));
+        if (adminUpdateProfile) await adminUpdateProfile(updated);
+        else if (updateFullProfile) await updateFullProfile(updated);
+      }
+      return;
+    }
+
+    const confirmMsg = `Enable & Activate Profile for ${profile.name} (${regNo})?\n\nPayment Method: PhonePe / Manual (₹1,000)\n\nThis will instantly mark them as an Active Paid Member and unlock all alliance profiles and contacts.`;
+    if (!window.confirm(confirmMsg)) return;
+
+    const updated = {
+      ...profile,
+      paymentStatus: 'PAID',
+      registrationStatus: 'PAID_ACTIVE',
+      membershipStatus: 'Active Paid Member',
+      is_paid_member: true,
+      verified: true,
+      isVerified: true,
+      paymentDetails: {
+        id: `PHONEPE_MANUAL_${Date.now()}`,
+        gateway: 'PhonePe / GPay Manual (90437 73977)',
+        paidAt: new Date().toISOString(),
+        amount: 1000
+      }
+    };
+
+    setProfilesList(prev => prev.map(p => (p.id === profile.id || (p.regNo && p.regNo === profile.regNo)) ? updated : p));
+
+    if (adminUpdateProfile) {
+      await adminUpdateProfile(updated);
+    } else if (updateFullProfile) {
+      await updateFullProfile(updated);
+    }
+
+    alert(`✅ Success: ${profile.name} (${regNo}) is now an Active Paid Member with full access!`);
+  };
 
   const toggleVerify = (id) => {
     const target = (profilesList || []).find(p => p.id === id);
@@ -643,6 +707,20 @@ export default function NextAdminPage() {
                     }}>
                     Grooms 🤵 ({groomsCount})
                   </button>
+                  <button
+                    onClick={() => setAdminGenderFilter('PendingPayment')}
+                    style={{
+                      padding: '4px 10px',
+                      borderRadius: '12px',
+                      border: adminGenderFilter === 'PendingPayment' ? '1.5px solid #5f259f' : '1px solid #CBD5E1',
+                      background: adminGenderFilter === 'PendingPayment' ? '#5f259f' : '#FFF',
+                      color: adminGenderFilter === 'PendingPayment' ? '#FFF' : '#5f259f',
+                      fontWeight: 700,
+                      fontSize: '0.78rem',
+                      cursor: 'pointer'
+                    }}>
+                    ⚡ Pending PhonePe / Unpaid
+                  </button>
                 </div>
 
                 <div style={{ position: 'relative', width: '240px' }}>
@@ -669,7 +747,8 @@ export default function NextAdminPage() {
                     <th style={{ padding: '10px' }}>Community / Caste</th>
                     <th style={{ padding: '10px' }}>Education & Job</th>
                     <th style={{ padding: '10px' }}>Phone / Email</th>
-                    <th style={{ padding: '10px' }}>Status</th>
+                    <th style={{ padding: '10px' }}>Verification</th>
+                    <th style={{ padding: '10px' }}>Payment & Membership</th>
                     <th style={{ padding: '10px', textAlign: 'center' }}>Actions</th>
                   </tr>
                 </thead>
@@ -710,6 +789,7 @@ export default function NextAdminPage() {
                           return (
                             <button 
                               onClick={() => toggleVerify(profile.id)}
+                              title="Toggle Document Verification"
                               style={{
                                 border: 'none',
                                 background: verified ? '#DCFCE7' : '#FEF3C7',
@@ -721,6 +801,59 @@ export default function NextAdminPage() {
                                 cursor: 'pointer'
                               }}>
                               {verified ? '✓ Verified' : '⚠️ Pending'}
+                            </button>
+                          );
+                        })()}
+                      </td>
+                      <td style={{ padding: '12px 10px' }}>
+                        {(() => {
+                          const isPaid = profile.paymentStatus === 'PAID' || 
+                                         profile.membershipStatus === 'Active Paid Member' ||
+                                         profile.is_paid_member === true;
+                          if (isPaid) {
+                            return (
+                              <button
+                                type="button"
+                                onClick={() => handleManualPaymentActivate(profile)}
+                                title="Click to toggle or manage payment status"
+                                style={{
+                                  border: 'none',
+                                  background: '#DCFCE7',
+                                  color: '#166534',
+                                  padding: '4px 10px',
+                                  borderRadius: '12px',
+                                  fontSize: '0.74rem',
+                                  fontWeight: 700,
+                                  cursor: 'pointer',
+                                  display: 'inline-flex',
+                                  alignItems: 'center',
+                                  gap: '4px'
+                                }}>
+                                <CheckCircle2 size={12} /> PAID (₹1,000)
+                              </button>
+                            );
+                          }
+                          return (
+                            <button
+                              type="button"
+                              onClick={() => handleManualPaymentActivate(profile)}
+                              title="Click to activate profile after receiving PhonePe / GPay / Cash payment"
+                              style={{
+                                display: 'inline-flex',
+                                alignItems: 'center',
+                                gap: '4px',
+                                background: 'linear-gradient(135deg, #5f259f 0%, #7c3aed 100%)',
+                                color: '#FFFFFF',
+                                border: 'none',
+                                padding: '5px 12px',
+                                borderRadius: '12px',
+                                fontSize: '0.74rem',
+                                fontWeight: 700,
+                                cursor: 'pointer',
+                                boxShadow: '0 2px 6px rgba(95, 37, 159, 0.25)',
+                                whiteSpace: 'nowrap'
+                              }}>
+                              <span>⚡ Enable Paid (PhonePe)</span>
                             </button>
                           );
                         })()}
