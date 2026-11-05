@@ -46,3 +46,4 @@ export async function GET(request) {
   url.searchParams.set('error', 'payment_failed');
   return NextResponse.redirect(url);
 }
+

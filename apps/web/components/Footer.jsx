@@ -112,6 +112,10 @@ export default function Footer() {
                 <span>/</span>
                 <a href="tel:9445756377" style={{ color: '#E8DCD3', textDecoration: 'none' }}>+91 94457 56377</a>
               </div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', color: '#FDE047', fontWeight: 600, fontSize: '0.74rem' }}>
+                <span>📱 PhonePe / GPay: 90437 73977 (Chandra Babu M)</span>
+              </div>
+
               <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', overflow: 'hidden', textOverflow: 'ellipsis' }}>
                 <Mail size={13} color="var(--gold-primary)" style={{ flexShrink: 0 }} />
                 <a href="mailto:arulbabuvalllalar@gmail.com" style={{ color: '#E8DCD3', textDecoration: 'none', whiteSpace: 'nowrap' }}>arulbabuvalllalar@gmail.com</a>

@@ -43,3 +43,4 @@ CREATE POLICY "Allow service role full access"
     FOR ALL
     USING (true)
     WITH CHECK (true);
+

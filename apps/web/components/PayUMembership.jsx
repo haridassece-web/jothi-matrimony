@@ -86,3 +86,4 @@ export default function PayUMembership({ user, className = "", style = {} }) {
     </button>
   );
 }
+

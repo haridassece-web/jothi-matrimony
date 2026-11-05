@@ -123,3 +123,4 @@ export async function GET(request) {
   const url = new URL('/payment/success', request.url);
   return NextResponse.redirect(url);
 }
+

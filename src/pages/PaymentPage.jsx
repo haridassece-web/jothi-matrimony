@@ -199,6 +199,174 @@ export default function PaymentPage({ setActivePage, onOpenRazorpay }) {
 
         </div>
 
+        
+        {/* PhonePe & UPI Instant Scan & Pay Card */}
+        <div className="card" style={{
+          padding: '2rem 1.75rem',
+          borderRadius: 'var(--radius-lg)',
+          border: '2.5px solid #5f259f',
+          background: 'linear-gradient(180deg, #FAF5FF 0%, #FFFFFF 100%)',
+          boxShadow: 'var(--shadow-md)',
+          marginBottom: '2rem',
+          textAlign: 'center'
+        }}>
+          
+          <div style={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: '8px',
+            background: '#5f259f',
+            color: '#FFFFFF',
+            padding: '6px 16px',
+            borderRadius: '20px',
+            fontSize: '0.88rem',
+            fontWeight: 800,
+            marginBottom: '0.85rem'
+          }}>
+            <span>PhonePe & GPay Accepted Here</span>
+          </div>
+
+          <h3 style={{ fontSize: '1.4rem', color: '#3B0764', margin: '0 0 0.35rem', fontWeight: 800 }}>
+            Scan & Pay Using PhonePe / GPay App
+          </h3>
+          <p style={{ color: '#6B7280', fontSize: '0.9rem', margin: '0 0 1.25rem' }}>
+            Instant Registration Fee Payment (₹1,000) • Official Account: <strong>CHANDRA BABU M</strong>
+          </p>
+
+          {/* Official PhonePe QR Code Image */}
+          <div style={{
+            background: '#FFFFFF',
+            padding: '1rem',
+            borderRadius: '16px',
+            border: '2px dashed #A855F7',
+            display: 'inline-block',
+            maxWidth: '280px',
+            margin: '0 auto 1.25rem',
+            boxShadow: '0 4px 15px rgba(95, 37, 159, 0.12)'
+          }}>
+            <img 
+              src="/phonepe-qr.jpg" 
+              alt="PhonePe QR Code - Chandra Babu M" 
+              style={{
+                width: '100%',
+                maxWidth: '240px',
+                height: 'auto',
+                display: 'block',
+                borderRadius: '8px'
+              }}
+            />
+            <div style={{ marginTop: '0.5rem', fontSize: '0.78rem', color: '#6B21A8', fontWeight: 700 }}>
+              CHANDRA BABU M • 9043773977@ybl
+            </div>
+          </div>
+
+          {/* PhonePe Details with One-Click Copy */}
+          <div style={{
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '0.65rem',
+            maxWidth: '440px',
+            margin: '0 auto 1.25rem',
+            textAlign: 'left'
+          }}>
+            
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: '#FFFFFF', padding: '0.75rem 1rem', borderRadius: '8px', border: '1px solid #E9D5FF' }}>
+              <div>
+                <span style={{ fontSize: '0.76rem', color: '#6B7280', display: 'block' }}>PhonePe / Mobile Number for Registration:</span>
+                <strong style={{ fontSize: '1.1rem', color: '#5f259f', letterSpacing: '0.03em' }}>+91 90437 73977</strong>
+              </div>
+              <button
+                type="button"
+                onClick={() => handleCopy('phonepe_no', '9043773977')}
+                style={copyBtnStyle}>
+                {copiedField === 'phonepe_no' ? <Check size={14} color="#166534" /> : <Copy size={14} />}
+                <span>{copiedField === 'phonepe_no' ? 'Copied' : 'Copy'}</span>
+              </button>
+            </div>
+
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: '#FFFFFF', padding: '0.75rem 1rem', borderRadius: '8px', border: '1px solid #E9D5FF' }}>
+              <div>
+                <span style={{ fontSize: '0.76rem', color: '#6B7280', display: 'block' }}>PhonePe UPI ID:</span>
+                <strong style={{ fontSize: '1rem', color: '#5f259f' }}>9043773977@ybl</strong>
+              </div>
+              <button
+                type="button"
+                onClick={() => handleCopy('phonepe_upi', '9043773977@ybl')}
+                style={copyBtnStyle}>
+                {copiedField === 'phonepe_upi' ? <Check size={14} color="#166534" /> : <Copy size={14} />}
+                <span>{copiedField === 'phonepe_upi' ? 'Copied' : 'Copy'}</span>
+              </button>
+            </div>
+
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: '#FFFFFF', padding: '0.75rem 1rem', borderRadius: '8px', border: '1px solid #E9D5FF' }}>
+              <div>
+                <span style={{ fontSize: '0.76rem', color: '#6B7280', display: 'block' }}>Payee Name:</span>
+                <strong style={{ fontSize: '0.98rem', color: '#1F2937' }}>CHANDRA BABU M</strong>
+              </div>
+            </div>
+
+          </div>
+
+          {/* Direct Pay Link for Mobile */}
+          <div style={{ marginBottom: '1rem' }}>
+            <a 
+              href={`upi://pay?pa=9043773977@ybl&pn=CHANDRA%20BABU%20%20M&am=1000&cu=INR&tn=Reg%20Fee%20${registrationId || user?.id || 'JM2026001234'}`}
+              className="btn btn-full"
+              style={{
+                background: 'linear-gradient(135deg, #5f259f 0%, #7c3aed 100%)',
+                color: '#FFFFFF',
+                fontWeight: 700,
+                padding: '0.85rem',
+                borderRadius: '8px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: '8px',
+                fontSize: '0.98rem',
+                boxShadow: '0 4px 12px rgba(95, 37, 159, 0.3)',
+                textDecoration: 'none'
+              }}>
+              <span>📱 Open in PhonePe / GPay App (Pay ₹1,000)</span>
+            </a>
+          </div>
+
+          {/* WhatsApp Confirmation Banner */}
+          <div style={{
+            background: '#F0FDF4',
+            border: '1px solid #BBF7D0',
+            borderRadius: '8px',
+            padding: '0.85rem 1rem',
+            fontSize: '0.84rem',
+            color: '#166534',
+            lineHeight: 1.5,
+            textAlign: 'left',
+            marginBottom: '1rem'
+          }}>
+            ✅ <strong>Instant Activation:</strong> After paying ₹1,000 via PhonePe or UPI, take a screenshot and send it with your Registration ID (<strong>{displayRegId}</strong>) to WhatsApp: <strong>+91 90437 73977</strong>. Dr. Chandra Babu will verify and activate your alliance browsing immediately.
+          </div>
+
+          <a 
+            href={`https://wa.me/919043773977?text=Vanakkam!%20I%20have%20paid%20Rs.1000%20via%20PhonePe%20for%20Registration%20ID:%20${registrationId || user?.id || 'JM2026001234'}.%20Please%20find%20my%20screenshot%20and%20activate%20my%20account.`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="btn btn-full"
+            style={{
+              background: '#25D366',
+              color: '#FFF',
+              fontWeight: 700,
+              padding: '0.75rem',
+              borderRadius: '8px',
+              display: 'inline-flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: '6px',
+              textDecoration: 'none'
+            }}>
+            <span>📲 Send PhonePe Screenshot to WhatsApp (+91 90437 73977)</span>
+          </a>
+
+        </div>
+
         {/* Direct Bank Account Transfer Card */}
         <div className="card" style={{
           padding: '1.75rem',

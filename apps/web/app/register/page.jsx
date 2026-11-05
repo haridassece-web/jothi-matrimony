@@ -563,6 +563,20 @@ export default function RegisterPage() {
               </span>
               <ArrowRight size={18} />
             </button>
+            {/* PhonePe Registration Fee Notice */}
+            <div style={{
+              marginTop: '1.25rem',
+              padding: '0.75rem 1rem',
+              background: '#FAF5FF',
+              border: '1px solid #E9D5FF',
+              borderRadius: '8px',
+              fontSize: '0.84rem',
+              color: '#5f259f',
+              textAlign: 'center',
+              lineHeight: 1.5
+            }}>
+              📱 <strong>Registration Payment:</strong> ₹1,000 official fee can be paid via <strong>PhonePe / GPay (90437 73977 - Chandra Babu M)</strong>, QR Scan, UPI, or Online Gateway in Step 3.
+            </div>
           </form>
         </div>
 

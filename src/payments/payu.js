@@ -95,3 +95,4 @@ module.exports = {
   PAYU_SALT,
   PAYU_URL,
 };
+
